@@ -15,7 +15,9 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 
 
@@ -30,46 +32,105 @@
 
 </head>
 
-<body>
+<body id="bd">
+    <div class="content">
+        <i class="fas fa-sun"></i>
+        &nbsp;&nbsp;&nbsp;
+        <input type="checkbox" id="tooglenight" class="cbx hidden"/>
+        <label for="tooglenight" class="switch"></label>
+        &nbsp;&nbsp;&nbsp;
+        <i class="fas fa-moon"></i>
+    </div>
 
     <header class="header">
 
+
         <div class="nav-top">
             <div class="container">
-                <nav class="navbar justify-content-center">
-                    <ul class="navbar-nav d-flex flex-row align-items-center">
-                        <li class="nav-item-list">
-                            <a href="index.html" class="nav-item-link">
-                                <img src="img/for humans.PNG" alt="logo" class="logo">
-                            </a>
-                        </li>
 
-                        <li class="nav-item-list">
-                            <a href="men.html" class="nav-item-link">
-                                men
-                            </a>
-                        </li>
+                <div class="row align-items-center">
 
-                        <li class="nav-item-list">
-                            <a href="women.html" class="nav-item-link">
-                                women
-                            </a>
-                        </li>
+                    <div class="col-md-1">
+                        <a href="index.html">
+                            <img src="img/for humans.PNG" alt="logo" class="logo">
+                        </a>
+                    </div>
 
-                        <li class="nav-item-list">
-                            <a href="accessories.html" class="nav-item-link">
-                                accessories
-                            </a>
-                        </li>
+                    <div class="col-md-8">
+                        <nav>
+                            <ul class="navbar-nav d-flex flex-row align-items-center justify-content-center">
 
-                        <li class="nav-item-list">
-                            <a href="aboutus.html" class="nav-item-link">
-                                about us
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
 
+                                <li class="nav-item-list">
+                                    <a href="tshirt.html" class="nav-item-link">
+                                        Tshirt
+                                    </a>
+                                    <ul class="nav-sub">
+
+                                        <li class="offset-2"><a href="product.html">for human</a></li>
+                                        <li class="offset-2"><a href='product.html'>the free fall</a></li>
+                                        <li class="offset-2"><a href='product.html'>product</a></li>
+
+                                    </ul>
+                                </li>
+
+                                <li class="nav-item-list">
+                                    <a href="tshirt.html" class="nav-item-link">
+                                        polo
+                                    </a>
+                                </li>
+
+                                <li class="nav-item-list">
+                                    <a href="tshirt.html" class="nav-item-link">
+                                        sweatshirt
+                                    </a>
+                                </li>
+
+                                <li class="nav-item-list">
+                                    <a href="tshirt.html" class="nav-item-link na-link">
+                                        new arrivals
+                                    </a>
+                                </li>
+                                <li class="nav-item-list">
+                                    <a href="tshirt.html" class="nav-item-link">
+                                        digital marketing
+                                    </a>
+                                </li>
+
+
+                            </ul>
+                        </nav>
+
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <form class="d-flex search-form justify-content-end" role="search">
+                                <input class="form-control" type="search" placeholder="Search products"
+                                    aria-label="Search">
+                                <span></span>
+
+                                <!-- <button class="btn btn-search" type="submit"><i
+                                        class="fa-solid fa-magnifying-glass fa-xl"></i>
+                                </button> -->
+
+
+                            </form>
+
+
+
+                            <div class="cart-icon">
+                                <a href="signin.html" class="cart-btn mx-3">
+                                    <i class="fa-solid fa-user fa-xl"></i>
+                                </a>
+                                <a href="cart.html" class=" cart-btn">
+                                    <i class="fa-solid fa-cart-shopping fa-xl"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
 
             </div>
         </div>
@@ -111,7 +172,15 @@
             </ul>
         </nav>
 
-        <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+                    aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                    aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                    aria-label="Slide 3"></button>
+            </div>
             <div class="carousel-inner">
                 <div class="carousel-item active">
                     <img src="https://images.unsplash.com/photo-1523381294911-8d3cead13475?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
@@ -126,14 +195,20 @@
                         class="d-block w-100" alt="...">
                 </div>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-              </button>
-              <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-              </button>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                data-bs-slide="prev">
+                <span class="carousel-control">
+                    <i class="fa-solid fa-angle-left fa-2xl"></i>
+
+                </span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                data-bs-slide="next">
+                <span class="carousel-control">
+                    <i class="fa-solid fa-angle-right fa-2xl"></i>
+
+                </span>
+            </button>
         </div>
     </header>
 
@@ -156,8 +231,7 @@
                     <div class="categories-box">
                         <h6 class="cat-head">
                             <a href="ourprojects.html" class="cat-link">
-                                <img src="img/Flat Front Brown TFF.png"
-                                    alt="arc-img">
+                                <img src="img/Flat Front Brown TFF.png" alt="arc-img">
                                 <span class="title">JG Tshirt</span>
                                 <span class="price">Rs. 100</span>
                             </a>
@@ -168,8 +242,7 @@
                     <div class="categories-box">
                         <h6 class="cat-head">
                             <a href="ourprojects.html" class="cat-link">
-                                <img src="img/Flat Front black FH.png"
-                                    alt="arc-img">
+                                <img src="img/Flat Front black FH.png" alt="arc-img">
                                 <span class="title">JG Tshirt</span>
                                 <span class="price">Rs. 100</span>
                             </a>
@@ -180,8 +253,7 @@
                     <div class="categories-box">
                         <h6 class="cat-head">
                             <a href="ourprojects.html" class="cat-link">
-                                <img src="img/Flat Front White FH.png"
-                                    alt="arc-img">
+                                <img src="img/Flat Front White FH.png" alt="arc-img">
                                 <span class="title">JG Tshirt</span>
                                 <span class="price">Rs. 100</span>
                             </a>
@@ -192,8 +264,7 @@
                     <div class="categories-box">
                         <h6 class="cat-head">
                             <a href="ourprojects.html" class="cat-link">
-                                <img src="img/freefall sweat shirt .png"
-                                    alt="arc-img">
+                                <img src="img/freefall sweat shirt .png" alt="arc-img">
                                 <span class="title">JG Tshirt</span>
                                 <span class="price">Rs. 100</span>
                             </a>
@@ -204,8 +275,7 @@
                     <div class="categories-box">
                         <h6 class="cat-head">
                             <a href="ourprojects.html" class="cat-link">
-                                <img src="img/Green FH front.png"
-                                    alt="arc-img">
+                                <img src="img/Green FH front.png" alt="arc-img">
                                 <span class="title">JG Tshirt</span>
                                 <span class="price">Rs. 100</span>
                             </a>
@@ -216,8 +286,7 @@
                     <div class="categories-box">
                         <h6 class="cat-head">
                             <a href="ourprojects.html" class="cat-link">
-                                <img src="img/Green FH front.png"
-                                    alt="arc-img">
+                                <img src="img/Green FH front.png" alt="arc-img">
                                 <span class="title">JG Tshirt</span>
                                 <span class="price">Rs. 100</span>
                             </a>
@@ -239,12 +308,11 @@
                         <div class="categories-box">
                             <h6 class="cat-head">
                                 <a href="ourprojects.html" class="cat-link">
-                                    <img src="img/Green FH front.png"
-                                        alt="arc-img">
+                                    <img src="img/Green FH front.png" alt="arc-img">
                                     <span class="title">JG Tshirt</span>
                                     <span class="price">Rs. 100</span>
                                 </a>
-    
+
                             </h6>
                         </div>
                     </div>
@@ -252,12 +320,11 @@
                         <div class="categories-box">
                             <h6 class="cat-head">
                                 <a href="ourprojects.html" class="cat-link">
-                                    <img src="img/freefall sweat shirt .png"
-                                        alt="arc-img">
+                                    <img src="img/freefall sweat shirt .png" alt="arc-img">
                                     <span class="title">JG Tshirt</span>
                                     <span class="price">Rs. 100</span>
                                 </a>
-    
+
                             </h6>
                         </div>
                     </div>
@@ -265,8 +332,7 @@
                         <div class="categories-box">
                             <h6 class="cat-head">
                                 <a href="ourprojects.html" class="cat-link">
-                                    <img src="img/Flat Back Brown TFF.png"
-                                        alt="arc-img">
+                                    <img src="img/Flat Back Brown TFF.png" alt="arc-img">
                                     <span class="title">orange and blue yarn</span>
                                     <span class="price">Rs. 100</span>
                                 </a>
@@ -278,8 +344,7 @@
                         <div class="categories-box">
                             <h6 class="cat-head">
                                 <a href="ourprojects.html" class="cat-link">
-                                    <img src="img/Flat Front black FH.png"
-                                        alt="arc-img">
+                                    <img src="img/Flat Front black FH.png" alt="arc-img">
                                     <span class="title">orange and blue yarn</span>
                                     <span class="price">Rs. 100</span>
                                 </a>
@@ -382,35 +447,49 @@
         </section> -->
 
         <section class="aboutus">
-            <div class="row g-0">
-                <div class="col-md-6">
-                    <div class="aboutus-des">
-                        <h2 class="heading-secondary text-start">who are we</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis fugit dolorum vero magnam
-                            quia nisi numquam accusamus error ab, corporis ut, ipsa sequi laudantium. Aut?Lorem ipsum
-                            dolor sit amet consectetur adipisicing elit. Assumenda vero quasi exercitationem non nisi
-                            dolor voluptatem vel ratione facilis voluptate odit autem quo suscipit cumque quia,
-                            consectetur molestiae qui deleniti fugiat laboriosam sunt? Sit explicabo ut necessitatibus,
-                            inventore blanditiis dignissimos voluptate quam praesentium illo repellat vel
-                            exercitationem. Deleniti, ex nesciunt?Lorem ipsum dolor sit amet consectetur, adipisicing
-                            elit. Dolorum architecto illum reiciendis aliquam dolorem culpa non eius omnis, nam voluptas
-                            error temporibus eveniet totam rerum consectetur, dolor velit dicta nisi voluptate dolores?
-                            Distinctio unde ab architecto animi perferendis neque. Id, natus dolorum quia animi ab vero
-                            consequatur non necessitatibus pariatur!</p>
+            <div class="container">
+                <div class="row g-0">
+                    <div class="col-md-6">
+                        <div class="aboutus-des">
+                            <h2 class="heading-secondary text-start">About our Goals</h2>
+                            <p class="about-para">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis
+                                fugit dolorum vero
+                                magnam
+                                quia nisi numquam accusamus error ab, corporis ut, ipsa sequi laudantium. Aut?Lorem
+                                ipsum
+                                dolor sit amet consectetur adipisicing elit. Assumenda vero quasi exercitationem non
+                                nisi
+                                dolor voluptatem vel ratione facilis voluptate odit autem quo suscipit cumque quia,
+                                consectetur molestiae qui deleniti fugiat laboriosam sunt? Sit explicabo ut
+                                necessitatibus,
+                                inventore blanditiis dignissimos voluptate quam praesentium illo repellat vel
+                                exercitationem. Deleniti, ex nesciunt?Lorem ipsum dolor sit amet consectetur,
+                                adipisicing
+                                elit. Dolorum architecto illum reiciendis aliquam dolorem culpa non eius omnis, nam
+                                voluptas
+                                error temporibus eveniet totam rerum consectetur, dolor velit dicta nisi voluptate
+                                dolores?
+                                Distinctio unde ab architecto animi perferendis neque. Id, natus dolorum quia animi ab
+                                vero
+                                consequatur non necessitatibus pariatur!</p>
+                        </div>
+
                     </div>
-
-                </div>
-                <div class="col-md-6">
-                    <div class="video">
-                        <img src="https://images.unsplash.com/photo-1479064555552-3ef4979f8908?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" class="img-fluid">
-
+                    <div class="col-md-6">
+                        <div class="video">
+                            <iframe width="908" height="511" src="https://www.youtube.com/embed/uKw6BCEM2MM"
+                                title="Mens Fashion 101: HOW TO DRESS BETTER" frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                        </div>
                     </div>
                 </div>
             </div>
+
         </section>
 
-        <section class="testimonials d-none">
-            <div class="container">
+        <section class="testimonials">
+            <div>
                 <h2 class="heading-secondary text-center">reviews
                     <div class="separator mx-auto"></div>
                 </h2>
@@ -566,88 +645,152 @@
     </main>
 
     <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <!-- <div class="main-logo">
-                        <a href="index.html">
-                            <img src="img/logo-btsyc.png" alt="footer-logo">
-                        </a>
-                    </div> -->
 
-                    <h3 class="heading-tertiary">
-                        about
-                    </h3>
+        <div class="footer-links">
+            <div class="container">
 
-                    <ul class="footer-nav">
-                        <li class="footer-nav-list">
-                            <a href="whoarewe.html">who are we</a>
-                        </li>
-                        <li class="footer-nav-list">
-                            <a href="aboutus.html">our team</a>
-                        </li>
+                <div class="row">
+                    <div class="col-md-4">
 
-                    </ul>
-                </div>
+                        <h3 class="heading-tertiary">
+                            jg
+                        </h3>
 
-                <div class="col-md-4">
-                    <h3 class="heading-tertiary">
-                        Quick Links
-                    </h3>
-                    <ul class="footer-nav">
-                        <li class="footer-nav-list">
-                            <a href="index.html">Home</a>
-                        </li>
-                        <li class="footer-nav-list">
-                            <a href="aboutus.html">About Us</a>
-                        </li>
-                        <li class="footer-nav-list">
-                            <a href="contact.html">Contact Us</a>
-                        </li>
+                        <p class="footer-au">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorum eligendi
+                            dolorem, facilis aperiam dolore ipsa rem! Accusamus voluptate quidem assumenda possimus, quo
+                            quia sunt laborum odio expedita qui facilis excepturi?</p>
+                    </div>
 
-                    </ul>
-                </div>
+                    <div class="col-md-4">
+                        <h3 class="heading-tertiary">
+                            Quick Links
+                        </h3>
+                        <ul class="footer-nav">
+                            <li class="footer-nav-list">
+                                <a href="index.html">Home</a>
+                            </li>
+                            <li class="footer-nav-list">
+                                <a href="aboutus.html">About Us</a>
+                            </li>
 
-                <div class="col-md-4">
-                    <h3 class="heading-tertiary">
-                        contact
-                    </h3>
-
-                    <p class="address position-relative mb-4">Kathmandu</p>
-                    <p class="phone position-relative mb-4">+97798080000</p>
-                    <p class="mail position-relative">mail@hotmail.com</p>
-
-                    <div class="social-link">
-                        <h4 class="heading-social">
-                            Follow us on:
-                        </h4>
-                        <ul>
-                            <li>
-                                <a href="#" class="social-icon">
-                                    <i class="fa-brands fa-facebook"></i>
-                                </a>
-                                <a href="#" class="social-icon">
-                                    <i class="fa-brands fa-instagram"></i>
-                                </a>
+                            <li class="footer-nav-list">
+                                <a href="p&p.html">delivery policy</a>
+                            </li>
+                            <li class="footer-nav-list">
+                                <a href="t&c.html">Terms & Conditions</a>
+                            </li>
+                            <li class="footer-nav-list">
+                                <a href="contact.html">Contact Us</a>
                             </li>
                         </ul>
                     </div>
 
+                    <div class="col-md-4">
+                        <h3 class="heading-tertiary">
+                            contact
+                        </h3>
+
+                        <p class="address position-relative mb-4">Kathmandu</p>
+                        <p class="phone position-relative mb-4">+97798080000</p>
+                        <p class="mail position-relative">mail@hotmail.com</p>
+
+                        <div class="social-link">
+                            <h4 class="heading-social">
+                                Follow us on:
+                            </h4>
+                            <ul>
+                                <li class="d-flex">
+                                    <a href="#" class="social-icon">
+                                        <img src="img/facebook.png" alt="fbicon">
+                                    </a>
+                                    <a href="#" class="social-icon">
+                                        <img src="img/instagram(1).png" alt="">
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
                 </div>
+
+                <div class="d-flex rr-po justify-content-between align-items-center">
+
+                    <p class="para-rights text-center">
+                        all rights reserved xyz &copy; 2024
+                    </p>
+
+                    <div class="payopt d-flex">
+                        <figure>
+                            <img src="img/american-express.png" alt="">
+                        </figure>
+                        <figure>
+                            <img src="img/card.png" alt="">
+                        </figure>
+                        <figure>
+                            <img src="img/discover.png" alt="">
+                        </figure>
+                        <figure>
+                            <img src="img/visa.png" alt="">
+                        </figure>
+                    </div>
+                </div>
+
             </div>
+
         </div>
 
-        <p class="para-rights text-center">
-            all rights reserved xyz &copy; 2024
-        </p>
     </footer>
+
+
+    <div class="modal" tabindex="-1">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">stay in touch</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-p">Subscribe to our newsletter for news and offers</p>
+              <form>
+                <input type="email" class="form-control" placeholder="example@email.com">
+              </form>
+            </div>
+            <div class="modal-footer">
+              
+              <button type="button" class="btn btn-primary btn-modal">Subscribe</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/min/tiny-slider.js"></script>
 
     <script src="js/bootstrap.bundle.min.js"></script>
 
-    <!-- TINY SLIDER -->
+    
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+
+    <script type="text/javascript">
+        $(window).on('load', function() {
+            $('.modal').modal('show');
+        });
+    </script>
 
     <script>
+
+$(document).ready(function(){
+        $("#tooglenight").change(function() {
+            if(this.checked) {
+                $("#bd").addClass("night");
+                $("i").css("color", "white");
+            }else{
+                $("#bd").removeClass("night");
+                $("i").css("color", "black");
+            }
+        });
+    });
 
         var slider = tns({
             container: '.my-slider',
@@ -674,6 +817,7 @@
                 },
                 640: {
                     gutter: 20,
+                    edgePadding: 20
                 },
                 700: {
 
@@ -682,7 +826,8 @@
                 },
                 900: {
                     items: 2,
-                    gutter: 20
+                    gutter: 50,
+                    edgePadding: 50
 
                 }
             }
@@ -736,6 +881,8 @@
 
 
     </script>
+
+
 
     <script src="js/script.js"></script>
 
