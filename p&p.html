@@ -32,7 +32,16 @@
 
 </head>
 
-<body>
+<body id="bd">
+
+    <div class="content">
+        <i class="fas fa-sun"></i>
+        &nbsp;&nbsp;&nbsp;
+        <input type="checkbox" id="tooglenight" class="cbx hidden" />
+        <label for="tooglenight" class="switch"></label>
+        &nbsp;&nbsp;&nbsp;
+        <i class="fas fa-moon"></i>
+    </div>
 
     <header class="header">
 
@@ -98,8 +107,7 @@
                     <div class="col-md-3">
                         <div class="d-flex justify-content-between align-items-center">
                             <form class="d-flex search-form justify-content-end" role="search">
-                                <input class="form-control" type="search" placeholder="Search products"
-                                    aria-label="Search">
+                                <input class="form-control" type="search" placeholder="search" aria-label="Search">
                                 <span></span>
 
                                 <!-- <button class="btn btn-search" type="submit"><i
@@ -218,7 +226,7 @@
                 <p class="para fw-medium">
                     Expected Delivery Charge:
 
-                    <br>  Inside Ring-road (Kathmandu): NRS 100
+                    <br> Inside Ring-road (Kathmandu): NRS 100
 
                     <br> Outside Ring-road (Kathmadnu):NRS 150
                 </p>
@@ -347,7 +355,22 @@
 
     </footer>
 
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
+    <script>
+        $(document).ready(function () {
+            $("#tooglenight").change(function () {
+                if (this.checked) {
+                    $("#bd").addClass("night");
+                    $(".content i").css("color", "#333");
+                } else {
+                    $("#bd").removeClass("night");
+                    $(".content i").css("color", "white");
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

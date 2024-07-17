@@ -37,7 +37,7 @@
     <div class="content">
         <i class="fas fa-sun"></i>
         &nbsp;&nbsp;&nbsp;
-        <input type="checkbox" id="tooglenight" class="cbx hidden"/>
+        <input type="checkbox" id="tooglenight" class="cbx hidden" />
         <label for="tooglenight" class="switch"></label>
         &nbsp;&nbsp;&nbsp;
         <i class="fas fa-moon"></i>
@@ -107,8 +107,7 @@
                     <div class="col-md-3">
                         <div class="d-flex justify-content-between align-items-center">
                             <form class="d-flex search-form justify-content-end" role="search">
-                                <input class="form-control" type="search" placeholder="Search products"
-                                    aria-label="Search">
+                                <input class="form-control" type="search" placeholder="search" aria-label="Search">
                                 <span></span>
 
                                 <!-- <button class="btn btn-search" type="submit"><i
@@ -485,17 +484,17 @@
 
     <!-- DARK MODE -->
     <script>
-$(document).ready(function(){
-        $("#tooglenight").change(function() {
-            if(this.checked) {
-                $("#bd").addClass("night");
-                $("i").css("color", "white");
-            }else{
-                $("#bd").removeClass("night");
-                $("i").css("color", "black");
-            }
+        $(document).ready(function () {
+            $("#tooglenight").change(function () {
+                if (this.checked) {
+                    $("#bd").addClass("night");
+                    $("i").css("color", "white");
+                } else {
+                    $("#bd").removeClass("night");
+                    $("i").css("color", "black");
+                }
+            });
         });
-    });
     </script>
 
 

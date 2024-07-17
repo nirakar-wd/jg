@@ -107,8 +107,7 @@
                     <div class="col-md-3">
                         <div class="d-flex justify-content-between align-items-center">
                             <form class="d-flex search-form justify-content-end" role="search">
-                                <input class="form-control" type="search" placeholder="Search products"
-                                    aria-label="Search">
+                                <input class="form-control" type="search" placeholder="search" aria-label="Search">
                                 <span></span>
 
                                 <!-- <button class="btn btn-search" type="submit"><i
@@ -324,10 +323,10 @@
             $("#tooglenight").change(function () {
                 if (this.checked) {
                     $("#bd").addClass("night");
-                    $("i").css("color", "white");
+                    $(".content i").css("color", "#333");
                 } else {
                     $("#bd").removeClass("night");
-                    $("i").css("color", "black");
+                    $(".content i").css("color", "white");
                 }
             });
         });
