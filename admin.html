@@ -197,14 +197,12 @@
                             <a href="#" data-id="3"><i class="fa-solid fa-square-plus"></i>Add Product</a>
                         </div>
                         <div>
-                            <a href="#" data-id="3"><i class="fas fa-home"></i>Dashboard</a>
+                            <a href="#" data-id="4"><i class="fa-solid fa-user-tie"></i>Add Category</a>
                         </div>
                         <div>
-                            <a href="#"><i class="fas fa-home"></i>Dashboard</a>
+                            <a href="#" data-id="5"><i class="fa-solid fa-user-tie"></i>Profile</a>
                         </div>
-                        <div>
-                            <a href="#"><i class="fas fa-home"></i>Dashboard</a>
-                        </div>
+
                     </div>
                 </aside>
 
@@ -442,7 +440,7 @@
                         </div>
                     </div>
 
-                    <div class="add-product busi active">
+                    <div class="add-product busi">
                         <div class="heading-business mb-4">add product</div>
                         <div class="add-product-box">
                             <form>
@@ -571,6 +569,421 @@
 
                     </div>
 
+                    <div class="add-product add-category busi active">
+                        <div class="heading-business mb-4">add category</div>
+                        <div class="add-product-box">
+                            <form>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="product-left">
+                                            <div class="form-group mb-4">
+                                                <label for="product-name" class="form-label">name</label>
+                                                <input type="text" class="form-control" id="product-name"
+                                                    name="product">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="categoryDescription" class="form-label">sort
+                                                    description</label>
+                                                <textarea class="form-control" id="categoryDescription" rows="5"
+                                                    placeholder="Write a description here..."></textarea>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label for="productDescription" class="form-label">full
+                                                    description</label>
+                                                <textarea class="form-control" id="productDescription" rows="5"
+                                                    ></textarea>
+                                            </div>
+
+                                            <div class="form-group mb-4">
+                                                <label for="product-tags" class="form-label">product tags <span>(Type and
+                                                    make comma to separate tags)</span></label>
+                                                <input type="text" class="form-control" id="product-tags"
+                                                    name="product">
+                                            </div>
+
+                                            <div class="btns">
+                                                <button type="submit" class="btn btn-save">Save</button>
+                                                <button type="submit" class="btn btn-delete">Delete</button>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-8 order-box">
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">name</th>
+                                                        <th scope="col">tags</th>
+                                                        <th scope="col">product</th>
+                                                        <th scope="col">total sale</th>
+                                                        <th scope="col">status</th>
+                                                        <th scope="col">action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <th scope="row">
+                                                            <a href="#">clothes</a>
+                                                        </th>
+                                                        <td>
+                                                            <span class="cat-tag">T-shirt</span>
+                                                            <span class="cat-tag">Shirt</span>
+                                                            <span class="cat-tag">Dress</span>
+                                                            <span class="cat-tag">Jeans</span>
+                                                            <span class="cat-tag">Top</span>
+                                                        </td>
+                                                        <td>100</td>
+                                                        <td>10</td>
+                                                        <td>
+                                                            <span class="paid">active</span>
+                                                        </td>
+                                                        <td>
+                                                            <div class="btn-group">
+                                                                <button class="btn btn-primary">
+                                                                    edit
+                                                                </button>
+                                                                <button class="btn btn-danger">
+                                                                    delete
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">
+                                                            <a href="#">clothes</a>
+                                                        </th>
+                                                        <td>
+                                                            <span class="cat-tag">T-shirt</span>
+                                                            <span class="cat-tag">Shirt</span>
+                                                            <span class="cat-tag">Dress</span>
+                                                            <span class="cat-tag">Jeans</span>
+                                                            <span class="cat-tag">Top</span>
+                                                        </td>
+                                                        <td>100</td>
+                                                        <td>10</td>
+                                                        <td>
+                                                            <span class="paid">active</span>
+                                                        </td>
+                                                        <td>
+                                                            <div class="btn-group">
+                                                                <button class="btn btn-primary">
+                                                                    edit
+                                                                </button>
+                                                                <button class="btn btn-danger">
+                                                                    delete
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">
+                                                            <a href="#">clothes</a>
+                                                        </th>
+                                                        <td>
+                                                            <span class="cat-tag">T-shirt</span>
+                                                            <span class="cat-tag">Shirt</span>
+                                                            <span class="cat-tag">Dress</span>
+                                                            <span class="cat-tag">Jeans</span>
+                                                            <span class="cat-tag">Top</span>
+                                                        </td>
+                                                        <td>100</td>
+                                                        <td>10</td>
+                                                        <td>
+                                                            <span class="paid">active</span>
+                                                        </td>
+                                                        <td>
+                                                            <div class="btn-group">
+                                                                <button class="btn btn-primary">
+                                                                    edit
+                                                                </button>
+                                                                <button class="btn btn-danger">
+                                                                    delete
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">
+                                                            <a href="#">clothes</a>
+                                                        </th>
+                                                        <td>
+                                                            <span class="cat-tag">T-shirt</span>
+                                                            <span class="cat-tag">Shirt</span>
+                                                            <span class="cat-tag">Dress</span>
+                                                            <span class="cat-tag">Jeans</span>
+                                                            <span class="cat-tag">Top</span>
+                                                        </td>
+                                                        <td>100</td>
+                                                        <td>10</td>
+                                                        <td>
+                                                            <span class="paid">active</span>
+                                                        </td>
+                                                        <td>
+                                                            <div class="btn-group">
+                                                                <button class="btn btn-primary">
+                                                                    edit
+                                                                </button>
+                                                                <button class="btn btn-danger">
+                                                                    delete
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                   
+    
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+
+                    <div class="userprofile busi ">
+                        <div class="heading-business mb-4">profile</div>
+                        <div class="profile-user-box">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <div class="avatar">
+                                        <img src="img/pexels-andrea-piacquadio-774909 1.png" alt="pp"
+                                            class="rounded-circle img-thumbnail">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <h4 class="heading-fourth">phoolkumari</h4>
+                                    <p class="fs-5 mb-4">authorised brand seller</p>
+                                    <ul class="list-inline">
+                                        <li class="list-inline-item me-5">
+                                            <h5 class="heading-fifth">$2500</h5>
+                                            <p class="fs-5">total revenue</p>
+
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <h5 class="heading-fifth">$2500</h5>
+                                            <p class="fs-5">total revenue</p>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="profile-settings">
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                  <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Profile</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                  <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Settings</button>
+                                </li>
+                               
+                              </ul>
+                              <div class="tab-content" id="myTabContent">
+                                <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                                    <div class="row">
+                                       
+                                        <div class="col-md-4">
+                                            <div class="seller-info">
+                                                <h5 class="heading-fifth mb-4">
+                                                    seller information
+                                                </h5>
+                                                <p class="fs-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste, repellat pariatur repellendus in nesciunt odit reprehenderit laudantium assumenda vitae enim.</p>
+                                                <hr>
+                                                <div class="text-start">
+                                                    <div class="text-muted mb-4">
+                                                        <h5 class="heading-fifth">Full Name :
+                                                            <span class="ms-2 txt">Phoolmaya Kumari</span>
+                                                        </h5>
+                                                    </div>
+                                                    <div class="text-muted mb-4">
+                                                        <h5 class="heading-fifth">Mobile :<span class="ms-2 txt">980808080</span></h5>
+                                                    </div>
+                                                    <div class="text-muted mb-4">
+                                                        <h5 class="heading-fifth">Email :<span class="ms-2 txt">phool234@gmail.com</span></h5>
+                                                    </div>
+                                                    <div class="text-muted mb-4">
+                                                        <h5 class="heading-fifth">Location :<span class="ms-2 txt">Battisputali</span></h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            
+
+                                            <div class="dash-details">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="dash-card clearfix">
+                                                            <div class="float-end card-icon d-flex">
+                                                                <i class="fi fi-tr-users-alt"></i>
+                    
+                                                            </div>
+                                                            <h6 class="db-card-title">customers</h6>
+                                                            <div class="num">3000</div>
+                                                            <div class="percent"><i class="fa-solid fa-up-long"></i>5.27%</div>
+                    
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="dash-card clearfix">
+                                                            <div class="float-end card-icon d-flex">
+                                                                <i class="fi fi-tr-cart-arrow-down"></i>
+                    
+                                                            </div>
+                                                            <h6 class="db-card-title">orders</h6>
+                                                            <div class="num">6000</div>
+                                                            <div class="d-percent"><i class="fa-solid fa-down-long"></i>3%</div>
+                    
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="dash-card clearfix">
+                                                            <div class="float-end card-icon d-flex">
+                                                                <i class="fi fi-tr-revenue-alt"></i>
+                    
+                                                            </div>
+                                                            <h6 class="db-card-title">revenue</h6>
+                                                            <div class="num">$7002</div>
+                                                            <div class="percent"><i class="fa-solid fa-up-long"></i>5.27%</div>
+                    
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+
+                                            <div class="profile-product seller-info">
+                                                <h5 class="heading-fifth mb-4">
+                                                    my products
+                                                </h5>
+
+                                                <div class="table-responsive">
+                                                    <table class="table mb-0">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Product</th>
+                                                                <th>Price</th>
+                                                                <th>Stock</th>
+                                                                <th>Amount</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>ASOS Ridley High Waist</td>
+                                                                <td>$79.49</td>
+                                                                <td><span class="badge bg-primary">82 Pcs</span></td>
+                                                                <td>$6,518.18</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Marco Lightweight Shirt</td>
+                                                                <td>$128.50</td>
+                                                                <td><span class="badge bg-primary">37 Pcs</span></td>
+                                                                <td>$4,754.50</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Half Sleeve Shirt</td>
+                                                                <td>$39.99</td>
+                                                                <td><span class="badge bg-primary">64 Pcs</span></td>
+                                                                <td>$2,559.36</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Lightweight Jacket</td>
+                                                                <td>$20.00</td>
+                                                                <td><span class="badge bg-primary">184 Pcs</span></td>
+                                                                <td>$3,680.00</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Marco Shoes</td>
+                                                                <td>$28.49</td>
+                                                                <td><span class="badge bg-primary">69 Pcs</span></td>
+                                                                <td>$1,965.81</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+                                    <div class="seller-info">
+                                        <h5 class="heading-fifth mb-4">
+                                            personal info
+                                        </h5>
+
+                                        <form>
+                                            
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label for="firstname" class="form-label">First Name</label>
+                                                        <input type="text" class="form-control" id="firstname" placeholder="Enter first name">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label for="lastname" class="form-label">Last Name</label>
+                                                        <input type="text" class="form-control" id="lastname" placeholder="Enter last name">
+                                                    </div>
+                                                </div> <!-- end col -->
+                                            </div> <!-- end row -->
+
+                                            <div class="row">
+                                                <div class="col-8">
+                                                    <div class="mb-3">
+                                                        <label for="userbio" class="form-label">Bio</label>
+                                                        <textarea class="form-control" id="userbio" rows="4" placeholder="Write something..."></textarea>
+                                                    </div>
+                                                </div> <!-- end col -->
+
+                                                <div class="col-4">
+                                                    <div class="mb-3">
+                                                        <label for="userimg" class="form-label">User Image</label>
+                                                        <input type="file" name="userimg" id="userimg" class="form-control">
+                                                    </div>
+                                                </div> <!-- end col -->
+                                            </div> <!-- end row -->
+
+                                
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label for="useremail" class="form-label">Email Address</label>
+                                                        <input type="email" class="form-control" id="useremail" placeholder="Enter email">
+                                                        <span class="form-text text-muted"><small>If you want to change email please <a href="javascript: void(0);">click</a> here.</small></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label for="userpassword" class="form-label">Password</label>
+                                                        <input type="password" class="form-control" id="userpassword" placeholder="Enter password">
+                                                        <span class="form-text text-muted"><small>If you want to change password please <a href="javascript: void(0);">click</a> here.</small></span>
+                                                    </div>
+                                                </div> <!-- end col -->
+                                            </div> <!-- end row -->
+
+                                            <div class="text-end">
+                                                <button type="submit" class="btn btn-success mt-2"><i class="mdi mdi-content-save"></i> Save</button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                </div>
+                                
+                              </div>
+
+                              
+                        </div>
+                    </div>
+
+                    
                 </section>
 
 
@@ -706,7 +1119,7 @@
                     label: '# of Sales',
                     data: [12, 19, 3, 5, 2, 3, 7, 6, 15, 4, 23, 0],
                     borderWidth: 1
-                    
+
                 }]
             },
             options: {
@@ -715,7 +1128,32 @@
                         beginAtZero: true
                     }
                 }
-                
+
+            }
+        });
+    </script>
+    
+    <script>
+        const ctx1 = document.getElementById('myChart2');
+
+        new Chart(ctx1, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                datasets: [{
+                    label: '# of Sales',
+                    data: [12, 19, 3, 5, 2, 3, 7, 6, 15, 4, 23, 0],
+                    borderWidth: 1
+
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+
             }
         });
     </script>
@@ -739,20 +1177,20 @@
 
     </script>
 
-<script>
-    $(document).ready(function () {
-        $("#tooglenight").change(function () {
-            if (this.checked) {
-                $("#bd").addClass("night");
-                $(".content i").css("color", "#333");
-            } else {
-                $("#bd").removeClass("night");
-                $(".content i").css("color", "white");
-            }
+    <script>
+        $(document).ready(function () {
+            $("#tooglenight").change(function () {
+                if (this.checked) {
+                    $("#bd").addClass("night");
+                    $(".content i").css("color", "#333");
+                } else {
+                    $("#bd").removeClass("night");
+                    $(".content i").css("color", "white");
+                }
+            });
         });
-    });
-</script>
-<!-- <script>
+    </script>
+    <!-- <script>
      const inputElement = document.querySelector('input[type="file"]');
 const credits = false;
 // create a FilePond instance at the input element location
@@ -763,7 +1201,7 @@ console.log(pond.maxFiles); // 10
 console.log(pond.required); // true
 
 </script> -->
-   
+
 </body>
 
 </html>
