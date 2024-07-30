@@ -1,21 +1,18 @@
 require("dotenv").config();
 var mysql = require("mysql");
 
-var connection = mysql.createConnection({
-  host: process.env.DB_HOST || "localhost",
-  port: process.env.DB_PORT || "3308",
-  user: process.env.DB_USER || "root",
-  password: process.env.DB_PASSWORD || "",
-  database: process.env.DB_NAME || "jg_ecommerce",
-});
+module.exports = {
+  HOST: process.env.DB_HOST || "localhost",
+  PORT: process.env.DB_PORT || "3308",
+  USER: process.env.DB_USER || "root",
+  PASSWORD: process.env.DB_PASSWORD || "",
+  DB: process.env.DB_NAME || "jg_ecommerce",
+  dialect: "mysql",
 
-connection.connect(function (err) {
-  if (err) {
-    console.log(err);
-    //throw err;
-  } else {
-    console.log("DB connected :)");
-  }
-});
-
-module.exports = connection;
+  pool: {
+    max: 5,
+    min: 0,
+    acquire: 30000,
+    idle: 10000,
+  },
+};
