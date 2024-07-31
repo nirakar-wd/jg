@@ -22,8 +22,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
 // routers
-// const router = require('./routes/productRouter.js')
-// app.use('/api/products', router)
+const router = require('./routes/userRoutes.js')
+app.use('/api/users', router)
 
 // Define a route handler for the default home page
 app.get("/", (req, res) => {

@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
       },
       description: {
-        type: TEXT(255),
+        type: STRING(255),
         allowNull: false,
       },
       createdAt: {

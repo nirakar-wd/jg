@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const CategoryImange = sequelize.define(
+  const CategoryImage = sequelize.define(
     "category_images",
     {
       id: {
@@ -44,22 +44,22 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: new Date(),
         field: "updated_at",
       },
-    },
-    {
-      tableName: "file_uploads",
-      defaultScope: {
-        where: {
-          categoryId: {
-            [sequelize.Op.not]: null,
-          },
-        },
-      },
     }
+    // {
+    //   tableName: "file_uploads",
+    //   defaultScope: {
+    //     where: {
+    //       categoryId: {
+    //         [sequelize.Op.not]: null,
+    //       },
+    //     },
+    //   },
+    // }
   );
 
-  CategoryImange.associate = (models) => {
-    CategoryImange.belongsTo(models.Category, { onDelete: "cascade" });
+  CategoryImage.associate = (models) => {
+    CategoryImage.belongsTo(models.Category, { onDelete: "cascade" });
   };
 
-  return CategoryImange;
+  return CategoryImage;
 };

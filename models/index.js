@@ -1,4 +1,4 @@
-const dbConfig = require("../configs/db.js");
+const dbConfig = require("../config/db.js");
 
 const { Sequelize, DataTypes } = require("sequelize");
 
@@ -81,20 +81,8 @@ db.Comment.associate(db);
 db.Order.associate(db);
 db.OrderItem.associate(db);
 
-db.sequelize.sync({ force: false }).then(() => {
-  console.log("yes re-sync done!");
-});
-
-// 1 to Many Relation
-
-// db.products.hasMany(db.reviews, {
-//   foreignKey: "product_id",
-//   as: "review",
-// });
-
-// db.reviews.belongsTo(db.products, {
-//   foreignKey: "product_id",
-//   as: "product",
+// db.sequelize.sync({ force: false }).then(() => {
+//   console.log("yes re-sync done!");
 // });
 
 module.exports = db;

@@ -45,16 +45,16 @@ module.exports = (sequelize, DataTypes) => {
         field: "updated_at",
       },
     },
-    {
-      tableName: "file_uploads",
-      defaultScope: {
-        where: {
-          tagId: {
-            [sequelize.Op.ne]: null,
-          },
-        },
-      },
-    }
+    // {
+    //   tableName: "file_uploads",
+    //   defaultScope: {
+    //     where: {
+    //       tagId: {
+    //         [sequelize.Op.ne]: null,
+    //       },
+    //     },
+    //   },
+    // }
   );
 
   TagImage.associate = (models) => {
