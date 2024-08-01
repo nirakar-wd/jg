@@ -8,6 +8,7 @@ const AppResponseDto = require("../dtos/responses/appResponseDto");
 exports.register = async (req, res) => {
   try {
     const body = req.body;
+    console.log(req.body);
     const resultBinding = UserRequestDto.createUserRequestDto(req.body);
     if (!_.isEmpty(resultBinding.errors)) {
       return res
@@ -15,7 +16,7 @@ exports.register = async (req, res) => {
         .json(AppResponseDto.buildWithErrorMessages(resultBinding.errors));
     }
 
-    const { email, username } = resultBinding.validatedData;
+    const { email, username, firstName, lastName } = resultBinding.validatedData;
 
     const user = await User.findOne({
       where: {
