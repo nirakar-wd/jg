@@ -1,7 +1,7 @@
 const PageMetaDto = require("./pageMetaDto");
 const TagDto = require("./tagsDto");
 const CategoryDto = require("./categoriesDto");
-const UserDto = require("./userDto");
+const UserDto = require("./usersDto");
 const CommentsDto = require("./commentsDto");
 
 function buildPagedList(

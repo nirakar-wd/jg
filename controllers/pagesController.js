@@ -1,7 +1,7 @@
 const PagesDto = require("../dtos/responses/pagesDto");
 const Tag = require("../models/index").Tag;
 const Category = require("../models/index").Category;
-const CategoryImage = require("../models/index ").CategoryImage;
+const CategoryImage = require("../models/index").CategoryImage;
 const TagImage = require("../models/index").TagImage;
 const AppResponseDto = require("../dtos/responses/appResponseDto");
 

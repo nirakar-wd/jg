@@ -1,4 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
+  const { Op } = require("sequelize");
+
   const CategoryImage = sequelize.define(
     "category_images",
     {
@@ -44,17 +46,17 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: new Date(),
         field: "updated_at",
       },
+    },
+    {
+      tableName: "file_uploads",
+      defaultScope: {
+        where: {
+          categoryId: {
+            [Op.not]: null,
+          },
+        },
+      },
     }
-    // {
-    //   tableName: "file_uploads",
-    //   defaultScope: {
-    //     where: {
-    //       categoryId: {
-    //         [sequelize.Op.not]: null,
-    //       },
-    //     },
-    //   },
-    // }
   );
 
   CategoryImage.associate = (models) => {

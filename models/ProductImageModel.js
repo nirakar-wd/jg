@@ -1,4 +1,4 @@
-
+const { Op } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
   const ProductImage = sequelize.define(
@@ -47,16 +47,16 @@ module.exports = (sequelize, DataTypes) => {
         field: "updated_at",
       },
     },
-    // {
-    //   tableName: "file_uploads",
-    //   defaultScope: {
-    //     where: {
-    //       productId: {
-    //         [sequelize.Op.ne]: null,
-    //       },
-    //     },
-    //   },
-    // }
+    {
+      tableName: "file_uploads",
+      defaultScope: {
+        where: {
+          productId: {
+            [Op.ne]: null,
+          },
+        },
+      },
+    }
   );
 
   ProductImage.associate = (models) => {

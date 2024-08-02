@@ -1,3 +1,5 @@
+const { Op } = require("sequelize");
+
 module.exports = (sequelize, DataTypes) => {
   const TagImage = sequelize.define(
     "tag_images",
@@ -45,16 +47,16 @@ module.exports = (sequelize, DataTypes) => {
         field: "updated_at",
       },
     },
-    // {
-    //   tableName: "file_uploads",
-    //   defaultScope: {
-    //     where: {
-    //       tagId: {
-    //         [sequelize.Op.ne]: null,
-    //       },
-    //     },
-    //   },
-    // }
+    {
+      tableName: "file_uploads",
+      defaultScope: {
+        where: {
+          tagId: {
+            [Op.ne]: null,
+          },
+        },
+      },
+    }
   );
 
   TagImage.associate = (models) => {

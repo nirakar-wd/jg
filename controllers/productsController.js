@@ -1,69 +1,36 @@
 const _ = require("lodash");
-const sequelize = require("./../config/sequelize.config").sequelize;
-const Product = require("./../config/sequelize.config").Product;
-const ProductTag = require("./../config/sequelize.config").ProductTag;
-const Tag = require("./../config/sequelize.config").Tag;
-const ProductImage = require("./../config/sequelize.config").ProductImage;
-const Category = require("./../config/sequelize.config").Category;
-const Comment = require("./../config/sequelize.config").Comment;
-const User = require("./../config/sequelize.config").User;
+const sequelize = require("../models/index").sequelize;
+const Product = require("../models/index").Product;
+const ProductTag = require("../models/index").ProductTag;
+const Tag = require("../models/index").Tag;
+const ProductImage = require("../models/index").ProductImage;
+const Category = require("../models/index").Category;
+const Comment = require("../models/index").Comment;
+const User = require("../models/index").User;
 
-const AppResponseDto = require("./../dtos/responses/app_response.dto");
-const ProductRequestDto = require("./../dtos/requests/products.dto");
-const ProductResponseDto = require("./../dtos/responses/products.dto");
+const AppResponseDto = require("./../dtos/responses/appResponseDto");
+const ProductRequestDto = require("./../dtos/requests/productsDto");
+const ProductResponseDto = require("./../dtos/responses/productsDto");
 
+// Get All Products
 exports.getAll = (req, res, next) => {
   const page = parseInt(req.query.page) || 1;
   const pageSize = parseInt(req.query.pageSize) || 5;
 
   Promise.all([
     Product.findAll({
-      offset: 0,
-      limit: 5,
-      order: [
-        ["createdAt", "DESC"],
-        // ['price', 'DESC']
-      ],
-      // [Comment, 'createdAt', 'DESC'],
-
-      attributes: [
-        "id",
-        "name",
-        "slug",
-        "price",
-        "created_at",
-        "updated_at",
-        // ['publish_on', 'created_at'],
-        // [sequelize.fn('count', sequelize.col('comments.id')), 'commentsCount']
-        // [sequelize.fn('COUNT', sequelize.col('id')), 'productsCount'] // instance.get('productsCount')
-      ], // retrieve publish_on column and report it as created_at javascript attribute
-      // or
-      // attributes: { include: [[sequelize.fn('COUNT', sequelize.col('hats')), 'no_hats']] }
-
-      // attributes: {exclude: ['description']},
-      include: [
-        /*{
-                    model: Comment,
-                    attributes: []
-                }
-                ,*/ {
-          model: Tag,
-          exclude: ["description", "created_at", "updated_at"],
-        },
-        {
-          model: Category,
-          attributes: ["id", "name"],
-        },
-      ],
-      // group: ['products.id'],
       offset: (page - 1) * pageSize,
       limit: pageSize,
+      order: [["createdAt", "DESC"]],
+      attributes: ["id", "name", "slug", "price", "created_at", "updated_at"],
+      include: [
+        { model: Tag, attributes: ["id", "name"] },
+        { model: Category, attributes: ["id", "name"] },
+      ],
     }),
     Product.findAndCountAll({ attributes: ["id"] }),
   ])
-    .then((results) => {
-      const products = results[0];
-      const productsCount = results[1].count;
+    .then(([products, productsCount]) => {
       Comment.findAll({
         where: {
           productId: {
@@ -76,60 +43,53 @@ exports.getAll = (req, res, next) => {
         ],
         group: "productId",
       })
-        .then((results) => {
+        .then((comments) => {
           products.forEach((product) => {
-            let comment = results.find(
-              (comment) => product.id === comment.productId
-            );
-            if (comment != null)
-              product.comments_count = comment.get("commentsCount");
-            else product.comments_count = 0;
+            let comment = comments.find((c) => product.id === c.productId);
+            product.comments_count = comment ? comment.get("commentsCount") : 0;
           });
-          return res.json(
+          res.json(
             ProductResponseDto.buildPagedList(
               products,
               page,
               pageSize,
-              productsCount,
+              productsCount.count,
               req.baseUrl
             )
           );
         })
-        .catch((err) => {
-          res.json(AppResponseDto.buildWithErrorMessages(err.message));
-        });
+        .catch((err) =>
+          res.json(AppResponseDto.buildWithErrorMessages(err.message))
+        );
     })
-    .catch((err) => {
-      return res.status(400).send(err.message);
-    });
+    .catch((err) => res.status(400).send(err.message));
 };
 
-exports.getByIdOrSlug = function (req, res, next) {
-  const query = _.assign(req.query, {
+// Get Product by ID or Slug
+exports.getByIdOrSlug = (req, res, next) => {
+  Product.findOne({
+    where: {
+      [sequelize.Op.or]: [
+        { id: req.params.idOrSlug },
+        { slug: req.params.idOrSlug },
+      ],
+    },
     include: [
-      {
-        model: Tag,
-        attributes: ["id", "name"],
-      },
-      {
-        model: Category,
-        attributes: ["id", "name"],
-      },
+      { model: Tag, attributes: ["id", "name"] },
+      { model: Category, attributes: ["id", "name"] },
       {
         model: Comment,
         attributes: ["id", "content"],
         include: [{ model: User, attributes: ["id", "username"] }],
       },
     ],
-  });
-
-  Product.findOne(req.query)
-    .then((product) => {
-      return res.json(ProductResponseDto.buildDetails(product, true, false));
-    })
-    .catch((err) => {
-      return res.json(AppResponseDto.buildWithErrorMessages(err.message));
-    });
+  })
+    .then((product) =>
+      res.json(ProductResponseDto.buildDetails(product, true, false))
+    )
+    .catch((err) =>
+      res.json(AppResponseDto.buildWithErrorMessages(err.message))
+    );
 };
 
 exports.searchProduct = (req, res, next) => {
@@ -263,123 +223,196 @@ exports.getByCategory = function (req, res, next) {
     });
 };
 
+// Create Product
 exports.createProduct = (req, res) => {
   const bindingResult = ProductRequestDto.createProductResponseDto(req);
-  const promises = [];
+  
   if (!_.isEmpty(bindingResult.errors)) {
     return res.json(
       AppResponseDto.buildWithErrorMessages(bindingResult.errors)
     );
   }
-  let transac = undefined;
+
+  let transac;
   sequelize
     .transaction({ autocommit: false })
-    .then(async function (transaction) {
+    .then(async (transaction) => {
       transac = transaction;
       const tags = req.body.tags || [];
       const categories = req.body.categories || [];
-      _.forOwn(tags, (description, name) => {
+      const promises = [];
+
+      tags.forEach(({ name, description }) => {
         promises.push(
-          Tag.findOrCreate({
-            where: { name },
-            defaults: { description },
-          })
+          Tag.findOrCreate({ where: { name }, defaults: { description } })
         );
       });
-      // another way of doing it without lodash
-      Object.keys(categories).forEach((name) => {
+
+      Object.entries(categories).forEach(([name, description]) => {
         promises.push(
-          Category.findOrCreate({
-            where: { name },
-            defaults: { description: categories[name] },
-          })
+          Category.findOrCreate({ where: { name }, defaults: { description } })
         );
       });
+
       promises.push(
         Product.create(bindingResult.validatedData, { transaction })
       );
-      await Promise.all(promises)
-        .then(async (results) => {
-          promises.length = 0;
-          const product = results.pop();
-          const tags = [];
-          const categories = [];
-          results.forEach((result) => {
-            if (result[0].constructor.getTableName() === "tags")
-              // method 1 of getting table name
-              tags.push(result[0]);
-            else if (result[0]._modelOptions.name.plural === "categories")
-              // method 2 of getting table name
-              categories.push(result[0]);
-          });
 
-          promises.push(product.setTags(tags, { transaction }));
-          promises.push(product.setCategories(categories, { transaction }));
+      const results = await Promise.all(promises);
+      promises.length = 0;
 
-          for (let i = 0; req.files != null && i < req.files.length; i++) {
-            let file = req.files[i];
-            let filePath = file.path.replace(new RegExp("\\\\", "g"), "/");
-            filePath = filePath.replace("public", "");
-            promises.push(
-              ProductImage.create(
-                {
-                  fileName: file.filename,
-                  filePath: filePath,
-                  originalName: file.originalname,
-                  fileSize: file.size,
-                  productId: product.id,
-                },
-                { transaction: transaction }
-              )
-            );
-          }
+      const product = results.pop();
+      const tagsToSet = results
+        .filter((result) => result[0].constructor.getTableName() === "tags")
+        .map((result) => result[0]);
+      const categoriesToSet = results
+        .filter(
+          (result) => result[0]._modelOptions.name.plural === "categories"
+        )
+        .map((result) => result[0]);
 
-          await Promise.all(promises)
-            .then((results) => {
-              const images = _.takeRightWhile(results, (result) => {
-                return (
-                  result.constructor.getTableName &&
-                  result.constructor.getTableName() === "file_uploads"
-                );
-              });
-              product.images = images;
-              product.tags = tags;
-              product.categories = categories;
-              transaction.commit();
-              return res.json(
-                AppResponseDto.buildWithDtoAndMessages(
-                  ProductResponseDto.buildDto(product),
-                  "product created successfully"
-                )
-              );
-            })
-            .catch((err) => {
-              throw err;
-            });
-        })
-        .catch((err) => {
-          throw err;
+      promises.push(product.setTags(tagsToSet, { transaction }));
+      promises.push(product.setCategories(categoriesToSet, { transaction }));
+
+      if (req.files) {
+        req.files.forEach((file) => {
+          let filePath = file.path.replace(/\\/g, "/").replace("public", "");
+          promises.push(
+            ProductImage.create(
+              {
+                fileName: file.filename,
+                filePath,
+                originalName: file.originalname,
+                fileSize: file.size,
+                productId: product.id,
+              },
+              { transaction }
+            )
+          );
         });
-    })
-    .catch((err) => {
-      transac.rollback();
-      return res.json(AppResponseDto.buildWithErrorMessages(err));
-    });
-};
+      }
 
-exports.updateProduct = (req, res, next) => {
-  res.json(AppResponseDto.buildWithErrorMessages("not implemented yet"));
-};
-
-exports.deleteProduct = (req, res, next) => {
-  req.product
-    .destroy(req.query)
-    .then((result) => {
+      await Promise.all(promises);
+      transaction.commit();
       res.json(
-        AppResponseDto.buildSuccessWithMessages("Product deleted successfully")
+        AppResponseDto.buildWithDtoAndMessages(
+          ProductResponseDto.buildDto(product),
+          "Product created successfully"
+        )
       );
     })
     .catch((err) => {
-      res.json(AppResponseDto.buildWithErrorMessages(err));
+      if (transac) transac.rollback();
+      res.json(AppResponseDto.buildWithErrorMessages(err.message));
     });
+};
+
+// Update Product
+exports.updateProduct = (req, res) => {
+  const bindingResult = ProductRequestDto.updateProductResponseDto(req);
+  if (!_.isEmpty(bindingResult.errors)) {
+    return res.json(
+      AppResponseDto.buildWithErrorMessages(bindingResult.errors)
+    );
+  }
+
+  let transac;
+  sequelize
+    .transaction({ autocommit: false })
+    .then(async (transaction) => {
+      transac = transaction;
+      const product = await Product.findByPk(req.params.productId);
+
+      if (!product) {
+        throw new Error("Product not found");
+      }
+
+      await product.update(bindingResult.validatedData, { transaction });
+
+      const tags = req.body.tags || [];
+      const categories = req.body.categories || [];
+      const promises = [];
+
+      tags.forEach(({ name, description }) => {
+        promises.push(
+          Tag.findOrCreate({ where: { name }, defaults: { description } })
+        );
+      });
+
+      Object.entries(categories).forEach(([name, description]) => {
+        promises.push(
+          Category.findOrCreate({ where: { name }, defaults: { description } })
+        );
+      });
+
+      const results = await Promise.all(promises);
+      promises.length = 0;
+
+      const tagsToSet = results
+        .filter((result) => result[0].constructor.getTableName() === "tags")
+        .map((result) => result[0]);
+      const categoriesToSet = results
+        .filter(
+          (result) => result[0]._modelOptions.name.plural === "categories"
+        )
+        .map((result) => result[0]);
+
+      promises.push(product.setTags(tagsToSet, { transaction }));
+      promises.push(product.setCategories(categoriesToSet, { transaction }));
+
+      if (req.files) {
+        req.files.forEach((file) => {
+          let filePath = file.path.replace(/\\/g, "/").replace("public", "");
+          promises.push(
+            ProductImage.create(
+              {
+                fileName: file.filename,
+                filePath,
+                originalName: file.originalname,
+                fileSize: file.size,
+                productId: product.id,
+              },
+              { transaction }
+            )
+          );
+        });
+      }
+
+      await Promise.all(promises);
+      transaction.commit();
+      res.json(
+        AppResponseDto.buildWithDtoAndMessages(
+          ProductResponseDto.buildDto(product),
+          "Product updated successfully"
+        )
+      );
+    })
+    .catch((err) => {
+      if (transac) transac.rollback();
+      res.json(AppResponseDto.buildWithErrorMessages(err.message));
+    });
+};
+
+// Delete Product
+exports.deleteProduct = (req, res, next) => {
+  Product.findByPk(req.params.productId)
+    .then((product) => {
+      if (!product) {
+        return res.json(
+          AppResponseDto.buildWithErrorMessages("Product not found")
+        );
+      }
+      return product
+        .destroy()
+        .then(() =>
+          res.json(
+            AppResponseDto.buildSuccessWithMessages(
+              "Product deleted successfully"
+            )
+          )
+        );
+    })
+    .catch((err) =>
+      res.json(AppResponseDto.buildWithErrorMessages(err.message))
+    );
 };
