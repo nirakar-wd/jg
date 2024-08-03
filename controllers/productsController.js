@@ -1,4 +1,5 @@
 const _ = require("lodash");
+const { Op } = require("sequelize");
 const sequelize = require("../models/index").sequelize;
 const Product = require("../models/index").Product;
 const ProductTag = require("../models/index").ProductTag;
@@ -34,7 +35,7 @@ exports.getAll = (req, res, next) => {
       Comment.findAll({
         where: {
           productId: {
-            [sequelize.Op.in]: products.map((product) => product.id),
+            [Op.in]: products.map((product) => product.id),
           },
         },
         attributes: [
@@ -67,12 +68,10 @@ exports.getAll = (req, res, next) => {
 
 // Get Product by ID or Slug
 exports.getByIdOrSlug = (req, res, next) => {
+  console.log(req.params);
   Product.findOne({
     where: {
-      [sequelize.Op.or]: [
-        { id: req.params.idOrSlug },
-        { slug: req.params.idOrSlug },
-      ],
+      [Op.or]: [{ id: req.params.idOrSlug }, { slug: req.params.idOrSlug }],
     },
     include: [
       { model: Tag, attributes: ["id", "name"] },
@@ -119,7 +118,7 @@ exports.getByTag = function (req, res, next) {
           attributes: ["id", "name", "slug", "created_at", "updated_at"],
           where: {
             id: {
-              [sequelize.Op.in]: productIds,
+              [Op.in]: productIds,
             },
           },
           include: [Tag, Category],
@@ -127,7 +126,7 @@ exports.getByTag = function (req, res, next) {
         Comment.findAll({
           where: {
             productId: {
-              [sequelize.Op.in]: productIds,
+              [Op.in]: productIds,
             },
           },
           attributes: [
@@ -226,7 +225,7 @@ exports.getByCategory = function (req, res, next) {
 // Create Product
 exports.createProduct = (req, res) => {
   const bindingResult = ProductRequestDto.createProductResponseDto(req);
-  
+
   if (!_.isEmpty(bindingResult.errors)) {
     return res.json(
       AppResponseDto.buildWithErrorMessages(bindingResult.errors)
