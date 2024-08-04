@@ -7,21 +7,33 @@ const User = require("../models/index").User;
 const Role = require("../models/index").Role;
 
 const readToken = function (req, res, next) {
+  console.log(req.user);
+
   if (req.user != null) return next();
 
   if (
-    (req.hasOwnProperty("headers") &&
-      req.headers.hasOwnProperty("authorization") &&
-      req.headers.authorization.split(" ")[0] === "Bearer") ||
-    (req.headers.authorization &&
-      req.headers.authorization.split(" ")[0] === "Token")
+    req.headers.authorization &&
+    (req.headers.authorization.startsWith("Bearer ") ||
+      req.headers.authorization.startsWith("Token "))
   ) {
+    console.log("Authorization header:", req.headers.authorization);
+
     checkToken({
       secret: process.env.JWT_SECRET || "JWT_SUPER_SECRET",
       algorithms: ["HS256"],
       userProperty: "decodedJwt",
-    })(req, res, next);
+    })(req, res, (err) => {
+      if (err) {
+        console.error("JWT Error:", err);
+        return res
+          .status(401)
+          .json(AppResponseDto.buildWithErrorMessages("Invalid token"));
+      }
+      console.log("Decoded JWT:", req.decodedJwt);
+      next();
+    });
   } else {
+    console.log("No Authorization header found");
     return next();
   }
 };
@@ -45,21 +57,28 @@ exports.isAdmin = (req, res, next) => {
 
 const getFreshUser = (required) => {
   return (req, res, next) => {
-    if (req.decodedJwt == null || req.decodedJwt.userId == null) {
-      if (required)
-        return res.json(
-          AppResponseDto.buildWithErrorMessages("Permission denied")
-        );
-      else return next();
+    console.log("Decoding JWT...", req.decodedJwt);
+    if (!req.decodedJwt || !req.decodedJwt.userId) {
+      if (required) {
+        console.log("Permission denied: No decoded JWT or user ID");
+        return res
+          .status(401)
+          .json(AppResponseDto.buildWithErrorMessages("Permission denied"));
+      } else {
+        return next();
+      }
     }
+
     User.findOne({
       where: { id: req.decodedJwt.userId },
       include: [Role],
     })
       .then((user) => {
         if (!user) {
-          res.status(401).send({ error: "Unauthorized" });
+          console.log("User not found");
+          return res.status(401).send({ error: "Unauthorized" });
         } else {
+          console.log("User found", user);
           req.user = user;
           next();
         }
@@ -83,9 +102,15 @@ exports.isAuthenticated = (req, res, next) => {
 };
 
 exports.signToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET || "JWT_SUPER_SECRET", {
-    expiresIn: process.env.JWT_EXPIRE_TIME || 30000,
-  });
+  const token = jwt.sign(
+    { userId: id },
+    process.env.JWT_SECRET || "JWT_SUPER_SECRET",
+    {
+      expiresIn: process.env.JWT_EXPIRE_TIME || 30000,
+    }
+  );
+  console.log("Generated JWT:", token);
+  return token;
 };
 
 exports.mustBeAuthenticated = [readToken, getFreshUser(true)];

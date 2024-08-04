@@ -14,7 +14,7 @@ router.get("/by_category/:category_slug", productsController.getByCategory);
 router.get("/by_category_id/:categoryId", productsController.getByCategory);
 
 
-// router.get("/:product_slug", productsController.getByIdOrSlug);
+router.get("/:product_slug", productsController.getByIdOrSlug);
 router.get("/", productsController.getAll);
 
 router.post(
