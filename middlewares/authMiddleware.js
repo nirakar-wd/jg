@@ -1,27 +1,28 @@
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
-const { expressjwt: checkToken } = require("express-jwt"); // Updated import
+const { expressjwt: checkToken } = require("express-jwt");
 const AppResponseDto = require("../dtos/responses/appResponseDto");
 
 const User = require("../models/index").User;
 const Role = require("../models/index").Role;
 
-const readToken = function (req, res, next) {
-  console.log(req.user);
+const readToken = (req, res, next) => {
+  console.log("User:", req.user);
 
   if (req.user != null) return next();
 
+  const authorizationHeader = req.headers.authorization;
   if (
-    req.headers.authorization &&
-    (req.headers.authorization.startsWith("Bearer ") ||
-      req.headers.authorization.startsWith("Token "))
+    authorizationHeader &&
+    (authorizationHeader.startsWith("Bearer ") ||
+      authorizationHeader.startsWith("Token "))
   ) {
-    console.log("Authorization header:", req.headers.authorization);
+    console.log("Authorization header:", authorizationHeader);
 
     checkToken({
-      secret: process.env.JWT_SECRET || "JWT_SUPER_SECRET",
+      secret: process.env.JWT_SECRET,
       algorithms: ["HS256"],
-      userProperty: "decodedJwt",
+      requestProperty: "decodedJwt",
     })(req, res, (err) => {
       if (err) {
         console.error("JWT Error:", err);
@@ -39,10 +40,10 @@ const readToken = function (req, res, next) {
 };
 
 exports.isAdmin = (req, res, next) => {
-  if (req.user === null)
+  if (req.user == null)
     return res.json(
       AppResponseDto.buildWithErrorMessages(
-        "Access denied, you re not Logged In"
+        "Access denied, you are not logged in"
       )
     );
 
@@ -50,13 +51,13 @@ exports.isAdmin = (req, res, next) => {
   else
     return res.json(
       AppResponseDto.buildWithErrorMessages(
-        "Access denied, you re not an Author"
+        "Access denied, you are not an Author"
       )
     );
 };
 
 const getFreshUser = (required) => {
-  return (req, res, next) => {
+  return async (req, res, next) => {
     console.log("Decoding JWT...", req.decodedJwt);
     if (!req.decodedJwt || !req.decodedJwt.userId) {
       if (required) {
@@ -69,23 +70,23 @@ const getFreshUser = (required) => {
       }
     }
 
-    User.findOne({
-      where: { id: req.decodedJwt.userId },
-      include: [Role],
-    })
-      .then((user) => {
-        if (!user) {
-          console.log("User not found");
-          return res.status(401).send({ error: "Unauthorized" });
-        } else {
-          console.log("User found", user);
-          req.user = user;
-          next();
-        }
-      })
-      .catch((err) => {
-        next(err);
+    try {
+      const user = await User.findOne({
+        where: { id: req.decodedJwt.userId },
+        include: [Role],
       });
+
+      if (!user) {
+        console.log("User not found");
+        return res.status(401).send({ error: "Unauthorized" });
+      } else {
+        console.log("User found", user);
+        req.user = user;
+        next();
+      }
+    } catch (err) {
+      next(err);
+    }
   };
 };
 
@@ -102,13 +103,9 @@ exports.isAuthenticated = (req, res, next) => {
 };
 
 exports.signToken = (id) => {
-  const token = jwt.sign(
-    { userId: id },
-    process.env.JWT_SECRET || "JWT_SUPER_SECRET",
-    {
-      expiresIn: process.env.JWT_EXPIRE_TIME || 30000,
-    }
-  );
+  const token = jwt.sign({ userId: id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRE_TIME || "30m",
+  });
   console.log("Generated JWT:", token);
   return token;
 };
@@ -120,14 +117,15 @@ exports.userOwnsItOrIsAdmin = (req, res, next) => {
   if (
     req.user != null &&
     (req.user.isAdminSync() || req.userOwnable.userId === req.user.id)
-  )
+  ) {
     next();
-  else
+  } else {
     return res.json(
       AppResponseDto.buildWithErrorMessages(
         "This resource does not belong to you"
       )
     );
+  }
 };
 
 // TODO: replace by userOwnsItOrIsOnly
@@ -136,12 +134,13 @@ exports.ownsCommentOrIsAdmin = (req, res, next) => {
     req.user != null &&
     (req.user.roles.some((role) => role.name === "ROLE_ADMIN") ||
       req.comment.userId === req.user.id)
-  )
+  ) {
     next();
-  else
+  } else {
     return res.json(
       AppResponseDto.buildWithErrorMessages(
         "This comment does not belong to you"
       )
     );
+  }
 };

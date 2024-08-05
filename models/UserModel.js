@@ -1,3 +1,4 @@
+require("dotenv").config();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -36,6 +37,10 @@ module.exports = function (sequelize, DataTypes) {
         type: STRING(50),
         allowNull: true,
       },
+      // phone: {
+      //   type: STRING(15),
+      //   allowNull: true,
+      // },
       createdAt: {
         type: DATE,
         allowNull: false,
@@ -109,7 +114,7 @@ module.exports = function (sequelize, DataTypes) {
         username: this.username,
         roles: this.roles ? this.roles.map((role) => role.name) : [],
       },
-      process.env.JWT_SECRET || "JWT_SUPER_SECRET",
+      process.env.JWT_SECRET,
       { expiresIn: process.env.EXPIRE_TIME || "1h" }
     );
   };
