@@ -20,7 +20,7 @@ module.exports = {
           firstName: process.env.ADMIN_FNAME || "admin",
           lastName: process.env.ADMIN_LNAME || "admin",
           email: process.env.ADMIN_EMAIL || "admin@admin.com",
-          password: bcrypt.hashSync("password", 10),
+          password: "password",
         },
       });
 

@@ -7,8 +7,6 @@ const User = require("../models/index").User;
 const Role = require("../models/index").Role;
 
 const readToken = (req, res, next) => {
-  console.log("User:", req.user);
-
   if (req.user != null) return next();
 
   const authorizationHeader = req.headers.authorization;
@@ -17,8 +15,6 @@ const readToken = (req, res, next) => {
     (authorizationHeader.startsWith("Bearer ") ||
       authorizationHeader.startsWith("Token "))
   ) {
-    console.log("Authorization header:", authorizationHeader);
-
     checkToken({
       secret: process.env.JWT_SECRET,
       algorithms: ["HS256"],
@@ -30,7 +26,6 @@ const readToken = (req, res, next) => {
           .status(401)
           .json(AppResponseDto.buildWithErrorMessages("Invalid token"));
       }
-      console.log("Decoded JWT:", req.decodedJwt);
       next();
     });
   } else {
@@ -58,7 +53,6 @@ exports.isAdmin = (req, res, next) => {
 
 const getFreshUser = (required) => {
   return async (req, res, next) => {
-    console.log("Decoding JWT...", req.decodedJwt);
     if (!req.decodedJwt || !req.decodedJwt.userId) {
       if (required) {
         console.log("Permission denied: No decoded JWT or user ID");
@@ -80,7 +74,7 @@ const getFreshUser = (required) => {
         console.log("User not found");
         return res.status(401).send({ error: "Unauthorized" });
       } else {
-        console.log("User found", user);
+        // console.log("User found", user);
         req.user = user;
         next();
       }

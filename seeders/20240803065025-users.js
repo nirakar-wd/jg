@@ -33,14 +33,15 @@ module.exports = {
       if (usersToSeed > 0) {
         console.log(`[+] Seeding ${usersToSeed} users`);
         for (let i = 0; i < usersToSeed; i++) {
-          const fname = faker.name.firstName();
-          const lname = faker.name.lastName();
+          const fname = faker.person.firstName();
+          const lname = faker.person.lastName();
           const user = await User.create({
             firstName: fname,
             lastName: lname,
             username: `${fname}_${lname}`,
             email: faker.internet.email(),
-            password: "password", // You might want to hash this password
+            password: "password",
+            phone: faker.phone.number(),
           });
           promises.push(user.addRole(userRole));
         }

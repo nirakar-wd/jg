@@ -37,10 +37,10 @@ module.exports = function (sequelize, DataTypes) {
         type: STRING(50),
         allowNull: true,
       },
-      // phone: {
-      //   type: STRING(15),
-      //   allowNull: true,
-      // },
+      phone: {
+        type: STRING(15),
+        allowNull: true,
+      },
       createdAt: {
         type: DATE,
         allowNull: false,

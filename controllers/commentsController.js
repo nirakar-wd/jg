@@ -2,6 +2,7 @@ const CommentResponseDto = require("../dtos/responses/commentsDto");
 const CommentRequestDto = require("../dtos/requests/commentsDto");
 const AppResponseDto = require("../dtos/responses/appResponseDto");
 const Comment = require("../models/index").Comment;
+const _ = require("lodash");
 const User = require("../models/index").User;
 
 exports.getCommentsFromProduct = function (req, res, next) {
