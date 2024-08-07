@@ -12,6 +12,7 @@ const User = require("../models/index").User;
 const AppResponseDto = require("./../dtos/responses/appResponseDto");
 const ProductRequestDto = require("./../dtos/requests/productsDto");
 const ProductResponseDto = require("./../dtos/responses/productsDto");
+const CommentModel = require("../models/CommentModel");
 
 // Get All Products
 exports.getAll = (req, res, next) => {
@@ -222,9 +223,9 @@ exports.getByCategory = function (req, res, next) {
     });
 };
 
-// Create Product
-exports.createProduct = (req, res) => {
+exports.createProduct = async (req, res) => {
   const bindingResult = ProductRequestDto.createProductResponseDto(req);
+  const promises = [];
 
   if (!_.isEmpty(bindingResult.errors)) {
     return res.json(
@@ -232,78 +233,93 @@ exports.createProduct = (req, res) => {
     );
   }
 
-  let transac;
-  sequelize
-    .transaction({ autocommit: false })
-    .then(async (transaction) => {
-      transac = transaction;
-      const tags = req.body.tags || [];
-      const categories = req.body.categories || [];
-      const promises = [];
+  let transaction;
 
-      tags.forEach(({ name, description }) => {
-        promises.push(
-          Tag.findOrCreate({ where: { name }, defaults: { description } })
-        );
-      });
+  try {
+    transaction = await sequelize.transaction({ autocommit: false });
 
-      Object.entries(categories).forEach(([name, description]) => {
-        promises.push(
-          Category.findOrCreate({ where: { name }, defaults: { description } })
-        );
-      });
+    const tags = req.body.tags || [];
+    const categories = req.body.categories || [];
 
+    // console.log("Tags:", tags);
+    // console.log("Categories:", categories);
+
+    tags.forEach(({ name, description }) => {
       promises.push(
-        Product.create(bindingResult.validatedData, { transaction })
+        Tag.findOrCreate({ where: { name }, defaults: { description } })
       );
-
-      const results = await Promise.all(promises);
-      promises.length = 0;
-
-      const product = results.pop();
-      const tagsToSet = results
-        .filter((result) => result[0].constructor.getTableName() === "tags")
-        .map((result) => result[0]);
-      const categoriesToSet = results
-        .filter(
-          (result) => result[0]._modelOptions.name.plural === "categories"
-        )
-        .map((result) => result[0]);
-
-      promises.push(product.setTags(tagsToSet, { transaction }));
-      promises.push(product.setCategories(categoriesToSet, { transaction }));
-
-      if (req.files) {
-        req.files.forEach((file) => {
-          let filePath = file.path.replace(/\\/g, "/").replace("public", "");
-          promises.push(
-            ProductImage.create(
-              {
-                fileName: file.filename,
-                filePath,
-                originalName: file.originalname,
-                fileSize: file.size,
-                productId: product.id,
-              },
-              { transaction }
-            )
-          );
-        });
-      }
-
-      await Promise.all(promises);
-      transaction.commit();
-      res.json(
-        AppResponseDto.buildWithDtoAndMessages(
-          ProductResponseDto.buildDto(product),
-          "Product created successfully"
-        )
-      );
-    })
-    .catch((err) => {
-      if (transac) transac.rollback();
-      res.json(AppResponseDto.buildWithErrorMessages(err.message));
     });
+
+    categories.forEach(({ name, description }) => {
+      promises.push(
+        Category.findOrCreate({ where: { name }, defaults: { description } })
+      );
+    });
+
+    promises.push(Product.create(bindingResult.validatedData, { transaction }));
+
+    const results = await Promise.all(promises);
+
+    promises.length = 0;
+    const product = results.pop();
+    const createdTags = [];
+    const createdCategories = [];
+
+    results.forEach((result) => {
+      if (result[0].constructor.getTableName() === "tags") {
+        createdTags.push(result[0]);
+      } else if (result[0].constructor.getTableName() === "categories") {
+        createdCategories.push(result[0]);
+      }
+    });
+
+    promises.push(product.setTags(createdTags, { transaction }));
+    promises.push(product.setCategories(createdCategories, { transaction }));
+
+    if (req.files) {
+      req.files.forEach((file) => {
+        const filePath = file.path
+          .replace(new RegExp("\\\\", "g"), "/")
+          .replace("public", "");
+        promises.push(
+          ProductImage.create(
+            {
+              fileName: file.filename,
+              filePath: filePath,
+              originalName: file.originalname,
+              fileSize: file.size,
+              productId: product.id,
+            },
+            { transaction }
+          )
+        );
+      });
+    }
+
+    const finalResults = await Promise.all(promises);
+    const images = finalResults.filter(
+      (result) =>
+        result.constructor.getTableName &&
+        result.constructor.getTableName() === "file_uploads"
+    );
+
+    product.images = images;
+    product.tags = createdTags;
+    product.categories = createdCategories;
+
+    await transaction.commit();
+    return res.json(
+      AppResponseDto.buildWithDtoAndMessages(
+        ProductResponseDto.buildDto(product),
+        "Product created successfully"
+      )
+    );
+  } catch (err) {
+    if (transaction) {
+      await transaction.rollback();
+    }
+    return res.json(AppResponseDto.buildWithErrorMessages(err.message));
+  }
 };
 
 // Update Product
@@ -394,24 +410,14 @@ exports.updateProduct = (req, res) => {
 
 // Delete Product
 exports.deleteProduct = (req, res, next) => {
-  Product.findByPk(req.params.productId)
-    .then((product) => {
-      if (!product) {
-        return res.json(
-          AppResponseDto.buildWithErrorMessages("Product not found")
-        );
-      }
-      return product
-        .destroy()
-        .then(() =>
-          res.json(
-            AppResponseDto.buildSuccessWithMessages(
-              "Product deleted successfully"
-            )
-          )
-        );
+  req.product
+    .destroy(req.query)
+    .then((result) => {
+      res.json(
+        AppResponseDto.buildSuccessWithMessages("Product deleted successfully")
+      );
     })
-    .catch((err) =>
-      res.json(AppResponseDto.buildWithErrorMessages(err.message))
-    );
+    .catch((err) => {
+      res.json(AppResponseDto.buildWithErrorMessages(err));
+    });
 };

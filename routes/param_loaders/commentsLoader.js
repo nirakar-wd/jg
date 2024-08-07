@@ -21,9 +21,8 @@ function init(router) {
     })
       .then(function (comment) {
         if (!comment)
-          return res.json(
-            AppResponseDto.buildWithErrorMessages("Comment not found"),
-            404
+          return res.status(404).json(
+            AppResponseDto.buildWithErrorMessages("Comment not found")
           );
 
         req.comment = comment;

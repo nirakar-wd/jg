@@ -1,41 +1,47 @@
-const Product = require("../../models/index").Product;
+const { Product } = require("../../models/index");
 const AppResponseDto = require("./../../dtos/responses/appResponseDto");
-const _ = require("lodash");
 
 function init(router) {
-  // Preload product objects on routes with ':product'
-  router.param("product_slug", function (req, res, next, slug) {
-    req.query = { slug: req.params.product_slug };
+  // Preload product objects on routes with ':product_slug'
+  router.param("product_slug", (req, res, next, slug) => {
+    req.query = { slug: slug };
     next();
   });
 
-  // place the product in the request object when :product_id is present in path
-  router.param("productId", function (req, res, next, slug) {
-    req.query = { id: req.params.productId };
+  // Place the product in the request object when :productId is present in the path
+  router.param("productId", (req, res, next, id) => {
+    req.query = { id: id };
     next();
   });
 
-  router.param("product_load_ids", async function (req, res, next, slugOrId) {
+  router.param("product_load_ids", async (req, res, next, slugOrId) => {
     const query = { attributes: ["id"] };
-    if (isNaN(slugOrId)) query.where = { slug: slugOrId };
-    else query.where = { id: slugOrId };
 
-    await Product.findOne(query)
-      .then((product) => {
-        if (product) {
-          req.product = product;
-          req.product_id = product.id;
-          return next();
-        } else {
-          return res.json(
-            AppResponseDto.buildWithErrorMessages("Product does not exist"),
-            404
+    if (isNaN(slugOrId)) {
+      query.where = { slug: slugOrId };
+    } else {
+      query.where = { id: slugOrId };
+    }
+
+    try {
+      const product = await Product.findOne(query);
+
+      if (product) {
+        req.product = product;
+        req.product_id = product.id;
+        return next();
+      } else {
+        return res
+          .status(404)
+          .json(
+            AppResponseDto.buildWithErrorMessages("Product does not exist")
           );
-        }
-      })
-      .catch((err) => {
-        return res.json(AppResponseDto.buildWithErrorMessages(err.message));
-      });
+      }
+    } catch (err) {
+      return res
+        .status(500)
+        .json(AppResponseDto.buildWithErrorMessages(err.message));
+    }
   });
 }
 
