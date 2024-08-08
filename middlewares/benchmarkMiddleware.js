@@ -1,11 +1,12 @@
 exports.benchmark = (req, res, next) => {
   const startTime = new Date().getTime();
-  res.on("finish", function (event) {
-    // TODO: finish event is too late to set a header because it is already sent, any suggestions?
+
+  res.on("finish", () => {
     const elapsed = (new Date().getTime() - startTime) / 1000;
     console.log("It took " + elapsed + " seconds");
+    // Optionally, you can set a custom response header here
+    // res.set("X-Perf-Time", elapsed);
   });
-  next();
-  const elapsed = (new Date().getTime() - startTime) / 1000;
-  res.set("X-Perf-Time", elapsed);
+
+  next(); // Pass control to the next middleware or route handler
 };

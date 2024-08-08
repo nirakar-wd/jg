@@ -8,17 +8,14 @@ function registerDto(user) {
 }
 
 function loginSuccess(user) {
-  const token = user.generateJwt();
   return {
     success: true,
-    token,
     user: {
       id: user.id,
       username: user.username,
       firstName: user.firstName,
       lastName: user.lastName,
       roles: RolesDto.toNameList(user.roles || []),
-      token,
     },
   };
 }

@@ -29,6 +29,11 @@ exports.createUserRequestDto = (body) => {
     resultBinding.errors.username = "Username is required";
   else resultBinding.validatedData.username = sanitizeInput(body.username);
 
+    // Check for phone
+    if (!body.phone || body.phone.trim() === "")
+      resultBinding.errors.phone = "Phone number is required";
+    else resultBinding.validatedData.phone = sanitizeInput(body.phone);
+
   // Validate email
   if (
     body.email &&

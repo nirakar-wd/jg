@@ -6,10 +6,34 @@ const AppResponseDto = require("../dtos/responses/appResponseDto");
 const User = require("../models/index").User;
 const Role = require("../models/index").Role;
 
+const verifyToken = (req, res, next) => {
+  const { access_token } = req.cookies;
+
+  console.log(req.cookies);
+
+  if (!access_token) {
+    return res.status(401).send("Not Authorized, no token");
+  }
+  jwt.verify(access_token, process.env.JWT_SECRET, async (err, decodedUser) => {
+    if (err) {
+      return res.status(401).send("Not Authorized, invalid token");
+    }
+    const foundUser = await User.findOne({ id: decodedUser.id });
+    console.log(foundUser);
+    if (!foundUser) {
+      return res.status(401).send("Unauthorized! User not found");
+    }
+    req.user = foundUser;
+    next();
+  });
+};
+
 const readToken = (req, res, next) => {
   if (req.user != null) return next();
 
-  const authorizationHeader = req.headers.authorization;
+  console.log(req.headers);
+
+  const authorizationHeader = req.headers;
   if (
     authorizationHeader &&
     (authorizationHeader.startsWith("Bearer ") ||
@@ -104,7 +128,7 @@ exports.signToken = (id) => {
   return token;
 };
 
-exports.mustBeAuthenticated = [readToken, getFreshUser(true)];
+exports.mustBeAuthenticated = [verifyToken, getFreshUser(true)];
 exports.loadUser = [readToken, getFreshUser(false)];
 
 exports.userOwnsItOrIsAdmin = (req, res, next) => {

@@ -3,8 +3,10 @@ const createError = require("http-errors");
 const express = require("express");
 const cors = require("cors");
 const logger = require("morgan");
+const cookieParser = require("cookie-parser");
 const path = require("path");
 const helmet = require("helmet");
+const bodyParser = require("body-parser");
 
 const productsRouter = require("./routes/productsRoutes");
 const usersRouter = require("./routes/userRoutes");
@@ -22,15 +24,17 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 
+app.use(bodyParser.json());
 app.use(helmet());
 
 // Use CORS middleware to allow cross-origin requests
 var corsOptions = {
-  origin: "http://localhost:3000",
+  origin: "http://127.0.0.1:5500",
 };
-app.use(BenchmarkMiddleware.benchmark);
-app.use(AuthMiddleware.loadUser);
+// app.use(BenchmarkMiddleware.benchmark);
+// app.use(AuthMiddleware.loadUser);
 app.use(cors(corsOptions));
+app.use(cookieParser());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
