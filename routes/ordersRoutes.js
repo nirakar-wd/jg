@@ -2,17 +2,17 @@ const router = require("express").Router();
 require("./param_loaders/ordersLoader").init(router);
 
 const ordersController = require("../controllers/ordersController");
-const AuthMiddleware = require("../middlewares/authMiddleware");
+const { verifyToken, userOwnsItOrIsAdmin } = require("../middlewares/authMiddleware");
 
 router.get("",
-   AuthMiddleware.mustBeAuthenticated,
+   verifyToken,
    ordersController.getOrders);
 router.get(
   "/:order_load_ids",
-  AuthMiddleware.mustBeAuthenticated,
-  AuthMiddleware.userOwnsItOrIsAdmin,
+  verifyToken,
+  userOwnsItOrIsAdmin,
   ordersController.getOrderDetails
 );
-router.post("", ordersController.createOrder);
+router.post("",verifyToken, ordersController.createOrder);
 
 module.exports = router;

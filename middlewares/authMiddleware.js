@@ -1,20 +1,20 @@
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
-const { expressjwt: checkToken } = require("express-jwt");
+// const { expressjwt: checkToken } = require("express-jwt");
 const AppResponseDto = require("../dtos/responses/appResponseDto");
 
 const User = require("../models/index").User;
 const Role = require("../models/index").Role;
 
 const verifyToken = (req, res, next) => {
-  const { access_token } = req.cookies;
+  const { accessToken } = req.cookies;
 
   console.log(req.cookies);
 
-  if (!access_token) {
+  if (!accessToken) {
     return res.status(401).send("Not Authorized, no token");
   }
-  jwt.verify(access_token, process.env.JWT_SECRET, async (err, decodedUser) => {
+  jwt.verify(accessToken, process.env.JWT_SECRET, async (err, decodedUser) => {
     if (err) {
       return res.status(401).send("Not Authorized, invalid token");
     }
@@ -28,37 +28,80 @@ const verifyToken = (req, res, next) => {
   });
 };
 
-const readToken = (req, res, next) => {
-  if (req.user != null) return next();
-
-  console.log(req.headers);
-
-  const authorizationHeader = req.headers;
-  if (
-    authorizationHeader &&
-    (authorizationHeader.startsWith("Bearer ") ||
-      authorizationHeader.startsWith("Token "))
-  ) {
-    checkToken({
-      secret: process.env.JWT_SECRET,
-      algorithms: ["HS256"],
-      requestProperty: "decodedJwt",
-    })(req, res, (err) => {
-      if (err) {
-        console.error("JWT Error:", err);
-        return res
-          .status(401)
-          .json(AppResponseDto.buildWithErrorMessages("Invalid token"));
-      }
-      next();
-    });
-  } else {
-    console.log("No Authorization header found");
-    return next();
-  }
+const generateAccessToken = ({ id, username, email }) => {
+  const accessToken = jwt.sign(
+    { id, username, email },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: "15m",
+    }
+  );
+  return {
+    accessToken,
+  };
 };
 
-exports.isAdmin = (req, res, next) => {
+const generateRefreshToken = ({ id, username, email }) => {
+  const refreshToken = jwt.sign(
+    { id, username, email },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: "30d",
+    }
+  );
+  return {
+    refreshToken,
+  };
+};
+
+// const readToken = (req, res, next) => {
+//   if (req.user != null) return next();
+
+//   console.log(req.headers);
+
+//   const authorizationHeader = req.headers;
+//   if (
+//     authorizationHeader &&
+//     (authorizationHeader.startsWith("Bearer ") ||
+//       authorizationHeader.startsWith("Token "))
+//   ) {
+//     checkToken({
+//       secret: process.env.JWT_SECRET,
+//       algorithms: ["HS256"],
+//       requestProperty: "decodedJwt",
+//     })(req, res, (err) => {
+//       if (err) {
+//         console.error("JWT Error:", err);
+//         return res
+//           .status(401)
+//           .json(AppResponseDto.buildWithErrorMessages("Invalid token"));
+//       }
+//       next();
+//     });
+//   } else {
+//     console.log("No Authorization header found");
+//     return next();
+//   }
+// };
+
+// exports.isAdmin = (req, res, next) => {
+//   if (req.user == null)
+//     return res.json(
+//       AppResponseDto.buildWithErrorMessages(
+//         "Access denied, you are not logged in"
+//       )
+//     );
+
+//   if (req.user.roles.some((role) => role.name === "ROLE_ADMIN")) next();
+//   else
+//     return res.json(
+//       AppResponseDto.buildWithErrorMessages(
+//         "Access denied, you are not an Author"
+//       )
+//     );
+// };
+
+const isAdmin = (req, res, next) => {
   if (req.user == null)
     return res.json(
       AppResponseDto.buildWithErrorMessages(
@@ -75,63 +118,78 @@ exports.isAdmin = (req, res, next) => {
     );
 };
 
-const getFreshUser = (required) => {
-  return async (req, res, next) => {
-    if (!req.decodedJwt || !req.decodedJwt.userId) {
-      if (required) {
-        console.log("Permission denied: No decoded JWT or user ID");
-        return res
-          .status(401)
-          .json(AppResponseDto.buildWithErrorMessages("Permission denied"));
-      } else {
-        return next();
-      }
-    }
+// const getFreshUser = (required) => {
+//   return async (req, res, next) => {
+//     if (!req.decodedJwt || !req.decodedJwt.userId) {
+//       if (required) {
+//         console.log("Permission denied: No decoded JWT or user ID");
+//         return res
+//           .status(401)
+//           .json(AppResponseDto.buildWithErrorMessages("Permission denied"));
+//       } else {
+//         return next();
+//       }
+//     }
 
-    try {
-      const user = await User.findOne({
-        where: { id: req.decodedJwt.userId },
-        include: [Role],
-      });
+//     try {
+//       const user = await User.findOne({
+//         where: { id: req.decodedJwt.userId },
+//         include: [Role],
+//       });
 
-      if (!user) {
-        console.log("User not found");
-        return res.status(401).send({ error: "Unauthorized" });
-      } else {
-        // console.log("User found", user);
-        req.user = user;
-        next();
-      }
-    } catch (err) {
-      next(err);
-    }
-  };
-};
+//       if (!user) {
+//         console.log("User not found");
+//         return res.status(401).send({ error: "Unauthorized" });
+//       } else {
+//         // console.log("User found", user);
+//         req.user = user;
+//         next();
+//       }
+//     } catch (err) {
+//       next(err);
+//     }
+//   };
+// };
 
-exports.isAuthenticated = (req, res, next) => {
-  if (req.user != null) {
-    next();
-    return;
-  }
-  return res.json(
-    AppResponseDto.buildWithErrorMessages(
-      "Permission denied, you must be authenticated"
-    )
-  );
-};
+// exports.isAuthenticated = (req, res, next) => {
+//   if (req.user != null) {
+//     next();
+//     return;
+//   }
+//   return res.json(
+//     AppResponseDto.buildWithErrorMessages(
+//       "Permission denied, you must be authenticated"
+//     )
+//   );
+// };
 
-exports.signToken = (id) => {
-  const token = jwt.sign({ userId: id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRE_TIME || "30m",
-  });
-  console.log("Generated JWT:", token);
-  return token;
-};
+// exports.signToken = (id) => {
+//   const token = jwt.sign({ userId: id }, process.env.JWT_SECRET, {
+//     expiresIn: process.env.JWT_EXPIRE_TIME || "30m",
+//   });
+//   console.log("Generated JWT:", token);
+//   return token;
+// };
 
-exports.mustBeAuthenticated = [verifyToken, getFreshUser(true)];
-exports.loadUser = [readToken, getFreshUser(false)];
+// exports.mustBeAuthenticated = [verifyToken, getFreshUser(true)];
+// exports.loadUser = [readToken, getFreshUser(false)];
 
-exports.userOwnsItOrIsAdmin = (req, res, next) => {
+// exports.userOwnsItOrIsAdmin = (req, res, next) => {
+//   if (
+//     req.user != null &&
+//     (req.user.isAdminSync() || req.userOwnable.userId === req.user.id)
+//   ) {
+//     next();
+//   } else {
+//     return res.json(
+//       AppResponseDto.buildWithErrorMessages(
+//         "This resource does not belong to you"
+//       )
+//     );
+//   }
+// };
+
+const userOwnsItOrIsAdmin = (req, res, next) => {
   if (
     req.user != null &&
     (req.user.isAdminSync() || req.userOwnable.userId === req.user.id)
@@ -146,8 +204,24 @@ exports.userOwnsItOrIsAdmin = (req, res, next) => {
   }
 };
 
-// TODO: replace by userOwnsItOrIsOnly
-exports.ownsCommentOrIsAdmin = (req, res, next) => {
+// // TODO: replace by userOwnsItOrIsOnly
+// exports.ownsCommentOrIsAdmin = (req, res, next) => {
+//   if (
+//     req.user != null &&
+//     (req.user.roles.some((role) => role.name === "ROLE_ADMIN") ||
+//       req.comment.userId === req.user.id)
+//   ) {
+//     next();
+//   } else {
+//     return res.json(
+//       AppResponseDto.buildWithErrorMessages(
+//         "This comment does not belong to you"
+//       )
+//     );
+//   }
+// };
+
+const ownsCommentOrIsAdmin = (req, res, next) => {
   if (
     req.user != null &&
     (req.user.roles.some((role) => role.name === "ROLE_ADMIN") ||
@@ -161,4 +235,13 @@ exports.ownsCommentOrIsAdmin = (req, res, next) => {
       )
     );
   }
+};
+
+module.exports = {
+  verifyToken,
+  generateAccessToken,
+  generateRefreshToken,
+  userOwnsItOrIsAdmin,
+  ownsCommentOrIsAdmin,
+  isAdmin,
 };

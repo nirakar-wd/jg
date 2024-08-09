@@ -1,15 +1,15 @@
 const router = require("express").Router();
 const AddressesController = require("../controllers/addressController");
-const AuthMiddleware = require("../middlewares/authMiddleware");
+const { verifyToken } = require("../middlewares/authMiddleware");
 
 router.get(
   "/users/addresses",
-  AuthMiddleware.mustBeAuthenticated,
+  verifyToken,
   AddressesController.getAddresses
 );
 router.post(
   "/users/addresses",
-  AuthMiddleware.mustBeAuthenticated,
+  verifyToken,
   AddressesController.createAddress
 );
 

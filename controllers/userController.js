@@ -3,6 +3,11 @@ const _ = require("lodash");
 const jwt = require("jsonwebtoken");
 const { User, Role, Sequelize } = require("../models/index");
 const { Op } = Sequelize;
+const {
+  generateAccessToken,
+  generateRefreshToken,
+} = require("../middlewares/authMiddleware");
+
 const UserResponseDto = require("../dtos/responses/usersDto");
 const UserRequestDto = require("../dtos/requests/usersDto");
 const AppResponseDto = require("../dtos/responses/appResponseDto");
@@ -46,35 +51,34 @@ exports.register = async (req, res) => {
       }
     }
 
-    console.log(resultBinding);
     const newUser = await User.create(resultBinding.validatedData);
     if (!newUser) {
       throw new Error("User creation failed");
     }
 
     // Generate access token
-    const accessToken = jwt.sign(
-      { id: newUser.id, username: newUser.username },
-      process.env.JWT_SECRET,
-      { expiresIn: "15m" }
-    );
+    const { accessToken } = generateAccessToken({
+      id: newUser.id,
+      username: newUser.username,
+      email: newUser.email,
+    });
 
-    // Generate refresh token
-    const refreshToken = jwt.sign(
-      { id: newUser.id, username: newUser.username },
-      process.env.JWT_SECRET,
-      { expiresIn: "7d" }
-    );
+    // // Generate refresh token
+    const { refreshToken } = generateRefreshToken({
+      id: newUser.id,
+      username: newUser.username,
+      email: newUser.email,
+    });
 
     // Set tokens as HTTP-only cookies
-    res.cookie("access_token", accessToken, {
+    res.cookie("accessToken", accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "none",
       maxAge: 15 * 60 * 1000, // 15 minutes
     });
 
-    res.cookie("refresh_token", refreshToken, {
+    res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "none",
@@ -106,28 +110,29 @@ exports.login = async (req, res) => {
     });
 
     if (user && user.isValidPassword(password)) {
-      const accessToken = jwt.sign(
-        { id: user.id, username: user.username },
-        process.env.JWT_SECRET,
-        { expiresIn: "15m" } // Access token is valid for 15 minutes
-      );
+      // Generate access token
+      const { accessToken } = generateAccessToken({
+        id: user.id,
+        username: user.username,
+        email: user.email,
+      });
 
-      // Generate the refresh token (long-lived)
-      const refreshToken = jwt.sign(
-        { id: user.id, username: user.username },
-        process.env.JWT_SECRET,
-        { expiresIn: "7d" } // Refresh token is valid for 7 days
-      );
+      // // Generate refresh token
+      const { refreshToken } = generateRefreshToken({
+        id: user.id,
+        username: user.username,
+        email: user.email,
+      });
 
       // Set cookies for both tokens
-      res.cookie("access_token", accessToken, {
+      res.cookie("accessToken", accessToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "Strict",
         maxAge: 15 * 60 * 1000, // 15 minutes
       });
 
-      res.cookie("refresh_token", refreshToken, {
+      res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "Strict",
@@ -146,7 +151,7 @@ exports.login = async (req, res) => {
 };
 
 exports.refreshToken = async (req, res) => {
-  const refreshToken = req.cookies.refresh_token;
+  const refreshToken = req.cookies.refreshToken;
 
   if (!refreshToken) {
     return res.status(401).json({ error: "No refresh token provided" });

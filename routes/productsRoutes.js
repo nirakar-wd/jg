@@ -2,7 +2,7 @@ const productsController = require("../controllers/productsController");
 const router = require("express").Router();
 const upload = require("../helpers/upload").upload;
 const setUploadPath = require("../middlewares/uploadMiddleware").setUploadPath;
-const AuthMiddleware = require("../middlewares/authMiddleware");
+const { verifyToken, isAdmin } = require("../middlewares/authMiddleware");
 
 require("./param_loaders/productsLoader").init(router);
 require("./param_loaders/tagsLoader").init(router);
@@ -19,16 +19,16 @@ router.get("/", productsController.getAll);
 
 router.post(
   "",
-  AuthMiddleware.mustBeAuthenticated,
-  AuthMiddleware.isAdmin,
+  verifyToken,
+  isAdmin,
   setUploadPath("./public/images/products"),
   upload.array("images", 6),
   productsController.createProduct
 );
 router.put(
   "/:product",
-  AuthMiddleware.mustBeAuthenticated,
-  AuthMiddleware.isAdmin,
+  verifyToken,
+  isAdmin,
   setUploadPath("./public/images/products"),
   upload.array("images", 6),
   productsController.updateProduct
@@ -36,14 +36,14 @@ router.put(
 
 router.delete(
   "/:product_load_ids",
-  AuthMiddleware.mustBeAuthenticated,
-  AuthMiddleware.isAdmin,
+  verifyToken,
+  isAdmin,
   productsController.deleteProduct
 );
 router.delete(
   "/by_id/:product_load_ids",
-  AuthMiddleware.mustBeAuthenticated,
-  AuthMiddleware.isAdmin,
+  verifyToken,
+  isAdmin,
   productsController.deleteProduct
 );
 
