@@ -26,14 +26,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const data = await response.json();
 
+      console.log(data);
+
       if (response.ok) {
-        localStorage.setItem('username', data.user.username);
+        localStorage.setItem("username", data.user.username);
         alert("login successful!");
-        window.location.href = 'http://127.0.0.1:5500/jg/contact.html';
+        window.location.href = "http://127.0.0.1:5500/jg/contact.html";
       } else {
         // Display validation errors returned by the server
         const errorMessages = Object.values(
-          data.errors || { message: "Login failed" }
+          data.full_messages || { message: "Login failed" }
         ).join("\n");
         alert(errorMessages);
       }

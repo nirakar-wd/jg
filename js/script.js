@@ -1,38 +1,37 @@
 /* scroll menu  */
 
 window.addEventListener("scroll", function () {
-    var header = document.querySelector(".nav-top");
-    header.classList.toggle("sticky", window.scrollY > 0);
+  var header = document.querySelector(".nav-top");
+  header.classList.toggle("sticky", window.scrollY > 0);
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+  const billingAddress = document.getElementById("billingAddress");
+  const shippingAddress = document.getElementById("shippingAddress");
+  const sameAsBilling = document.getElementById("sameAsBilling");
 
-document.addEventListener('DOMContentLoaded', function() {
-    const billingAddress = document.getElementById('billingAddress');
-    const shippingAddress = document.getElementById('shippingAddress');
-    const sameAsBilling = document.getElementById('sameAsBilling');
-    
-    sameAsBilling.addEventListener('change', function() {
-        if (this.checked) {
-            shippingAddress.value = billingAddress.value;
-            shippingAddress.setAttribute('readonly', true); // Optional: make the field read-only
-        } else {
-            shippingAddress.value = '';
-            shippingAddress.removeAttribute('readonly'); // Optional: remove read-only attribute
-        }
-    });
-    
-    billingAddress.addEventListener('input', function() {
-        if (sameAsBilling.checked) {
-            shippingAddress.value = this.value;
-        }
-    });
+  sameAsBilling.addEventListener("change", function () {
+    if (this.checked) {
+      shippingAddress.value = billingAddress.value;
+      shippingAddress.setAttribute("readonly", true); // Optional: make the field read-only
+    } else {
+      shippingAddress.value = "";
+      shippingAddress.removeAttribute("readonly"); // Optional: remove read-only attribute
+    }
+  });
+
+  billingAddress.addEventListener("input", function () {
+    if (sameAsBilling.checked) {
+      shippingAddress.value = this.value;
+    }
+  });
 });
 
 /* scroll menu  */
 
 window.addEventListener("scroll", function () {
-    var header = document.querySelector(".nav-top");
-    header.classList.toggle("sticky", window.scrollY > 0);
+  var header = document.querySelector(".nav-top");
+  header.classList.toggle("sticky", window.scrollY > 0);
 });
 
 const rangeInput = document.querySelectorAll(".range-input input"),
@@ -77,33 +76,36 @@ rangeInput.forEach((input) => {
   });
 });
 
+// JavaScript to handle the copying of values
+document
+  .getElementById("sameAsBilling")
+  .addEventListener("change", function () {
+    if (this.checked) {
+      document.getElementById("shippingAddress").value =
+        document.getElementById("billingAddress").value;
+      document.getElementById("shippingCity").value =
+        document.getElementById("billingCity").value;
+      document.getElementById("inputState").value =
+        document.getElementById("billingAddress").value;
+    } else {
+      document.getElementById("shippingAddress").value = "";
+    }
+  });
 
-        // JavaScript to handle the copying of values
-        document.getElementById('sameAsBilling').addEventListener('change', function() {
-          if (this.checked) {
-              document.getElementById('shippingAddress').value = document.getElementById('billingAddress').value;
-              document.getElementById('shippingCity').value = document.getElementById('billingCity').value;
-              document.getElementById('inputState').value = document.getElementById('billingAddress').value;
-          } else {
-              document.getElementById('shippingAddress').value = '';
-          }
-      });
+// Update shipping address in real-time if checkbox is checked
+document
+  .getElementById("billingAddress")
+  .addEventListener("input", function () {
+    if (document.getElementById("sameAsBilling").checked) {
+      document.getElementById("shippingAddress").value = this.value;
+      document.getElementById("shippingCity").value = this.value;
+      document.getElementById("inputState").value = this.value;
+    }
+  });
 
-      // Update shipping address in real-time if checkbox is checked
-      document.getElementById('billingAddress').addEventListener('input', function() {
-          if (document.getElementById('sameAsBilling').checked) {
-              document.getElementById('shippingAddress').value = this.value;
-              document.getElementById('shippingCity').value = this.value;
-              document.getElementById('inputState').value = this.value;
-          }
-      });
+// JS for number increase and decrease
 
-
-      // JS for number increase and decrease
-
-      function myFunction() {
-        var element = document.body;
-        element.classList.toggle("dark-mode");
-      }
-
-      
+function myFunction() {
+  var element = document.body;
+  element.classList.toggle("dark-mode");
+}

@@ -6,20 +6,25 @@ const AppResponseDto = require("../dtos/responses/appResponseDto");
 const User = require("../models/index").User;
 const Role = require("../models/index").Role;
 
-const verifyToken = (req, res, next) => {
+const verifyToken = async (req, res, next) => {
   const { accessToken } = req.cookies;
 
-  console.log(req.cookies);
+  // console.log(req.cookies);
 
   if (!accessToken) {
     return res.status(401).send("Not Authorized, no token");
   }
+
   jwt.verify(accessToken, process.env.JWT_SECRET, async (err, decodedUser) => {
     if (err) {
       return res.status(401).send("Not Authorized, invalid token");
     }
-    const foundUser = await User.findOne({ id: decodedUser.id });
-    console.log(foundUser);
+    const foundUser = await User.findOne({
+      where: { id: decodedUser.id },
+      include: [{ model: Role, attributes: ["name"] }],
+    });
+
+    // console.log(foundUser);
     if (!foundUser) {
       return res.status(401).send("Unauthorized! User not found");
     }
@@ -54,68 +59,28 @@ const generateRefreshToken = ({ id, username, email }) => {
   };
 };
 
-// const readToken = (req, res, next) => {
-//   if (req.user != null) return next();
-
-//   console.log(req.headers);
-
-//   const authorizationHeader = req.headers;
-//   if (
-//     authorizationHeader &&
-//     (authorizationHeader.startsWith("Bearer ") ||
-//       authorizationHeader.startsWith("Token "))
-//   ) {
-//     checkToken({
-//       secret: process.env.JWT_SECRET,
-//       algorithms: ["HS256"],
-//       requestProperty: "decodedJwt",
-//     })(req, res, (err) => {
-//       if (err) {
-//         console.error("JWT Error:", err);
-//         return res
-//           .status(401)
-//           .json(AppResponseDto.buildWithErrorMessages("Invalid token"));
-//       }
-//       next();
-//     });
-//   } else {
-//     console.log("No Authorization header found");
-//     return next();
-//   }
-// };
-
-// exports.isAdmin = (req, res, next) => {
-//   if (req.user == null)
-//     return res.json(
-//       AppResponseDto.buildWithErrorMessages(
-//         "Access denied, you are not logged in"
-//       )
-//     );
-
-//   if (req.user.roles.some((role) => role.name === "ROLE_ADMIN")) next();
-//   else
-//     return res.json(
-//       AppResponseDto.buildWithErrorMessages(
-//         "Access denied, you are not an Author"
-//       )
-//     );
-// };
-
 const isAdmin = (req, res, next) => {
-  if (req.user == null)
-    return res.json(
-      AppResponseDto.buildWithErrorMessages(
-        "Access denied, you are not logged in"
-      )
+  if (req.user == null) {
+    return res.status(403).json({
+      message: "Access denied, you are not logged in",
+    });
+  }
+
+  // Check if roles exist and are an array
+  if (req.user.roles && Array.isArray(req.user.roles)) {
+    // Use `some` to check if any role has the name 'ROLE_ADMIN'
+    const hasAdminRole = req.user.roles.some(
+      (role) => role.dataValues && role.dataValues.name === "ROLE_ADMIN"
     );
 
-  if (req.user.roles.some((role) => role.name === "ROLE_ADMIN")) next();
-  else
-    return res.json(
-      AppResponseDto.buildWithErrorMessages(
-        "Access denied, you are not an Author"
-      )
-    );
+    if (hasAdminRole) {
+      return next();
+    }
+  }
+
+  return res.status(403).json({
+    message: "Access denied, you are not an Admin",
+  });
 };
 
 // const getFreshUser = (required) => {

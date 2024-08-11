@@ -443,7 +443,7 @@
                     <div class="add-product busi">
                         <div class="heading-business mb-4">add product</div>
                         <div class="add-product-box">
-                            
+
                             <form id="addProductForm">
                                 <div class="row">
                                     <div class="col-md-8">
@@ -461,23 +461,24 @@
                                             </div>
 
                                             <div class="display-media">
-                                                <label for="productDescription" class="form-label">display image</label>
-                                                <div class="media-preview">Please choose your image
-                                                    <input type="file" name="file" multiple>
+                                                <label for="productDescription" class="form-label">Upload Image</label>
+                                                <div class="media-preview">
+                                                    <input type="file" name="file" id="displayImage" accept="image/*"
+                                                        style="display: none;">
+                                                    <button id="selectImageButton" class="btn btn-primary">Select
+                                                        Image</button>
+                                                    <small id="imageError" class="text-danger"
+                                                        style="display: none;"></small>
+                                                    <div id="imageName"></div>
+                                                    <!-- Display the name of the selected image -->
                                                     <br>
                                                     <i class="fa-solid fa-image"></i>
                                                 </div>
-
-
-                                                <!-- <input type="file" 
-                                                class="filepond"
-                                                name="filepond" 
-                                                multiple 
-                                                data-allow-reorder="true"
-                                                data-max-file-size="3MB"
-                                                data-max-files="10"> -->
-
                                             </div>
+
+
+
+
                                         </div>
 
                                     </div>
@@ -486,22 +487,25 @@
                                         <div class="product-right">
                                             <form>
 
-                                                <label for="price" class="form-label">
-                                                    price</label>
+                                                <label for="price" class="form-label">Price</label>
                                                 <div class="input-group mb-3">
-
-                                                    <input type="text" class="form-control"
+                                                    <input type="text" class="form-control" id="priceInput" name="price"
                                                         aria-label="Text input with dropdown button">
                                                     <button class="btn dropdown-toggle" type="button"
-                                                        data-bs-toggle="dropdown" aria-expanded="false">USD</button>
-                                                    <ul class="dropdown-menu dropdown-menu-end">
-                                                        <li><a class="dropdown-item" href="#">NPR</a></li>
-                                                        <li><a class="dropdown-item" href="#">EUR</a></li>
-                                                        <li><a class="dropdown-item" href="#">AUD</a></li>
+                                                        data-bs-toggle="dropdown" aria-expanded="false"
+                                                        id="currencyDropdown">USD</button>
+                                                    <ul class="dropdown-menu dropdown-menu-end" id="currencyMenu">
+                                                        <li><a class="dropdown-item" href="#"
+                                                                data-currency="USD">USD</a></li>
+                                                        <li><a class="dropdown-item" href="#"
+                                                                data-currency="NPR">NPR</a></li>
+                                                        <li><a class="dropdown-item" href="#"
+                                                                data-currency="EUR">EUR</a></li>
+                                                        <li><a class="dropdown-item" href="#"
+                                                                data-currency="AUD">AUD</a></li>
                                                         <li>
                                                             <hr class="dropdown-divider">
                                                         </li>
-
                                                     </ul>
                                                 </div>
 
@@ -518,7 +522,7 @@
                                                             category
                                                         </label>
                                                         <select name="categories" id="categories" class="form-control">
-                                                            <option value="1">
+                                                            <!-- <option value="1">
                                                                 Men's clothing
                                                             </option>
                                                             <option value="2">
@@ -526,14 +530,14 @@
                                                             </option>
                                                             <option value="3">
                                                                 Children's clothing
-                                                            </option>
+                                                            </option> -->
                                                         </select>
                                                     </div>
 
                                                     <div class="mb-3">
                                                         <label for="tags" class="form-label">Tags</label>
                                                         <select name="tags" id="tags" class="form-control">
-                                                            <option value="1">tag1</option>
+                                                            <!-- <option value="1">tag1</option> -->
                                                         </select>
                                                     </div>
 
