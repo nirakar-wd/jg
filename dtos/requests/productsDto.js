@@ -20,6 +20,11 @@ exports.createProductResponseDto = (req) => {
   } else {
     bindingResult.errors.price = "You must provide a valid price";
   }
+  if (req.body.vendor) {
+    bindingResult.validatedData.vendor = req.body.vendor;
+  } else {
+    bindingResult.errors.price = "You must provide a vendor name";
+  }
   if (req.body.stock) {
     bindingResult.validatedData.stock = req.body.stock;
   } else {

@@ -68,6 +68,25 @@ module.exports = function (sequelize, DataTypes) {
   User.associate = function (models) {
     User.hasMany(models.Order);
 
+    // here is how we add defaultScope programmatically
+    User.addScope(
+      "defaultScope",
+      {
+        include: [
+          {
+            required: false,
+            model: models.UserImage,
+            as: "images",
+            attributes: ["id", "filePath"],
+          },
+        ],
+      },
+      {
+        // defaultScope already exists, to avoid the error pass override
+        override: true,
+      }
+    );
+
     User.belongsToMany(models.Role, {
       through: "users_roles",
       foreignKey: "userId",
@@ -75,8 +94,12 @@ module.exports = function (sequelize, DataTypes) {
     });
 
     User.hasMany(models.Comment);
+    User.hasMany(models.Feedback);
     User.hasMany(models.Address);
+    User.hasMany(models.UserImage, { as: "images" });
+    // console.log(models);
   };
+ 
 
   User.beforeBulkUpdate((user) => {
     user.attributes.updateTime = new Date();

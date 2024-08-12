@@ -1,8 +1,8 @@
 const slugify = require("slugify");
 module.exports = function (sequelize, DataTypes) {
   const { INTEGER, STRING, TEXT } = DataTypes;
-  const Category = sequelize.define(
-    "categories",
+  const Collection = sequelize.define(
+    "collections",
     {
       id: {
         type: DataTypes.INTEGER,
@@ -35,24 +35,23 @@ module.exports = function (sequelize, DataTypes) {
     },
     {
       timestamps: false,
-      tableName: "categories",
+      tableName: "collections",
 
       hooks: {
-        beforeValidate: function (category, options) {
-          category.slug = slugify(category.name, { lower: true });
+        beforeValidate: function (collection, options) {
+          collection.slug = slugify(collection.name, { lower: true });
         },
       },
     }
   );
 
-  Category.associate = function (models) {
-    Category.belongsToMany(models.Product, { through: models.ProductCategory });
-    Category.hasMany(models.CategoryImage, { as: "images" });
+  Collection.associate = function (models) {
+    Collection.belongsToMany(models.Product, { through: models.ProductCollection });
   };
-  Category.beforeBulkUpdate((category) => {
-    category.attributes.updateTime = new Date();
-    return category;
+  Collection.beforeBulkUpdate((collection) => {
+    collection.attributes.updateTime = new Date();
+    return collection;
   });
 
-  return Category;
+  return Collection;
 };

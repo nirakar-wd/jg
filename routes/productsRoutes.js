@@ -19,8 +19,8 @@ router.get("/", productsController.getAll);
 
 router.post(
   "",
-  verifyToken,
-  isAdmin,
+  // verifyToken,
+  // isAdmin,
   setUploadPath("./public/images/products"),
   upload.array("images", 6),
   productsController.createProduct

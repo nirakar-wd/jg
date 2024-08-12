@@ -46,8 +46,13 @@ db.ProductImage = require("../models/ProductImageModel.js")(
   sequelize,
   Sequelize
 );
+db.UserImage = require("../models/UserImageModel.js")(
+  sequelize,
+  Sequelize
+);
 
 db.Tag = require("../models/TagModel.js")(sequelize, Sequelize);
+db.Collection = require("../models/CollectionModel.js")(sequelize, Sequelize);
 db.ProductTag = require("../models/ProductTagModel.js")(sequelize, Sequelize);
 db.TagImage = require("../models/TagImageModel.js")(sequelize, Sequelize);
 
@@ -56,7 +61,19 @@ db.ProductCategory = require("../models/ProductCategoryModel.js")(
   sequelize,
   Sequelize
 );
+db.ProductCollection = require("../models/ProductCollectionModel.js")(
+  sequelize,
+  Sequelize
+);
 db.CategoryImage = require("../models/CategoryImageModel.js")(
+  sequelize,
+  Sequelize
+);
+db.Payment = require("../models/PaymentModel.js")(
+  sequelize,
+  Sequelize
+);
+db.Feedback = require("../models/FeedbackModel.js")(
   sequelize,
   Sequelize
 );
@@ -69,17 +86,22 @@ db.Address.associate(db);
 
 db.Tag.associate(db);
 db.Category.associate(db);
+db.Collection.associate(db);
 
 db.FileUpload.associate(db);
 db.CategoryImage.associate(db);
 db.TagImage.associate(db);
 db.ProductImage.associate(db);
+db.UserImage.associate(db);
+
 
 db.Product.associate(db);
 db.Comment.associate(db);
 
 db.Order.associate(db);
 db.OrderItem.associate(db);
+db.Payment.associate(db);
+db.Feedback.associate(db);
 
 // db.sequelize.sync({ force: false }).then(() => {
 //   console.log("yes re-sync done!");

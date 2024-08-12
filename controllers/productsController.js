@@ -6,13 +6,14 @@ const ProductTag = require("../models/index").ProductTag;
 const Tag = require("../models/index").Tag;
 const ProductImage = require("../models/index").ProductImage;
 const Category = require("../models/index").Category;
+const Collection = require("../models/index").Collection;
 const Comment = require("../models/index").Comment;
 const User = require("../models/index").User;
 
 const AppResponseDto = require("./../dtos/responses/appResponseDto");
 const ProductRequestDto = require("./../dtos/requests/productsDto");
 const ProductResponseDto = require("./../dtos/responses/productsDto");
-const CommentModel = require("../models/CommentModel");
+// const CommentModel = require("../models/CommentModel");
 
 // Get All Products
 exports.getAll = (req, res, next) => {
@@ -225,6 +226,7 @@ exports.getByCategory = function (req, res, next) {
 
 exports.createProduct = async (req, res) => {
   const bindingResult = ProductRequestDto.createProductResponseDto(req);
+  console.log(bindingResult);
   const promises = [];
 
   if (!_.isEmpty(bindingResult.errors)) {
@@ -240,9 +242,11 @@ exports.createProduct = async (req, res) => {
 
     const tags = req.body.tags || [];
     const categories = req.body.categories || [];
+    const collections = req.body.colletions || [];
 
-    // console.log("Tags:", tags);
-    // console.log("Categories:", categories);
+    console.log("Tags:", tags);
+    console.log("Categories:", categories);
+    console.log("collections:", collections);
 
     tags.forEach(({ name, description }) => {
       promises.push(
@@ -256,6 +260,12 @@ exports.createProduct = async (req, res) => {
       );
     });
 
+    collections.forEach(({ name, description }) => {
+      promises.push(
+        Collection.findOrCreate({ where: { name }, defaults: { description } })
+      );
+    });
+
     promises.push(Product.create(bindingResult.validatedData, { transaction }));
 
     const results = await Promise.all(promises);
@@ -264,19 +274,24 @@ exports.createProduct = async (req, res) => {
     const product = results.pop();
     const createdTags = [];
     const createdCategories = [];
+    const createdCollections = [];
 
     results.forEach((result) => {
       if (result[0].constructor.getTableName() === "tags") {
         createdTags.push(result[0]);
       } else if (result[0].constructor.getTableName() === "categories") {
         createdCategories.push(result[0]);
+      } else if (result[0].constructor.getTableName() === "collections") {
+        createdCollections.push(result[0]);
       }
     });
 
     promises.push(product.setTags(createdTags, { transaction }));
     promises.push(product.setCategories(createdCategories, { transaction }));
+    promises.push(product.setCollections(createdCollections, { transaction }));
 
     if (req.files) {
+      console.log(req.files);
       req.files.forEach((file) => {
         const filePath = file.path
           .replace(new RegExp("\\\\", "g"), "/")
@@ -306,6 +321,7 @@ exports.createProduct = async (req, res) => {
     product.images = images;
     product.tags = createdTags;
     product.categories = createdCategories;
+    product.collections = createdCollections;
 
     await transaction.commit();
     return res.json(

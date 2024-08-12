@@ -1,7 +1,9 @@
 const sequelize = require("../models/index").sequelize;
 const Tag = require("../models/index").Tag;
 const Category = require("../models/index").Category;
+const Collection = require("../models/index").Collection;
 const CategoryImage = require("../models/index").CategoryImage;
+const Product = require("../models/index").Product;
 const TagImage = require("../models/index").TagImage;
 const TagDto = require("../dtos/responses/tagsDto");
 const CategoryDto = require("../dtos/responses/categoriesDto");
@@ -30,6 +32,24 @@ exports.getTags = function (req, res, next) {
     .catch((err) => {
       return res.json(AppResponseDto.buildWithErrorMessages(err));
     });
+};
+
+exports.getCollections = async (req, res, next) => {
+  try {
+    const collections = await Collection.findAll({
+      // include: [
+      //   {
+      //     model: Product,
+      //     through: { attributes: [] },
+      //   },
+      // ],
+    });
+
+    res.status(200).json(collections);
+  } catch (error) {
+    console.error("Error fetching collections:", error);
+    res.status(500).json({ error: "Failed to fetch collections" });
+  }
 };
 
 exports.getCategories = function (req, res, next) {
@@ -191,4 +211,26 @@ exports.createCategory = function (req, res, next) {
       transac.rollback();
       return res.json(AppResponseDto.buildWithErrorMessages(err.message));
     });
+};
+
+exports.createCollections = async (req, res, next) => {
+  const { name, description } = req.body;
+
+  // Validate input
+  if (!name) {
+    return res.status(400).json({ error: "Name is required" });
+  }
+
+  try {
+    // Create the collection
+    const newCollection = await Collection.create({
+      name,
+      description,
+    });
+
+    res.status(201).json(newCollection);
+  } catch (error) {
+    console.error("Error creating collection:", error);
+    res.status(500).json({ error: "Failed to create collection" });
+  }
 };

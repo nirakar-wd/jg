@@ -7,6 +7,7 @@ const setUploadPath = require("../middlewares/uploadMiddleware").setUploadPath;
 
 router.get("/categories", tagCategoriesController.getCategories);
 router.get("/tags", tagCategoriesController.getTags);
+router.get("/collections", tagCategoriesController.getCollections);
 router.post(
   "/categories",
   verifyToken,
@@ -22,5 +23,11 @@ router.post(
   setUploadPath("./public/images/tags"),
   upload.array("images", 6),
   tagCategoriesController.createTag
+);
+router.post(
+  "/collections",
+  verifyToken,
+  isAdmin,
+  tagCategoriesController.createCollections
 );
 module.exports = router;

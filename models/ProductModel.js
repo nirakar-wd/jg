@@ -30,6 +30,10 @@ module.exports = (sequelize, DataTypes) => {
         type: INTEGER(11),
         allowNull: false,
       },
+      vendor: {
+        type: STRING(50),
+        allowNull: true,
+      },
       createdAt: {
         type: DATE,
         allowNull: false,
@@ -100,6 +104,13 @@ module.exports = (sequelize, DataTypes) => {
       through: models.ProductTag,
       foreignKey: "productId",
       otherKey: "tagId",
+    });
+
+    //product has many collections
+    Product.belongsToMany(models.Collection, {
+      through: models.ProductCollection,
+      foreignKey: "productId",
+      otherKey: "collectionId",
     });
   };
 

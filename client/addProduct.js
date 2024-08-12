@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const categoriesSelect = document.getElementById("categories");
   const tagsSelect = document.getElementById("tags");
+  const collectionSelect = document.getElementById("collections");
 
   // Fetch categories and tags when the page loads
   try {
@@ -38,14 +39,39 @@ document.addEventListener("DOMContentLoaded", async () => {
     } else {
       alert("Failed to load tags");
     }
+
+    // Fetch collections
+    const collectionsResponse = await fetch(
+      "http://localhost:4000/api/collections",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        cache: "no-store",
+      }
+    );
+    const collections = await collectionsResponse.json();
+
+    console.log(collections);
+
+    if (collectionsResponse.ok) {
+      collections.forEach((collection) => {
+        const option = document.createElement("option");
+        option.value = collection.id;
+        option.textContent = collection.name;
+        collectionSelect.appendChild(option);
+      });
+    } else {
+      alert("Failed to load collections");
+    }
   } catch (error) {
     console.error("Error:", error);
-    alert("An error occurred while fetching categories or tags");
+    alert("An error occurred while fetching categories or tags or collections");
   }
 
   // Handle form submission
   const form = document.getElementById("addProductForm");
-  const priceInput = document.getElementById("priceInput");
   const currencyDropdown = document.getElementById("currencyDropdown");
   const currencyMenu = document.getElementById("currencyMenu");
   const displayImageInput = document.getElementById("displayImage");
@@ -99,24 +125,28 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const formData = new FormData(form);
 
-    const productName = formData.get("product-name");
+    const productName = formData.get("productName");
     const description = formData.get("productDescription");
-    const price = priceInput.value;
+    const price = formData.get("price");
     const vendor = formData.get("vendor");
+    const stock = formData.get("stock");
     const categories = formData.get("categories");
     const tags = formData.get("tags");
     const collection = formData.get("collections");
-    const displayImage = formData.get("file");
+    const file = formData.get("file");
 
-    // Append the file to FormData
-    if (displayImageInput.files.length > 0) {
-      formData.append("file", displayImageInput.files[0]);
-    }
-
-    console.log(formData);
+    // Log each value to the console
+    console.log("Product Name:", productName);
+    console.log("Description:", description);
+    console.log("Price:", price);
+    console.log("Vendor:", vendor);
+    console.log("Categories:", categories);
+    console.log("Tags:", tags);
+    console.log("Collection:", collection);
+    console.log("file:", file);
 
     const payload = {
-      productName: productName,
+      name: productName,
       description: description,
       price: price,
       vendor: vendor,
@@ -125,6 +155,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       collection: collection,
       displayImage: displayImage,
     };
+
+    console.log(payload);
 
     try {
       const response = await fetch("http://localhost:4000/api/products", {
@@ -139,7 +171,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       if (response.ok) {
         alert("Product added successfully!");
-        window.location.reload();
+        // window.location.reload();
       } else {
         alert(data.errors?.message || "Failed to add product");
       }

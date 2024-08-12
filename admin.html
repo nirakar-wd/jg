@@ -451,13 +451,14 @@
                                             <div class="form-group mb-4">
                                                 <label for="product-name" class="form-label">product name</label>
                                                 <input type="text" class="form-control" id="product-name"
-                                                    name="product">
+                                                    name="productName">
                                             </div>
                                             <div class="mb-3">
                                                 <label for="productDescription" class="form-label">product
                                                     description</label>
                                                 <textarea class="form-control" id="productDescription" rows="5"
-                                                    placeholder="Write a description here..."></textarea>
+                                                    placeholder="Write a description here..."
+                                                    name="productDescription"></textarea>
                                             </div>
 
                                             <div class="display-media">
@@ -485,44 +486,50 @@
 
                                     <div class="col-md-4">
                                         <div class="product-right">
-                                            <form>
 
-                                                <label for="price" class="form-label">Price</label>
-                                                <div class="input-group mb-3">
-                                                    <input type="text" class="form-control" id="priceInput" name="price"
-                                                        aria-label="Text input with dropdown button">
-                                                    <button class="btn dropdown-toggle" type="button"
-                                                        data-bs-toggle="dropdown" aria-expanded="false"
-                                                        id="currencyDropdown">USD</button>
-                                                    <ul class="dropdown-menu dropdown-menu-end" id="currencyMenu">
-                                                        <li><a class="dropdown-item" href="#"
-                                                                data-currency="USD">USD</a></li>
-                                                        <li><a class="dropdown-item" href="#"
-                                                                data-currency="NPR">NPR</a></li>
-                                                        <li><a class="dropdown-item" href="#"
-                                                                data-currency="EUR">EUR</a></li>
-                                                        <li><a class="dropdown-item" href="#"
-                                                                data-currency="AUD">AUD</a></li>
-                                                        <li>
-                                                            <hr class="dropdown-divider">
-                                                        </li>
-                                                    </ul>
+                                            <label for="price" class="form-label">Price</label>
+                                            <div class="input-group mb-3">
+                                                <input type="text" class="form-control" id="priceInput" name="price"
+                                                    aria-label="Text input with dropdown button">
+                                                <button class="btn dropdown-toggle" type="button"
+                                                    data-bs-toggle="dropdown" aria-expanded="false"
+                                                    id="currencyDropdown">USD</button>
+                                                <ul class="dropdown-menu dropdown-menu-end" id="currencyMenu"
+                                                    name="currency">
+                                                    <li><a class="dropdown-item" href="#" data-currency="USD">USD</a>
+                                                    </li>
+                                                    <li><a class="dropdown-item" href="#" data-currency="NPR">NPR</a>
+                                                    </li>
+                                                    <li><a class="dropdown-item" href="#" data-currency="EUR">EUR</a>
+                                                    </li>
+                                                    <li><a class="dropdown-item" href="#" data-currency="AUD">AUD</a>
+                                                    </li>
+                                                    <li>
+                                                        <hr class="dropdown-divider">
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+
+                                            <div class="organisation">
+                                                <div class="mb-3">
+                                                    <label for="vendor" class="form-label">Vendor</label>
+                                                    <input type="text" id="vendor" placeholder="eg. Nike"
+                                                        class="form-control" name="vendor">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="stock" class="form-label">Stock</label>
+                                                    <input type="text" id="stock" placeholder="Stock"
+                                                        class="form-control" name="stock">
                                                 </div>
 
-
-                                                <div class="organisation">
-                                                    <div class="mb-3">
-                                                        <label for="vendor" class="form-label">Vendor</label>
-                                                        <input type="text" id="vendor" placeholder="eg. Nike"
-                                                            class="form-control">
-                                                    </div>
-
-                                                    <div class="mb-3">
-                                                        <label for="categories" class="form-label">
-                                                            category
-                                                        </label>
-                                                        <select name="categories" id="categories" class="form-control">
-                                                            <!-- <option value="1">
+                                                <div class="mb-3">
+                                                    <label for="categories" class="form-label">
+                                                        category
+                                                    </label>
+                                                    <select name="categories" id="categories" class="form-control"
+                                                        name="categories">
+                                                        <!-- <option value="1">
                                                                 Men's clothing
                                                             </option>
                                                             <option value="2">
@@ -531,37 +538,36 @@
                                                             <option value="3">
                                                                 Children's clothing
                                                             </option> -->
-                                                        </select>
-                                                    </div>
-
-                                                    <div class="mb-3">
-                                                        <label for="tags" class="form-label">Tags</label>
-                                                        <select name="tags" id="tags" class="form-control">
-                                                            <!-- <option value="1">tag1</option> -->
-                                                        </select>
-                                                    </div>
-
-                                                    <div class="mb-3">
-                                                        <label for="collections" class="form-label">
-                                                            Collections
-                                                        </label>
-                                                        <select name="collections" id="collections"
-                                                            class="form-control">
-                                                            <option value="1">Winter</option>
-                                                            <option value="1">Winter</option>
-                                                            <option value="1">Winter</option>
-                                                        </select>
-                                                    </div>
-
+                                                    </select>
                                                 </div>
 
-                                                <div class="btns">
-                                                    <button type="submit" class="btn btn-save">Save</button>
-                                                    <button type="submit" class="btn btn-delete">Delete</button>
-
+                                                <div class="mb-3">
+                                                    <label for="tags" class="form-label">Tags</label>
+                                                    <select name="tags" id="tags" class="form-control" name="tags">
+                                                        <!-- <option value="1">tag1</option> -->
+                                                    </select>
                                                 </div>
 
-                                            </form>
+                                                <div class="mb-3">
+                                                    <label for="collections" class="form-label">
+                                                        Collections
+                                                    </label>
+                                                    <select name="collections" id="collections" class="form-control">
+                                                        <!-- <option value="1">Winter</option>
+                                                            <option value="1">Winter</option>
+                                                            <option value="1">Winter</option> -->
+                                                    </select>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="btns">
+                                                <button type="submit" class="btn btn-save">Save</button>
+                                                <button type="submit" class="btn btn-delete">Delete</button>
+
+                                            </div>
+
+
 
                                         </div>
 
