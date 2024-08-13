@@ -7,7 +7,17 @@ const Address = require("../models/index").Address;
 const sequelize = require("../models/index").sequelize;
 const OrderItem = require("../models/index").OrderItem;
 
-exports.getOrders = function (req, res, next) {
+exports.getAllOrders = async (req, res, next) => {
+  try {
+    const orders = await Order.findAll({});
+    return res.status(200).json(orders);
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    return res.status(500).json({ message: "Error fetching orders" });
+  }
+};
+
+exports.getOrders = async (req, res, next) => {
   const page = parseInt(req.query.page) || 1;
   const pageSize = parseInt(req.query.page_size) || 5;
   const offset = (page - 1) * pageSize;

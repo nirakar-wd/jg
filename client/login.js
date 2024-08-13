@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log(data);
 
       if (response.ok) {
-        localStorage.setItem("username", data.user.username);
+        localStorage.setItem("userId", data.user.id);
         alert("login successful!");
         window.location.href = "http://127.0.0.1:5500/jg/contact.html";
       } else {

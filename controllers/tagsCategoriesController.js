@@ -7,6 +7,7 @@ const Product = require("../models/index").Product;
 const TagImage = require("../models/index").TagImage;
 const TagDto = require("../dtos/responses/tagsDto");
 const CategoryDto = require("../dtos/responses/categoriesDto");
+const CollectionDto = require("../dtos/responses/collectionsDto");
 const AppResponseDto = require("../dtos/responses/appResponseDto");
 
 exports.getTags = function (req, res, next) {
@@ -35,21 +36,28 @@ exports.getTags = function (req, res, next) {
 };
 
 exports.getCollections = async (req, res, next) => {
-  try {
-    const collections = await Collection.findAll({
-      // include: [
-      //   {
-      //     model: Product,
-      //     through: { attributes: [] },
-      //   },
-      // ],
-    });
+  const page = parseInt(req.query.page) || 1;
+  const pageSize = parseInt(req.query.page_size) || 5;
+  const offset = (page - 1) * pageSize;
 
-    res.status(200).json(collections);
-  } catch (error) {
-    console.error("Error fetching collections:", error);
-    res.status(500).json({ error: "Failed to fetch collections" });
-  }
+  Collection.findAndCountAll({
+    offset,
+    limit: pageSize,
+  })
+    .then(function (collections) {
+      return res.json(
+        CollectionDto.buildPagedList(
+          collections.rows,
+          page,
+          pageSize,
+          collections.count,
+          req.baseUrl
+        )
+      );
+    })
+    .catch((err) => {
+      return res.json(AppResponseDto.buildWithErrorMessages(err));
+    });
 };
 
 exports.getCategories = function (req, res, next) {
@@ -214,23 +222,57 @@ exports.createCategory = function (req, res, next) {
 };
 
 exports.createCollections = async (req, res, next) => {
-  const { name, description } = req.body;
-
-  // Validate input
-  if (!name) {
-    return res.status(400).json({ error: "Name is required" });
+  const collectionObj = {};
+  const promises = [];
+  if (req.body.name) {
+    collectionObj.name = req.body.name;
   }
 
-  try {
-    // Create the collection
-    const newCollection = await Collection.create({
-      name,
-      description,
+  if (req.body.description) {
+    collectionObj.description = req.body.description;
+  }
+
+  if (collectionObj.name == null) {
+    return res.json(
+      AppResponseDto.buildWithErrorMessages(
+        "You must provide the name for the collection"
+      )
+    );
+  }
+  let transac = undefined;
+  sequelize
+    .transaction({ autocommit: false })
+    .then(function (transaction) {
+      transac = transaction;
+      Collection.create(collectionObj, { transaction })
+        .then(async (collection) => {
+          for (let i = 0; req.files != null && i < req.files.length; i++) {
+            let file = req.files[i];
+            let filePath = file.path.replace(new RegExp("\\\\", "g"), "/");
+            filePath = filePath.replace("public", "");
+          }
+
+          Promise.all(promises)
+            .then((results) => {
+              // collection.images = results;
+              transaction.commit();
+              return res.json(
+                AppResponseDto.buildWithDtoAndMessages(
+                  CollectionDto.buildDto(collection, true),
+                  "Collection created successfully"
+                )
+              );
+            })
+            .catch((err) => {
+              throw err;
+            });
+        })
+        .catch((err) => {
+          throw err;
+        });
+    })
+    .catch((err) => {
+      transac.rollback();
+      return res.json(AppResponseDto.buildWithErrorMessages(err.message));
     });
-
-    res.status(201).json(newCollection);
-  } catch (error) {
-    console.error("Error creating collection:", error);
-    res.status(500).json({ error: "Failed to create collection" });
-  }
 };

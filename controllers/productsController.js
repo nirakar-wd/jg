@@ -225,6 +225,7 @@ exports.getByCategory = function (req, res, next) {
 };
 
 exports.createProduct = async (req, res) => {
+  console.log(req.body);
   const bindingResult = ProductRequestDto.createProductResponseDto(req);
   console.log(bindingResult);
   const promises = [];
@@ -242,25 +243,32 @@ exports.createProduct = async (req, res) => {
 
     const tags = req.body.tags || [];
     const categories = req.body.categories || [];
-    const collections = req.body.colletions || [];
+    const collections = req.body.collections || [];
 
-    console.log("Tags:", tags);
-    console.log("Categories:", categories);
-    console.log("collections:", collections);
+      // Parse the JSON strings to convert them into arrays of objects
+      const parsedCategories = JSON.parse(categories[1]); // Parsing the second entry
+      const parsedTags = JSON.parse(tags[1]); // Parsing the second entry
+      const parsedCollections = JSON.parse(collections[1]); // Parsing the second entry
 
-    tags.forEach(({ name, description }) => {
+
+    // Log the parsed arrays
+    console.log("Parsed Categories:", parsedCategories);
+    console.log("Parsed Tags:", parsedTags);
+    console.log("Parsed Collections:", parsedCollections);
+
+    parsedTags.forEach(({ name, description }) => {
       promises.push(
         Tag.findOrCreate({ where: { name }, defaults: { description } })
       );
     });
 
-    categories.forEach(({ name, description }) => {
+    parsedCategories.forEach(({ name, description }) => {
       promises.push(
         Category.findOrCreate({ where: { name }, defaults: { description } })
       );
     });
 
-    collections.forEach(({ name, description }) => {
+    parsedCollections.forEach(({ name, description }) => {
       promises.push(
         Collection.findOrCreate({ where: { name }, defaults: { description } })
       );

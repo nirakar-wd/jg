@@ -9,7 +9,7 @@ const Role = require("../models/index").Role;
 const verifyToken = async (req, res, next) => {
   const { accessToken } = req.cookies;
 
-  // console.log(req.cookies);
+  console.log(req.cookies);
 
   if (!accessToken) {
     return res.status(401).send("Not Authorized, no token");

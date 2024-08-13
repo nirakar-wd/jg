@@ -1,38 +1,41 @@
-document.querySelector("form").addEventListener("submit", async (e) => {
-  e.preventDefault(); // Prevent the default form submission
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("addCategoryForm");
 
-  // Get form data
-  const name = document.getElementById("product-name").value;
-  const sortDescription = document.getElementById("categoryDescription").value;
-  const fullDescription = document.getElementById("productDescription").value;
-  const tags = document.getElementById("product-tags").value;
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-  // Prepare the data to send
-  const categoryData = {
-    name,
-    sortDescription,
-    fullDescription,
-    tags,
-  };
+    const formData = new FormData(form);
+    const name = formData.get("name");
+    const description = formData.get("description");
 
-  try {
-    // Send the data to the backend
-    const response = await fetch("/api/categories", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(categoryData),
-    });
+    // Prepare the payload
+    const payload = {
+      name,
+      description,
+    };
 
-    if (response.ok) {
-      const result = await response.json();
-      alert("Category created successfully!");
-      // Optionally, refresh the page or update the UI to reflect the new category
-    } else {
-      throw new Error("Failed to create category");
+    try {
+      const response = await fetch("http://localhost:4000/api/categories", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Handle success
+        alert("Category added successfully!");
+        form.reset(); // Clear the form fields
+      } else {
+        // Handle error
+        alert("Failed to add category: " + (data.message || "Unknown error"));
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("An error occurred while adding the category.");
     }
-  } catch (error) {
-    alert(error.message);
-  }
+  });
 });

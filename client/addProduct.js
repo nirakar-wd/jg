@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const categoriesSelect = document.getElementById("categories");
   const tagsSelect = document.getElementById("tags");
-  const collectionSelect = document.getElementById("collections");
+  const collectionsSelect = document.getElementById("collections");
 
   // Fetch categories and tags when the page loads
   try {
@@ -44,23 +44,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     const collectionsResponse = await fetch(
       "http://localhost:4000/api/collections",
       {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
         cache: "no-store",
       }
     );
     const collections = await collectionsResponse.json();
 
-    console.log(collections);
+    // console.log(collections);
 
     if (collectionsResponse.ok) {
-      collections.forEach((collection) => {
+      collections.collections.forEach((collection) => {
         const option = document.createElement("option");
         option.value = collection.id;
         option.textContent = collection.name;
-        collectionSelect.appendChild(option);
+        collectionsSelect.appendChild(option);
       });
     } else {
       alert("Failed to load collections");
@@ -125,49 +121,49 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const formData = new FormData(form);
 
-    const productName = formData.get("productName");
-    const description = formData.get("productDescription");
-    const price = formData.get("price");
-    const vendor = formData.get("vendor");
-    const stock = formData.get("stock");
-    const categories = formData.get("categories");
-    const tags = formData.get("tags");
-    const collection = formData.get("collections");
-    const file = formData.get("file");
+    const selectedCategories = Array.from(categoriesSelect.selectedOptions).map(
+      (option) => ({
+        id: option.value,
+        name: option.textContent,
+      })
+    );
 
-    // Log each value to the console
-    console.log("Product Name:", productName);
-    console.log("Description:", description);
-    console.log("Price:", price);
-    console.log("Vendor:", vendor);
-    console.log("Categories:", categories);
-    console.log("Tags:", tags);
-    console.log("Collection:", collection);
-    console.log("file:", file);
+    console.log(selectedCategories);
 
-    const payload = {
-      name: productName,
-      description: description,
-      price: price,
-      vendor: vendor,
-      categories: categories,
-      tags: tags,
-      collection: collection,
-      displayImage: displayImage,
-    };
+    const selectedTags = Array.from(tagsSelect.selectedOptions).map(
+      (option) => ({
+        id: option.value,
+        name: option.textContent,
+      })
+    );
+    const selectedCollections = Array.from(
+      collectionsSelect.selectedOptions
+    ).map((option) => ({
+      id: option.value,
+      name: option.textContent,
+    }));
 
-    console.log(payload);
+    formData.append("categories", JSON.stringify(selectedCategories));
+    formData.append("tags", JSON.stringify(selectedTags));
+    formData.append("collections", JSON.stringify(selectedCollections));
+
+    console.log(formData);
+
+    const file = displayImageInput.files[0];
+
+    if (file) {
+      formData.append("file", file);
+    }
 
     try {
       const response = await fetch("http://localhost:4000/api/products", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
+        body: formData,
       });
 
       const data = await response.json();
+
+      console.log(data);
 
       if (response.ok) {
         alert("Product added successfully!");

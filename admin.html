@@ -335,7 +335,7 @@
                             <div class="row justify-content-center">
                                 <div class="col-md-12">
                                     <div class="table-responsive">
-                                        <table class="table">
+                                        <table class="table" id="productTable">
                                             <thead>
                                                 <tr>
                                                     <th scope="col">order id</th>
@@ -450,15 +450,14 @@
                                         <div class="product-left">
                                             <div class="form-group mb-4">
                                                 <label for="product-name" class="form-label">product name</label>
-                                                <input type="text" class="form-control" id="product-name"
-                                                    name="productName">
+                                                <input type="text" class="form-control" id="productname" name="name">
                                             </div>
                                             <div class="mb-3">
                                                 <label for="productDescription" class="form-label">product
                                                     description</label>
                                                 <textarea class="form-control" id="productDescription" rows="5"
                                                     placeholder="Write a description here..."
-                                                    name="productDescription"></textarea>
+                                                    name="description"></textarea>
                                             </div>
 
                                             <div class="display-media">
@@ -586,40 +585,43 @@
                             <form>
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <div class="product-left">
-                                            <div class="form-group mb-4">
-                                                <label for="product-name" class="form-label">name</label>
-                                                <input type="text" class="form-control" id="product-name"
-                                                    name="product">
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="categoryDescription" class="form-label">sort
-                                                    description</label>
-                                                <textarea class="form-control" id="categoryDescription" rows="5"
-                                                    placeholder="Write a description here..."></textarea>
-                                            </div>
+                                        <form id="addCategory">
+                                            <div class="product-left">
+                                                <div class="form-group mb-4">
+                                                    <label for="categoryName" class="form-label">name</label>
+                                                    <input type="text" class="form-control" id="categoryName"
+                                                        name="name">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="categoryDescription" class="form-label">full
+                                                        description</label>
+                                                    <textarea class="form-control" id="categoryDescription" rows="5"
+                                                        placeholder="Write a description here..." name="description"></textarea>
+                                                </div>
 
-                                            <div class="mb-3">
-                                                <label for="productDescription" class="form-label">full
-                                                    description</label>
-                                                <textarea class="form-control" id="productDescription"
-                                                    rows="5"></textarea>
-                                            </div>
+                                                <!-- <div class="mb-3">
+                                                    <label for="productDescription" class="form-label">full
+                                                        description</label>
+                                                    <textarea class="form-control" id="productDescription"
+                                                        rows="5"></textarea>
+                                                </div> -->
 
-                                            <div class="form-group mb-4">
-                                                <label for="product-tags" class="form-label">product tags <span>(Type
-                                                        and
-                                                        make comma to separate tags)</span></label>
-                                                <input type="text" class="form-control" id="product-tags"
-                                                    name="product">
-                                            </div>
+                                                <!-- <div class="form-group mb-4">
+                                                    <label for="product-tags" class="form-label">product tags
+                                                        <span>(Type
+                                                            and
+                                                            make comma to separate tags)</span></label>
+                                                    <input type="text" class="form-control" id="product-tags"
+                                                        name="product">
+                                                </div> -->
 
-                                            <div class="btns">
-                                                <button type="submit" class="btn btn-save">Save</button>
-                                                <button type="submit" class="btn btn-delete">Delete</button>
+                                                <div class="btns">
+                                                    <button type="submit" class="btn btn-save">Save</button>
+                                                    <button type="submit" class="btn btn-delete">Delete</button>
 
+                                                </div>
                                             </div>
-                                        </div>
+                                        </form>
 
                                     </div>
 
@@ -769,8 +771,8 @@
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <h4 class="heading-fourth">phoolkumari</h4>
-                                    <p class="fs-5 mb-4">authorised brand seller</p>
+                                    <h4 class="heading-fourth" id="userFullName">phoolkumari</h4>
+                                    <p class="fs-5 mb-4" id="userBio">authorised brand seller</p>
                                     <ul class="list-inline">
                                         <li class="list-inline-item me-5">
                                             <h5 class="heading-fifth">$2500</h5>
@@ -816,20 +818,22 @@
                                                 <div class="text-start">
                                                     <div class="text-muted mb-4">
                                                         <h5 class="heading-fifth">Full Name :
-                                                            <span class="ms-2 txt">Phoolmaya Kumari</span>
+                                                            <span class="ms-2 txt" id="userFullName">Phoolmaya
+                                                                Kumari</span>
                                                         </h5>
                                                     </div>
                                                     <div class="text-muted mb-4">
-                                                        <h5 class="heading-fifth">Mobile :<span
-                                                                class="ms-2 txt">980808080</span></h5>
+                                                        <h5 class="heading-fifth">Mobile :
+                                                            <span class="ms-2 txt" id="userPhone">980808080</span>
+                                                        </h5>
                                                     </div>
                                                     <div class="text-muted mb-4">
-                                                        <h5 class="heading-fifth">Email :<span
-                                                                class="ms-2 txt">phool234@gmail.com</span></h5>
+                                                        <h5 class="heading-fifth">Email :<span class="ms-2 txt"
+                                                                id="userEmail">phool234@gmail.com</span></h5>
                                                     </div>
                                                     <div class="text-muted mb-4">
-                                                        <h5 class="heading-fifth">Location :<span
-                                                                class="ms-2 txt">Battisputali</span></h5>
+                                                        <h5 class="heading-fifth">Location :<span class="ms-2 txt"
+                                                                id="userAddress">Battisputali</span></h5>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1228,7 +1232,10 @@
         });
     </script>
     <script src="./client/addProduct.js">
+
     </script>
+
+    <script src="./client/getProfile.js"></script>
     <!-- <script>
      const inputElement = document.querySelector('input[type="file"]');
 const credits = false;
