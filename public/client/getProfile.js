@@ -21,8 +21,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       if (response.ok) {
         // Populate the data into the HTML
-        document.getElementById("userFullName").textContent =
-          user.user.username;
+        document.getElementById("userFullName").textContent = user.user.username;
+        document.getElementById("userFullName1").textContent = user.user.username;
         document.getElementById("userPhone").textContent = user.user.phone;
         document.getElementById("userEmail").textContent = user.user.email;
         document.getElementById("userAddress").textContent =

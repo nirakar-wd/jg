@@ -25,10 +25,10 @@
         integrity="sha512-06CZo7raVnbbD3BlY8/hGUoUCuhk8sTdVGV3m3nuh9i2R+UmkLbLRTE/My8TuJ3ALbDulhBObJQWtOUt0mXzNQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
 
 
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
 
 </head>
 
@@ -44,7 +44,6 @@
     </div>
 
     <header class="header">
-
 
         <div class="nav-top">
             <div class="container">
@@ -117,6 +116,8 @@
 
                             </form>
 
+
+
                             <div class="cart-icon">
                                 <a href="signin.html" class="cart-btn mx-3">
                                     <i class="fa-solid fa-user fa-xl"></i>
@@ -170,52 +171,125 @@
             </ul>
         </nav>
 
-
     </header>
 
     <main>
 
-
-        <section class="whoweare">
+        <!-- Shop Grid Page Section Start -->
+        <div class="product-detail">
             <div class="container">
-                <h1 class="heading-primary whoweare-title">Who We Are</h1>
-
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12 col-lg-3">
+                        <div class="left-sidebar">
 
-                        <p class="whoweare-detail">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet sint quas quibusdam aut
-                            incidunt ut iure aspernatur architecto. Repellendus eos ad sed sapiente veniam architecto
-                            qui enim, aperiam officia voluptates in modi neque debitis quos harum natus ducimus saepe
-                            voluptatem reiciendis at iure, sint, inventore iste dolores? Optio aut voluptate quisquam
-                            voluptatibus possimus beatae numquam, culpa exercitationem sapiente fugit alias minima harum
-                            eos! Dolore saepe earum praesentium accusantium dolorem aperiam nesciunt debitis, dolor
-                            corrupti molestiae iusto harum officia suscipit cum beatae nostrum ad voluptas aspernatur
-                            veniam placeat. Consequatur cumque recusandae aspernatur sit! Voluptatem eligendi ea
-                            praesentium excepturi temporibus quod vitae?
-                        </p>
-                        <p class="whoweare-detail mt-4">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet sint quas quibusdam aut
-                            incidunt ut iure aspernatur architecto. Repellendus eos ad sed sapiente veniam architecto
-                            qui enim, aperiam officia voluptates in modi neque debitis quos harum natus ducimus saepe
-                            voluptatem reiciendis at iure, sint, inventore iste dolores? Optio aut voluptate quisquam
-                            voluptatibus possimus beatae numquam, culpa exercitationem sapiente fugit alias minima harum
-                            eos! Dolore saepe earum praesentium accusantium dolorem aperiam nesciunt debitis, dolor
-                            corrupti molestiae iusto harum officia suscipit cum beatae nostrum ad voluptas aspernatur
-                            veniam placeat.
-                        </p>
+                            <!-- product categories Section Start -->
+                            <div class="sidebar-box pb30">
+                                <h3 class="heading-tertiary">Product Categories</h3>
+                                <ul class="category-list">
+                                    <!-- <li>
+                                        <a href="#">Feltballs</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Feltshoes</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Feltballs</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Feltshoes</a>
+                                    </li> -->
+
+                                </ul>
+                            </div>
+
+                            <!-- Filter By Price -->
+
+                            <h3 class="heading-tertiary mt-5">filter by price</h3>
+                            <div class="price-ranger">
+                                <div class="price-input">
+                                    <div class="field">
+                                        <span>Min</span>
+                                        <input type="number" class="input-min" value="2500">
+                                    </div>
+                                    <div class="separator">-</div>
+                                    <div class="field">
+                                        <span>Max</span>
+                                        <input type="number" class="input-max" value="7500">
+                                    </div>
+                                </div>
+                                <div class="slider">
+                                    <div class="progress"></div>
+                                </div>
+                                <div class="range-input">
+                                    <input type="range" class="range-min" min="0" max="10000" value="2500" step="100">
+                                    <input type="range" class="range-max" min="0" max="10000" value="7500" step="100">
+                                </div>
+                            </div>
+
+
+                        </div>
                     </div>
+                    <div class="col-md-12 col-lg-9 order-first order-lg-last">
+                        <!-- List, Grid View and Sort by Section -->
+                        <div class="list-grid-sort">
+                            <div class="row">
 
-                    <div class="col-md-6">
-                        <img src="https://images.unsplash.com/photo-1630569266941-f8a348786bf0?q=80&w=1469&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                            alt="" class="team-photo">
+                                <div class="col-md-6">
+                                    <div class="sizeinproduct">
+                                        <ul>
+                                            <li class="fontsize_mks">Sort By : </li>
+                                            <li>
+                                                <div class="custom_selectmks">
+                                                    <select class="form-select">
+                                                        <option>Relevance</option>
+                                                        <option>Name (A - Z)</option>
+                                                        <option>Name (Z - A)</option>
+                                                        <option>Price (Low &gt; High)</option>
+                                                        <option>Rating (Lowest)</option>
+                                                        <option>Model (A - Z)</option>
+                                                        <option>Model (Z - A)</option>
+                                                    </select>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="show-result">
+                                        <p>Showing 1–12 of 15 results</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="right-sidebar">
+                            <div class="row" id="productsContainer">
+
+                            </div>
+
+                            <!-- Pagination Section
+                            <div class="pagination-sec">
+                                <nav class="pagination pagination_type1">
+                                    <ol class="pagination__list">
+                                        <li class="pagination__group"><a href="#0"
+                                                class="pagination__item pagination__control pagination__control_prev">prev</a>
+                                        </li>
+                                        <li class="pagination__group"><span
+                                                class="pagination__item pagination__item_active">1</span></li>
+                                        <li class="pagination__group"><a href="#0" class="pagination__item">2</a></li>
+                                        <li class="pagination__group"><a href="#0" class="pagination__item">3</a></li>
+                                        <li class="pagination__group"><a href="#0"
+                                                class="pagination__item pagination__control pagination__control_next">next</a>
+                                        </li>
+                                    </ol>
+                                </nav>
+                            </div> -->
+                        </div>
                     </div>
                 </div>
-
-
-
             </div>
-        </section>
+        </div>
+
+
     </main>
 
     <footer class="footer">
@@ -275,10 +349,10 @@
                             <ul>
                                 <li class="d-flex">
                                     <a href="#" class="social-icon">
-                                        <img src="img/facebook.png" alt="fbicon">
+                                        <img src="/img/facebook.png" alt="fbicon">
                                     </a>
                                     <a href="#" class="social-icon">
-                                        <img src="img/instagram(1).png" alt="">
+                                        <img src="/img/instagram(1).png" alt="">
                                     </a>
                                 </li>
                             </ul>
@@ -295,16 +369,16 @@
 
                     <div class="payopt d-flex">
                         <figure>
-                            <img src="img/american-express.png" alt="">
+                            <img src="/img/american-express.png" alt="">
                         </figure>
                         <figure>
-                            <img src="img/card.png" alt="">
+                            <img src="/img/card.png" alt="">
                         </figure>
                         <figure>
-                            <img src="img/discover.png" alt="">
+                            <img src="/img/discover.png" alt="">
                         </figure>
                         <figure>
-                            <img src="img/visa.png" alt="">
+                            <img src="/img/visa.png" alt="">
                         </figure>
                     </div>
                 </div>
@@ -314,6 +388,12 @@
         </div>
 
     </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/min/tiny-slider.js"></script>
+
+    <script src="../js/bootstrap.bundle.min.js"></script>
+
+    <script src="../js/script.js"></script>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
@@ -331,6 +411,9 @@
             });
         });
     </script>
+    <script src="/client/getProductCategories.js"></script>
+    <script src="/client/fetchProductsCategories.js"></script>
+
 </body>
 
 </html>

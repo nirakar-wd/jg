@@ -26,10 +26,10 @@
         integrity="sha512-06CZo7raVnbbD3BlY8/hGUoUCuhk8sTdVGV3m3nuh9i2R+UmkLbLRTE/My8TuJ3ALbDulhBObJQWtOUt0mXzNQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
 
 
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
 
 </head>
 
@@ -596,7 +596,8 @@
                                                     <label for="categoryDescription" class="form-label">full
                                                         description</label>
                                                     <textarea class="form-control" id="categoryDescription" rows="5"
-                                                        placeholder="Write a description here..." name="description"></textarea>
+                                                        placeholder="Write a description here..."
+                                                        name="description"></textarea>
                                                 </div>
 
                                                 <!-- <div class="mb-3">
@@ -771,7 +772,7 @@
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <h4 class="heading-fourth" id="userFullName">phoolkumari</h4>
+                                    <h4 class="heading-fourth" id="userFullName" name="userFullName"></h4>
                                     <p class="fs-5 mb-4" id="userBio">authorised brand seller</p>
                                     <ul class="list-inline">
                                         <li class="list-inline-item me-5">
@@ -818,8 +819,9 @@
                                                 <div class="text-start">
                                                     <div class="text-muted mb-4">
                                                         <h5 class="heading-fifth">Full Name :
-                                                            <span class="ms-2 txt" id="userFullName">Phoolmaya
-                                                                Kumari</span>
+                                                            <span class="ms-2 txt" id="userFullName1"
+                                                                name="userFullName">
+                                                            </span>
                                                         </h5>
                                                     </div>
                                                     <div class="text-muted mb-4">
@@ -1140,9 +1142,9 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/min/tiny-slider.js"></script>
 
-    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="../public/js/bootstrap.bundle.min.js"></script>
 
-    <script src="js/script.js"></script>
+    <script src="../public/js/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script> -->
@@ -1231,11 +1233,11 @@
             });
         });
     </script>
-    <script src="./client/addProduct.js">
+    <script src="../../client/addProduct.js">
 
     </script>
 
-    <script src="./client/getProfile.js"></script>
+    <script src="../../client/getProfile.js"></script>
     <!-- <script>
      const inputElement = document.querySelector('input[type="file"]');
 const credits = false;

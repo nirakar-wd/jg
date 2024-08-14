@@ -1,9 +1,14 @@
 const router = require("express").Router();
 const commentsController = require("../controllers/commentsController");
-const { verifyToken, ownsCommentOrIsAdmin } = require("../middlewares/authMiddleware");
+const {
+  verifyToken,
+  ownsCommentOrIsAdmin,
+} = require("../middlewares/authMiddleware");
 
 require("./param_loaders/productsLoader").init(router);
 require("./param_loaders/commentsLoader").init(router);
+
+router.get("/comments", commentsController.getAllComments);
 
 router.get(
   "/products/:product_load_ids/comments",

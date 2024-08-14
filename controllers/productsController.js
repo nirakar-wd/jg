@@ -69,28 +69,33 @@ exports.getAll = (req, res, next) => {
 };
 
 // Get Product by ID or Slug
-exports.getByIdOrSlug = (req, res, next) => {
-  console.log(req.params);
-  Product.findOne({
-    where: {
-      [Op.or]: [{ id: req.params.idOrSlug }, { slug: req.params.idOrSlug }],
-    },
+exports.getByIdOrSlug = function (req, res, next) {
+  // console.log(req.query);
+  const query = _.assign(req.query, {
     include: [
-      { model: Tag, attributes: ["id", "name"] },
-      { model: Category, attributes: ["id", "name"] },
+      {
+        model: Tag,
+        attributes: ["id", "name"],
+      },
+      {
+        model: Category,
+        attributes: ["id", "name"],
+      },
       {
         model: Comment,
         attributes: ["id", "content"],
         include: [{ model: User, attributes: ["id", "username"] }],
       },
     ],
-  })
-    .then((product) =>
-      res.json(ProductResponseDto.buildDetails(product, true, false))
-    )
-    .catch((err) =>
-      res.json(AppResponseDto.buildWithErrorMessages(err.message))
-    );
+  });
+
+  Product.findOne(req.query)
+    .then((product) => {
+      return res.json(ProductResponseDto.buildDetails(product, true, false));
+    })
+    .catch((err) => {
+      return res.json(AppResponseDto.buildWithErrorMessages(err.message));
+    });
 };
 
 exports.searchProduct = (req, res, next) => {
@@ -172,56 +177,65 @@ exports.getByTag = function (req, res, next) {
     });
 };
 
-exports.getByCategory = function (req, res, next) {
-  const page = parseInt(req.query.page) || 1;
-  const pageSize = parseInt(req.query.pageSize) || 5;
-  const offset = (page - 1) * pageSize;
+exports.getByCategory = async function (req, res, next) {
+  try {
+    const page = parseInt(req.query.page) || 1; // Get the current page from query params or default to 1
+    const pageSize = parseInt(req.query.pageSize) || 5; // Get the page size from query params or default to 5
+    const offset = (page - 1) * pageSize; // Calculate offset for pagination
 
-  const categoryQuery = {};
-  if (!!req.params.category_slug) categoryQuery.slug = req.params.category_slug;
-  else categoryQuery.id = req.params.categoryId;
+    const categoryQuery = {};
 
-  Product.findAndCountAll({
-    attributes: ["id", "name", "slug", "created_at", "updated_at"],
-    include: [
-      {
-        model: Category,
-        where: categoryQuery,
-        // through: {attributes: ['id'],}
-      },
-      {
-        model: Tag,
-        exclude: ["description", "created_at", "updated_at"],
-      },
-      {
-        model: Comment,
-        attributes: ["id", "productId"],
-        group: "productId",
-      },
-    ],
+    // Use slug if provided, otherwise use categoryId
+    if (req.params.category_slug) {
+      categoryQuery.slug = req.params.category_slug;
+    } else if (req.params.categoryId) {
+      categoryQuery.id = req.params.categoryId;
+    }
 
-    order: [
-      ["createdAt", "DESC"],
-      // ['price', 'DESC']
-    ],
-
-    offset,
-    limit: pageSize,
-  })
-    .then((products) => {
-      return res.json(
-        ProductResponseDto.buildPagedList(
-          products.rows,
-          page,
-          pageSize,
-          products.count,
-          req.baseUrl
-        )
-      );
-    })
-    .catch((err) => {
-      return res.json(AppResponseDto.buildWithErrorMessages(err.message));
+    // Fetch products with related categories, tags, and comments
+    const products = await Product.findAndCountAll({
+      attributes: [
+        "id",
+        "name",
+        "slug",
+        "price",
+        "stock",
+        "created_at",
+        "updated_at",
+      ],
+      include: [
+        {
+          model: Category,
+          where: categoryQuery, // Filter by category based on the query
+        },
+        {
+          model: Tag,
+          attributes: { exclude: ["description", "created_at", "updated_at"] }, // Exclude unnecessary fields
+        },
+        {
+          model: Comment,
+          attributes: ["id", "rating", "productId"],
+        },
+      ],
+      order: [["createdAt", "DESC"]], // Order by creation date descending
+      offset, // Pagination offset
+      limit: pageSize, // Number of items per page
     });
+
+    // Build paginated response
+    const response = ProductResponseDto.buildPagedList(
+      products.rows, // The actual product data
+      page, // Current page
+      pageSize, // Page size
+      products.count, // Total number of products
+      req.baseUrl // Base URL for pagination links
+    );
+
+    return res.json(response);
+  } catch (err) {
+    // Handle errors and return an appropriate error message
+    return res.json(AppResponseDto.buildWithErrorMessages(err.message));
+  }
 };
 
 exports.createProduct = async (req, res) => {
@@ -245,11 +259,10 @@ exports.createProduct = async (req, res) => {
     const categories = req.body.categories || [];
     const collections = req.body.collections || [];
 
-      // Parse the JSON strings to convert them into arrays of objects
-      const parsedCategories = JSON.parse(categories[1]); // Parsing the second entry
-      const parsedTags = JSON.parse(tags[1]); // Parsing the second entry
-      const parsedCollections = JSON.parse(collections[1]); // Parsing the second entry
-
+    // Parse the JSON strings to convert them into arrays of objects
+    const parsedCategories = JSON.parse(categories[1]); // Parsing the second entry
+    const parsedTags = JSON.parse(tags[1]); // Parsing the second entry
+    const parsedCollections = JSON.parse(collections[1]); // Parsing the second entry
 
     // Log the parsed arrays
     console.log("Parsed Categories:", parsedCategories);

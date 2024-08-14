@@ -29,7 +29,7 @@ app.use(bodyParser.json());
 
 // Use CORS middleware to allow cross-origin requests
 const corsOptions = {
-  origin: "http://127.0.0.1:5500", // Allow this origin
+  origin: "http://127.0.0.1:4000", // Allow this origin
   credentials: true, // Allow credentials (cookies, etc.)
   methods: ["GET", "POST", "PUT", "DELETE"], // Allow these HTTP methods
   allowedHeaders: ["Content-Type", "Authorization"], // Allow these headers
@@ -64,8 +64,61 @@ app.use("/api", tagAndCategoriesRouter);
 app.use("/api", pagesRouter);
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
-  next(createError(404));
+// app.use(function (req, res, next) {
+//   next(createError(404));
+// });
+
+// Serve your HTML file at the root URL
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/views", "index.html"));
+});
+
+app.get("/categories", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/views", "categories.html"));
+});
+
+app.get("/categories/:categoryId", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/views", "productsCategories.html"));
+});
+
+app.get("/admin", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/views", "admin.html"));
+});
+
+app.get("/aboutUs", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/views", "aboutus.html"));
+});
+
+app.get("/cart", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/views", "cart.html"));
+});
+
+app.get("/checkout", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/views", "checkout.html"));
+});
+
+app.get("/termsAndConditions", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/views", "t&c.html"));
+});
+
+app.get("/products", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/views", "product.html"));
+});
+
+app.get("/products/:productId", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/views", "productDetails.html"));
+});
+
+app.get("/login", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/views", "signin.html"));
+});
+
+app.get("/register", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/views", "register.html"));
+});
+
+app.get("/deliveryPolicy", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/views", "p&p.html"));
 });
 
 // Error handling middleware

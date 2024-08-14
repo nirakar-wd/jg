@@ -25,10 +25,10 @@
         integrity="sha512-06CZo7raVnbbD3BlY8/hGUoUCuhk8sTdVGV3m3nuh9i2R+UmkLbLRTE/My8TuJ3ALbDulhBObJQWtOUt0mXzNQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
 
 
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
 
 </head>
 
@@ -120,10 +120,10 @@
 
 
                             <div class="cart-icon">
-                                <a href="signin.html" class="cart-btn mx-3">
+                                <a href="http://localhost:4000/login" class="cart-btn mx-3">
                                     <i class="fa-solid fa-user fa-xl"></i>
                                 </a>
-                                <a href="cart.html" class=" cart-btn">
+                                <a href="http://localhost:4000/cart" class=" cart-btn">
                                     <i class="fa-solid fa-cart-shopping fa-xl"></i>
                                 </a>
                             </div>
@@ -208,15 +208,15 @@
                                 <li class="breadcrumb-item active" aria-current="page">
                                     <a href="product.html"></a>Product
                                 </li>
-                                <li class="breadcrumb-item active" aria-current="page">Felt One</li>
+                                <li class="breadcrumb-item active" aria-current="page" id="productName">Felt One</li>
                             </ol>
                         </nav>
 
-                        <h2 class="heading-secondary text-start mt-5">
+                        <h2 class="heading-secondary text-start mt-5" id="productName">
                             felt one
                         </h2>
 
-                        <span class="small-info">Lorem ipsum dolor sit amet consectetur. </span>
+                        <span class="small-info" id="productDescription">Lorem ipsum dolor sit amet consectetur. </span>
 
                         <div class="rating mt-3">
                             <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
@@ -250,7 +250,7 @@
 
                         <div class="cart-price">
                             <button class="add-cart d-flex">add to cart
-                                <div class="price">$399</div>
+                                <div class="price" id="price">$399</div>
                             </button>
                         </div>
 
@@ -263,7 +263,7 @@
                     </div>
 
                     <div class="prod-info">
-                        <h3 class="description-head">
+                        <h3 class="description-head" id="productDescription">
                             description
                         </h3>
 
@@ -276,7 +276,7 @@
                         </h3>
 
                         <div class="section-content">
-                            <ul style="list-style-type: none;">
+                            <ul style="list-style-type: none;"  id="sizeAndFeatures">
                                 <li>☆ Weight: 7 grams</li>
                                 <li>☆ 100% Pure Wool/Felt from New Zealand</li>
                                 <li>☆ Handmade and customizable</li>
@@ -478,9 +478,9 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/min/tiny-slider.js"></script>
 
-    <script src="js/jquery.ez-plus.js"></script>
+    <script src="../js/jquery.ez-plus.js"></script>
 
-    <script src="js/jquery.bootstrap-touchspin.min.js"></script>
+    <script src="../js/jquery.bootstrap-touchspin.min.js"></script>
 
     <!-- DARK MODE -->
     <script>
