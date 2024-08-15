@@ -159,6 +159,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const response = await fetch("http://localhost:4000/api/products", {
         method: "POST",
         body: formData,
+        credentials: "include",
       });
 
       const data = await response.json();

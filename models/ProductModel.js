@@ -22,9 +22,17 @@ module.exports = (sequelize, DataTypes) => {
       description: {
         type: TEXT,
       },
+      features: {
+        type: TEXT,
+      },
       price: {
-        type: DECIMAL(20, 2),
+        type: DECIMAL(10, 2),
         allowNull: false,
+      },
+      discountedPrice: {
+        type: DECIMAL(10, 2),
+        allowNull: true,
+        field: "discounted_price",
       },
       stock: {
         type: INTEGER(11),

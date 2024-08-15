@@ -44,6 +44,7 @@ module.exports = {
           let user = users[Math.floor(Math.random() * users.length)];
           if (user.addresses.length > 0 && faker.datatype.boolean()) {
             order.userId = user.id;
+            order.total = faker.number.int({ min: 100, max: 100000 }),
             order.addressId =
               user.addresses[
                 Math.floor(Math.random() * user.addresses.length)
@@ -62,7 +63,7 @@ module.exports = {
 
         const orderItemPromises = [];
         for (let order of orders) {
-          const orderItemsToSeed = faker.datatype.number({ min: 1, max: 12 });
+          const orderItemsToSeed = faker.number.int({ min: 1, max: 12 });
           for (let j = 0; j < orderItemsToSeed; j++) {
             const product =
               products[Math.floor(Math.random() * products.length)];
@@ -73,11 +74,8 @@ module.exports = {
                 userId: order.userId,
                 orderId: order.id,
                 productId: product.id,
-                price: Math.max(
-                  10,
-                  product.price - faker.datatype.number({ min: -50, max: 50 })
-                ),
-                quantity: faker.datatype.number({ min: 1, max: 10 }),
+                price: Math.min(10, product.price - faker.number.int({min: -50, max: 50})),
+                quantity: faker.number.int({ min: 1, max: 10 }),
               })
             );
           }

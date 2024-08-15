@@ -1,16 +1,15 @@
 "use strict";
 
 const { faker } = require("@faker-js/faker");
-const { Payment, User, Order, sequelize } = require("./../models/index");
+const { Payment, Order, sequelize } = require("./../models/index");
 const { PAYMENT_STATUS } = require("../constants");
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     try {
-      const [payments, users, orders] = await Promise.all([
+      const [payments, orders] = await Promise.all([
         Payment.findAll({ attributes: ["id"] }),
-        User.findAll({ attributes: ["id"] }),
         Order.findAll({ attributes: ["id"] }),
       ]);
 
@@ -19,7 +18,6 @@ module.exports = {
 
       const paymentPromises = [];
       for (let i = 0; i < paymentsToSeed; i++) {
-        const user = users[Math.floor(Math.random() * users.length)];
         const order = orders[Math.floor(Math.random() * orders.length)];
         const statusKeys = Object.keys(PAYMENT_STATUS);
         const randomStatus =
@@ -29,7 +27,6 @@ module.exports = {
 
         paymentPromises.push(
           Payment.create({
-            userId: user.id,
             orderId: order.id,
             paymentAmount: faker.number.float({
               min: 10,

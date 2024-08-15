@@ -239,7 +239,6 @@ exports.getByCategory = async function (req, res, next) {
 };
 
 exports.createProduct = async (req, res) => {
-  console.log(req.body);
   const bindingResult = ProductRequestDto.createProductResponseDto(req);
   console.log(bindingResult);
   const promises = [];
@@ -259,29 +258,19 @@ exports.createProduct = async (req, res) => {
     const categories = req.body.categories || [];
     const collections = req.body.collections || [];
 
-    // Parse the JSON strings to convert them into arrays of objects
-    const parsedCategories = JSON.parse(categories[1]); // Parsing the second entry
-    const parsedTags = JSON.parse(tags[1]); // Parsing the second entry
-    const parsedCollections = JSON.parse(collections[1]); // Parsing the second entry
-
-    // Log the parsed arrays
-    console.log("Parsed Categories:", parsedCategories);
-    console.log("Parsed Tags:", parsedTags);
-    console.log("Parsed Collections:", parsedCollections);
-
-    parsedTags.forEach(({ name, description }) => {
+    tags.forEach(({ name, description }) => {
       promises.push(
         Tag.findOrCreate({ where: { name }, defaults: { description } })
       );
     });
 
-    parsedCategories.forEach(({ name, description }) => {
+    categories.forEach(({ name, description }) => {
       promises.push(
         Category.findOrCreate({ where: { name }, defaults: { description } })
       );
     });
 
-    parsedCollections.forEach(({ name, description }) => {
+    collections.forEach(({ name, description }) => {
       promises.push(
         Collection.findOrCreate({ where: { name }, defaults: { description } })
       );
@@ -354,6 +343,13 @@ exports.createProduct = async (req, res) => {
   } catch (err) {
     if (transaction) {
       await transaction.rollback();
+    }
+
+    if (err instanceof sequelize.ValidationError) {
+      console.error("Validation errors:", err.errors);
+      return res.json(
+        AppResponseDto.buildWithErrorMessages(err.errors.map((e) => e.message))
+      );
     }
     return res.json(AppResponseDto.buildWithErrorMessages(err.message));
   }

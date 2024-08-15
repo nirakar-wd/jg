@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (response.ok) {
         localStorage.setItem("userId", data.user.id);
         alert("login successful!");
-        window.location.href = "http://127.0.0.1:5500/jg/contact.html";
+        window.location.href = "http://localhost:4000/contacts";
       } else {
         // Display validation errors returned by the server
         const errorMessages = Object.values(

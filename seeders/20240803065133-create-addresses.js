@@ -21,6 +21,7 @@ module.exports = {
             address: faker.address.streetAddress(true),
             country: faker.address.country(),
             city: faker.address.city(),
+            state: faker.address.state(),
             zipCode: faker.address.zipCode(),
           };
           const user = users[Math.floor(Math.random() * users.length)];
@@ -30,8 +31,8 @@ module.exports = {
             address.firstName = user.firstName;
             address.lastName = user.lastName;
           } else {
-            address.firstName = faker.name.firstName();
-            address.lastName = faker.name.lastName();
+            address.firstName = faker.person.firstName();
+            address.lastName = faker.person.lastName();
           }
 
           promises.push(Address.create(address));

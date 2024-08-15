@@ -12,19 +12,20 @@ module.exports = function (sequelize, DataTypes) {
         allowNull: false,
         autoIncrement: true,
       },
-
       userId: {
         type: INTEGER,
         allowNull: true,
         field: "userId",
       },
-
       trackingNumber: {
         type: DataTypes.STRING,
         unique: true,
         field: "tracking_number",
       },
-
+      total: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
       addressId: {
         type: DataTypes.INTEGER,
         field: "addressId",
@@ -33,7 +34,6 @@ module.exports = function (sequelize, DataTypes) {
           key: "id",
         },
       },
-
       orderStatus: {
         type: DataTypes.INTEGER,
         field: "order_status",
@@ -43,7 +43,6 @@ module.exports = function (sequelize, DataTypes) {
           ORDER_STATUS.shipped.ordinal,
         ],
       },
-
       orderStatusStr: {
         type: DataTypes.VIRTUAL,
         get: function () {
@@ -79,6 +78,7 @@ module.exports = function (sequelize, DataTypes) {
   // Order.hasOne(OrderInfo, {foreign_key: 'orderId'});
 
   Order.associate = (models) => {
+    Order.hasMany(models.Payment, { foreignKey: "orderId" });
     Order.hasMany(models.OrderItem);
     Order.belongsTo(models.User, { foreignKey: "userId" });
     Order.belongsTo(models.Address, { foreignKey: "addressId" });

@@ -1,6 +1,7 @@
 const PageMetaDto = require("./pageMetaDto");
 const TagDto = require("./tagsDto");
 const CategoryDto = require("./categoriesDto");
+const CollectionDto = require("./collectionsDto");
 const UserDto = require("./usersDto");
 const CommentsDto = require("./commentsDto");
 
@@ -37,6 +38,8 @@ function buildDto(product) {
     slug: product.slug,
     name: product.name,
     price: product.price,
+    discounted_price: product.discounted_price,
+    features: product.features,
     image_urls: product.images
       ? product.images.map((image) => image.filePath)
       : [],
@@ -44,6 +47,7 @@ function buildDto(product) {
     updated_at: product.updatedAt,
     ...TagDto.buildDtos(product.tags),
     ...CategoryDto.buildDtos(product.categories),
+    ...CollectionDto.buildDtos(product.collections),
     comments_count: product.comments
       ? product.comments.length
       : product.comments_count || 0,

@@ -31,5 +31,17 @@ exports.createProductResponseDto = (req) => {
     bindingResult.errors.stock =
       "You must provide a stock value for this product";
   }
+  if (req.body.features) {
+    bindingResult.validatedData.features = req.body.features;
+  } else {
+    bindingResult.errors.features =
+      "You must provide features for this product";
+  }
+  if (req.body.discounted_price) {
+    bindingResult.validatedData.discounted_price = req.body.discounted_price;
+  } else {
+    bindingResult.errors.discounted_price =
+      "You must provide dis price for this product";
+  }
   return bindingResult;
 };

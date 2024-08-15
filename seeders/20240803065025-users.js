@@ -42,6 +42,7 @@ module.exports = {
             email: faker.internet.email(),
             password: "password",
             phone: faker.phone.number(),
+            bio: faker.lorem.paragraph(),
           });
           promises.push(user.addRole(userRole));
         }

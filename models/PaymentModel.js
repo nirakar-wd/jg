@@ -13,13 +13,6 @@ module.exports = function (sequelize, DataTypes) {
         primaryKey: true,
         allowNull: false,
       },
-
-      userId: {
-        type: INTEGER,
-        allowNull: true,
-        field: "userId",
-      },
-
       orderId: {
         type: INTEGER,
         allowNull: false,
@@ -29,13 +22,11 @@ module.exports = function (sequelize, DataTypes) {
           key: "id",
         },
       },
-
       paymentAmount: {
         type: DECIMAL(10, 2),
         allowNull: false,
         field: "payment_amount",
       },
-
       paymentMethod: {
         type: STRING,
         allowNull: false,
@@ -53,7 +44,6 @@ module.exports = function (sequelize, DataTypes) {
           PAYMENT_STATUS.refunded.ordinal,
         ],
       },
-
       paymentStatusStr: {
         type: DataTypes.VIRTUAL,
         get: function () {
@@ -66,14 +56,12 @@ module.exports = function (sequelize, DataTypes) {
           return result;
         },
       },
-
       transactionId: {
         type: STRING,
         unique: true,
         allowNull: false,
         field: "transaction_id",
       },
-
       createdAt: {
         type: DATE,
         allowNull: false,
@@ -91,7 +79,6 @@ module.exports = function (sequelize, DataTypes) {
       timestamps: false,
       tableName: "payments",
       indexes: [
-        { fields: ["userId"] },
         { fields: ["orderId"] },
         { fields: ["transactionId"] },
       ],
@@ -99,7 +86,6 @@ module.exports = function (sequelize, DataTypes) {
   );
 
   Payment.associate = (models) => {
-    Payment.belongsTo(models.User, { foreignKey: "userId" });
     Payment.belongsTo(models.Order, { foreignKey: "orderId" });
   };
 

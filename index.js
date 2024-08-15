@@ -31,8 +31,6 @@ app.use(bodyParser.json());
 const corsOptions = {
   origin: "http://127.0.0.1:4000", // Allow this origin
   credentials: true, // Allow credentials (cookies, etc.)
-  methods: ["GET", "POST", "PUT", "DELETE"], // Allow these HTTP methods
-  allowedHeaders: ["Content-Type", "Authorization"], // Allow these headers
 };
 // app.use(BenchmarkMiddleware.benchmark);
 // app.use(AuthMiddleware.loadUser);
@@ -119,6 +117,10 @@ app.get("/register", (req, res) => {
 
 app.get("/deliveryPolicy", (req, res) => {
   res.sendFile(path.join(__dirname, "public/views", "p&p.html"));
+});
+
+app.get("/contacts", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/views", "contact.html"));
 });
 
 // Error handling middleware

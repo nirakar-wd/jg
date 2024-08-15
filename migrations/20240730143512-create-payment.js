@@ -10,17 +10,6 @@ module.exports = {
           type: Sequelize.UUID,
           defaultValue: Sequelize.UUIDV4,
         },
-        userId: {
-          type: Sequelize.INTEGER,
-          allowNull: true,
-          field: "userId",
-          references: {
-            model: "users", // Assuming there is a 'users' table
-            key: "id",
-          },
-          onDelete: "SET NULL",
-          onUpdate: "CASCADE",
-        },
         orderId: {
           type: Sequelize.INTEGER,
           allowNull: false,
@@ -63,7 +52,6 @@ module.exports = {
       .then(() => {
         // Adding indexes
         return Promise.all([
-          queryInterface.addIndex("payments", ["userId"]),
           queryInterface.addIndex("payments", ["orderId"]),
           queryInterface.addIndex("payments", ["transaction_id"]),
         ]);

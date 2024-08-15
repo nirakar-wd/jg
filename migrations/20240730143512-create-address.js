@@ -20,13 +20,15 @@ module.exports = {
       city: {
         type: Sequelize.STRING,
       },
+      state: {
+        type: Sequelize.STRING,
+      },
       country: {
         type: Sequelize.STRING,
       },
       zip_code: {
         type: Sequelize.STRING,
       },
-
       userId: {
         type: Sequelize.INTEGER,
         allowNull: true, // if we want to allow guest users to make an order we have to create Address objects without user id

@@ -23,9 +23,17 @@ module.exports = {
           type: Sequelize.STRING,
           allowNull: true, // Optional: You might want to allow null descriptions
         },
+        features: {
+          type: Sequelize.STRING,
+          allowNull: true,
+        },
         price: {
           type: Sequelize.INTEGER,
           allowNull: false, // Optional: Ensures that the price is required
+        },
+        discounted_price: {
+          type: Sequelize.INTEGER,
+          allowNull: true,
         },
         stock: {
           type: Sequelize.INTEGER,

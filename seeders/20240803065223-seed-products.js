@@ -33,7 +33,9 @@ module.exports = {
                   faker.commerce.productName() +
                   faker.number.int({ min: 0, max: 120 }),
                 description: faker.lorem.sentences(2),
-                price: parseInt(faker.commerce.price(10, 1000, 2)) * 100,
+                features: faker.lorem.sentences(3),
+                price: parseInt(faker.commerce.price(10, 1000, 2)) * 10,
+                discountedPrice: parseInt(faker.commerce.price(10, 900, 2)) * 10,
                 vendor: faker.company.name(),
                 stock: faker.number.int({ min: 0, max: 120 }),
               },

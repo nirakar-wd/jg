@@ -1,9 +1,10 @@
 require("dotenv").config();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { TEXT } = require("sequelize");
 
 module.exports = function (sequelize, DataTypes) {
-  const { INTEGER, STRING, DATE, UUID, UUIDV4 } = DataTypes;
+  const { INTEGER, STRING, DATE, UUID, UUIDV4, TEXT } = DataTypes;
 
   const User = sequelize.define(
     "users",
@@ -13,6 +14,11 @@ module.exports = function (sequelize, DataTypes) {
         allowNull: false,
         primaryKey: true,
         autoIncrement: true,
+      },
+      bio: {
+        type: STRING(255),
+        allowNull: true,
+        field: "bio",
       },
       firstName: {
         type: STRING(50),
@@ -99,7 +105,6 @@ module.exports = function (sequelize, DataTypes) {
     User.hasMany(models.UserImage, { as: "images" });
     // console.log(models);
   };
- 
 
   User.beforeBulkUpdate((user) => {
     user.attributes.updateTime = new Date();
