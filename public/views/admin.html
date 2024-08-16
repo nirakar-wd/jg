@@ -123,7 +123,7 @@
                                 <a href="http://localhost:4000/login" class="cart-btn mx-3">
                                     <i class="fa-solid fa-user fa-xl"></i>
                                 </a>
-                                <a href="cart.html" class=" cart-btn">
+                                <a href="http://localhost:4000/cart" class=" cart-btn">
                                     <i class="fa-solid fa-cart-shopping fa-xl"></i>
                                 </a>
                             </div>
@@ -180,9 +180,6 @@
 
 
             <div class="admin-dashboard">
-
-
-
                 <aside>
 
                     <div class="seller-nav">
@@ -335,7 +332,7 @@
                             <div class="row justify-content-center">
                                 <div class="col-md-12">
                                     <div class="table-responsive">
-                                        <table class="table" id="productTable">
+                                        <table class="table" id="ordersTable">
                                             <thead>
                                                 <tr>
                                                     <th scope="col">order id</th>
@@ -460,6 +457,13 @@
                                                     name="description"></textarea>
                                             </div>
 
+                                            <div class="mb-3">
+                                                <label for="productFeatures" class="form-label">product
+                                                    features</label>
+                                                <textarea class="form-control" id="productFeatures" rows="5"
+                                                    placeholder="Write the product's features here..."
+                                                    name="features"></textarea>
+                                            </div>
                                             <div class="display-media">
                                                 <label for="productDescription" class="form-label">Upload Image</label>
                                                 <div class="media-preview">
@@ -475,12 +479,7 @@
                                                     <i class="fa-solid fa-image"></i>
                                                 </div>
                                             </div>
-
-
-
-
                                         </div>
-
                                     </div>
 
                                     <div class="col-md-4">
@@ -520,6 +519,12 @@
                                                     <label for="stock" class="form-label">Stock</label>
                                                     <input type="text" id="stock" placeholder="Stock"
                                                         class="form-control" name="stock">
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="discount" class="form-label">Discounted Price(if any)</label>
+                                                    <input type="text" id="discount" placeholder="Stock"
+                                                        class="form-control" name="discounted_">
                                                 </div>
 
                                                 <div class="mb-3">
@@ -579,13 +584,15 @@
 
                     </div>
 
+
+
                     <div class="add-product add-category busi active">
-                        <div class="heading-business mb-4">add category</div>
+                        <div class="heading-business mb-4">add Categories</div>
                         <div class="add-product-box">
-                            <form>
+                            <form id="categoryForm">
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <form id="addCategory">
+                                        <form>
                                             <div class="product-left">
                                                 <div class="form-group mb-4">
                                                     <label for="categoryName" class="form-label">name</label>
@@ -1142,9 +1149,9 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/min/tiny-slider.js"></script>
 
-    <script src="../public/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
 
-    <script src="../public/js/script.js"></script>
+    <script src="../js/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script> -->
@@ -1238,6 +1245,13 @@
     </script>
 
     <script src="../../client/getProfile.js"></script>
+
+    <script src="../../client/categories.js"></script>
+
+    <script src="../../client/postCategories.js"></script>
+
+    <!-- <script src="../../client/fetchOrdersTable.js"></script> -->
+
     <!-- <script>
      const inputElement = document.querySelector('input[type="file"]');
 const credits = false;

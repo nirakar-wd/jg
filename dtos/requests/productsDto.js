@@ -41,7 +41,7 @@ exports.createProductResponseDto = (req) => {
     bindingResult.validatedData.discounted_price = req.body.discounted_price;
   } else {
     bindingResult.errors.discounted_price =
-      "You must provide dis price for this product";
+      "You must provide discounted price for this product";
   }
   return bindingResult;
 };

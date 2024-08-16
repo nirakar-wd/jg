@@ -239,6 +239,8 @@ exports.getByCategory = async function (req, res, next) {
 };
 
 exports.createProduct = async (req, res) => {
+  console.log(req.body);
+
   const bindingResult = ProductRequestDto.createProductResponseDto(req);
   console.log(bindingResult);
   const promises = [];
@@ -341,17 +343,7 @@ exports.createProduct = async (req, res) => {
       )
     );
   } catch (err) {
-    if (transaction) {
-      await transaction.rollback();
-    }
-
-    if (err instanceof sequelize.ValidationError) {
-      console.error("Validation errors:", err.errors);
-      return res.json(
-        AppResponseDto.buildWithErrorMessages(err.errors.map((e) => e.message))
-      );
-    }
-    return res.json(AppResponseDto.buildWithErrorMessages(err.message));
+    return res.json(AppResponseDto.buildWithErrorMessages(err));
   }
 };
 

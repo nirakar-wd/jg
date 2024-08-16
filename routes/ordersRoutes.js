@@ -10,7 +10,10 @@ const {
 
 router.get("", verifyToken, ordersController.getOrders);
 
-router.get("/all", verifyToken, isAdmin, ordersController.getAllOrders);
+router.get("/all",
+  //  verifyToken,
+  //  isAdmin,
+    ordersController.getAllOrders);
 
 router.get(
   "/:order_load_ids",

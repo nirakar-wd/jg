@@ -8,6 +8,10 @@ const sequelize = require("../models/index").sequelize;
 const OrderItem = require("../models/index").OrderItem;
 
 exports.getAllOrders = async (req, res, next) => {
+  const page = parseInt(req.query.page) || 1;
+  const pageSize = parseInt(req.query.page_size) || 5;
+  const offset = (page - 1) * pageSize;
+  
   try {
     const orders = await Order.findAll({});
     return res.status(200).json(orders);
