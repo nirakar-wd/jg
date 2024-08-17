@@ -183,13 +183,14 @@ exports.refreshToken = async (req, res) => {
 // Get all users
 exports.getAllUsers = async (req, res) => {
   try {
-    const users = await User.findAll({
+    const { count, rows: users } = await User.findAndCountAll({
       attributes: { exclude: ["password"] }, // Exclude the password field
       include: [{ model: Role, as: "roles" }],
     });
 
     res.json({
       success: true,
+      count,
       users,
     });
   } catch (error) {
@@ -200,6 +201,7 @@ exports.getAllUsers = async (req, res) => {
     });
   }
 };
+
 
 // Get current user profile (assuming user ID is passed via JWT token or similar auth mechanism)
 exports.getCurrentUser = async (req, res) => {

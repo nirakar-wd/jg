@@ -27,6 +27,7 @@ function buildPagedList(
 }
 
 function buildDtos(products) {
+  console.log(products);
   return {
     products: products.map((product) => buildDto(product)),
   };
@@ -38,7 +39,8 @@ function buildDto(product) {
     slug: product.slug,
     name: product.name,
     price: product.price,
-    discounted_price: product.discounted_price,
+    stock: product.stock,
+    discounted_price: product.discountedPrice,
     features: product.features,
     image_urls: product.images
       ? product.images.map((image) => image.filePath)

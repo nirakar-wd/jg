@@ -524,7 +524,7 @@
                                                 <div class="mb-3">
                                                     <label for="discount" class="form-label">Discounted Price(if any)</label>
                                                     <input type="text" id="discount" placeholder="Stock"
-                                                        class="form-control" name="discounted_">
+                                                        class="form-control" name="discounted_price">
                                                 </div>
 
                                                 <div class="mb-3">
@@ -783,13 +783,13 @@
                                     <p class="fs-5 mb-4" id="userBio">authorised brand seller</p>
                                     <ul class="list-inline">
                                         <li class="list-inline-item me-5">
-                                            <h5 class="heading-fifth">$2500</h5>
+                                            <h5 class="heading-fifth" id="totalRev">$2500</h5>
                                             <p class="fs-5">total revenue</p>
 
                                         </li>
                                         <li class="list-inline-item">
-                                            <h5 class="heading-fifth">$2500</h5>
-                                            <p class="fs-5">total revenue</p>
+                                            <h5 class="heading-fifth"  id="totalUsers">$2500</h5>
+                                            <p class="fs-5">total customers</p>
                                         </li>
                                     </ul>
                                 </div>
@@ -819,9 +819,7 @@
                                                 <h5 class="heading-fifth mb-4">
                                                     seller information
                                                 </h5>
-                                                <p class="fs-5">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                                    Iste, repellat pariatur repellendus in nesciunt odit reprehenderit
-                                                    laudantium assumenda vitae enim.</p>
+                                                <p class="fs-5" id="userDescription"></p>
                                                 <hr>
                                                 <div class="text-start">
                                                     <div class="text-muted mb-4">
@@ -859,7 +857,7 @@
 
                                                             </div>
                                                             <h6 class="db-card-title">customers</h6>
-                                                            <div class="num">3000</div>
+                                                            <div class="num" id="totalCustomers">3000</div>
                                                             <div class="percent"><i
                                                                     class="fa-solid fa-up-long"></i>5.27%</div>
 
@@ -872,7 +870,7 @@
 
                                                             </div>
                                                             <h6 class="db-card-title">orders</h6>
-                                                            <div class="num">6000</div>
+                                                            <div class="num" id="totalOrders">6000</div>
                                                             <div class="d-percent"><i
                                                                     class="fa-solid fa-down-long"></i>3%</div>
 
@@ -885,7 +883,7 @@
 
                                                             </div>
                                                             <h6 class="db-card-title">revenue</h6>
-                                                            <div class="num">$7002</div>
+                                                            <div class="num" id="totalRevenue">$7002</div>
                                                             <div class="percent"><i
                                                                     class="fa-solid fa-up-long"></i>5.27%</div>
 
@@ -901,7 +899,7 @@
                                                 </h5>
 
                                                 <div class="table-responsive">
-                                                    <table class="table mb-0">
+                                                    <table class="table mb-0" id="productsAdminTable">
                                                         <thead>
                                                             <tr>
                                                                 <th>Product</th>
@@ -956,20 +954,20 @@
                                             personal info
                                         </h5>
 
-                                        <form>
+                                        <form id="userProfileForm">
 
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
                                                         <label for="firstname" class="form-label">First Name</label>
-                                                        <input type="text" class="form-control" id="firstname"
+                                                        <input type="text" class="form-control" id="firstName"
                                                             placeholder="Enter first name">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
                                                         <label for="lastname" class="form-label">Last Name</label>
-                                                        <input type="text" class="form-control" id="lastname"
+                                                        <input type="text" class="form-control" id="lastName"
                                                             placeholder="Enter last name">
                                                     </div>
                                                 </div> <!-- end col -->
@@ -979,7 +977,7 @@
                                                 <div class="col-8">
                                                     <div class="mb-3">
                                                         <label for="userbio" class="form-label">Bio</label>
-                                                        <textarea class="form-control" id="userbio" rows="4"
+                                                        <textarea class="form-control" id="userBio1" rows="4"
                                                             placeholder="Write something..."></textarea>
                                                     </div>
                                                 </div> <!-- end col -->
@@ -987,7 +985,7 @@
                                                 <div class="col-4">
                                                     <div class="mb-3">
                                                         <label for="userimg" class="form-label">User Image</label>
-                                                        <input type="file" name="userimg" id="userimg"
+                                                        <input type="file" name="userimg" id="userImg"
                                                             class="form-control">
                                                     </div>
                                                 </div> <!-- end col -->
@@ -999,7 +997,7 @@
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
                                                         <label for="useremail" class="form-label">Email Address</label>
-                                                        <input type="email" class="form-control" id="useremail"
+                                                        <input type="email" class="form-control" id="userEmail1"
                                                             placeholder="Enter email">
                                                         <span class="form-text text-muted"><small>If you want to change
                                                                 email please <a href="javascript: void(0);">click</a>
@@ -1009,7 +1007,7 @@
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
                                                         <label for="userpassword" class="form-label">Password</label>
-                                                        <input type="password" class="form-control" id="userpassword"
+                                                        <input type="password" class="form-control" id="userPassword"
                                                             placeholder="Enter password">
                                                         <span class="form-text text-muted"><small>If you want to change
                                                                 password please <a href="javascript: void(0);">click</a>
@@ -1240,13 +1238,9 @@
             });
         });
     </script>
-    <script src="../../client/addProduct.js">
-
-    </script>
+    <script src="../../client/addProduct.js"></script>
 
     <script src="../../client/getProfile.js"></script>
-
-    <script src="../../client/categories.js"></script>
 
     <script src="../../client/postCategories.js"></script>
 

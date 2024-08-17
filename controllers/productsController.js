@@ -25,7 +25,15 @@ exports.getAll = (req, res, next) => {
       offset: (page - 1) * pageSize,
       limit: pageSize,
       order: [["createdAt", "DESC"]],
-      attributes: ["id", "name", "slug", "price", "created_at", "updated_at"],
+      attributes: [
+        "id",
+        "name",
+        "slug",
+        "price",
+        "stock",
+        "created_at",
+        "updated_at",
+      ],
       include: [
         { model: Tag, attributes: ["id", "name"] },
         { model: Category, attributes: ["id", "name"] },
@@ -241,6 +249,8 @@ exports.getByCategory = async function (req, res, next) {
 exports.createProduct = async (req, res) => {
   console.log(req.body);
 
+  console.log(req.files);
+
   const bindingResult = ProductRequestDto.createProductResponseDto(req);
   console.log(bindingResult);
   const promises = [];
@@ -343,7 +353,20 @@ exports.createProduct = async (req, res) => {
       )
     );
   } catch (err) {
-    return res.json(AppResponseDto.buildWithErrorMessages(err));
+    if (err.name === 'SequelizeUniqueConstraintError') {
+      await transaction.rollback();
+      return res.status(400).json({
+        success: false,
+        message: 'A product with the same unique attribute already exists.',
+        errors: err.errors,
+      });
+    }
+    await transaction.rollback();
+    return res.status(500).json({
+      success: false,
+      message: 'An unexpected error occurred.',
+      errors: err.stack,
+    });
   }
 };
 

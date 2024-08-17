@@ -20,11 +20,11 @@ router.get("/by_category_id/:categoryId", productsController.getByCategory);
 router.get("/", productsController.getAll);
 
 router.post(
-  "",
-  verifyToken,
-  isAdmin,
-  setUploadPath("./public/images/products"),
-  upload.array("images", 6),
+  "/",
+  // verifyToken,
+  // isAdmin,
+  // setUploadPath("./public/images/products"),
+  // upload.array("images", 6),
   productsController.createProduct
 );
 router.put(

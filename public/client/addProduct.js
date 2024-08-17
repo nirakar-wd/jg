@@ -49,8 +49,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     );
     const collections = await collectionsResponse.json();
 
-    // console.log(collections);
-
     if (collectionsResponse.ok) {
       collections.collections.forEach((collection) => {
         const option = document.createElement("option");
@@ -70,10 +68,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   const form = document.getElementById("addProductForm");
   const currencyDropdown = document.getElementById("currencyDropdown");
   const currencyMenu = document.getElementById("currencyMenu");
-  const displayImageInput = document.getElementById("displayImage");
-  const selectImageButton = document.getElementById("selectImageButton");
-  const imageNameDisplay = document.getElementById("imageName");
-  const imageError = document.getElementById("imageError");
 
   // Handle currency selection
   currencyMenu.addEventListener("click", (e) => {
@@ -81,38 +75,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (e.target.classList.contains("dropdown-item")) {
       const selectedCurrency = e.target.getAttribute("data-currency");
       currencyDropdown.textContent = selectedCurrency;
-    }
-  });
-
-  // Trigger the file selection dialog when "Select Image" button is clicked
-  selectImageButton.addEventListener("click", (e) => {
-    e.preventDefault();
-    displayImageInput.click();
-  });
-
-  // Handle file selection and display the file name
-  displayImageInput.addEventListener("change", () => {
-    const file = displayImageInput.files[0];
-    const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
-    const maxSize = 3 * 1024 * 1024; // 3MB
-
-    if (file) {
-      if (!allowedTypes.includes(file.type)) {
-        imageError.textContent =
-          "Invalid file type. Please upload an image (JPEG, PNG, GIF).";
-        imageError.style.display = "block";
-        displayImageInput.value = ""; // Clear the input
-        imageNameDisplay.textContent = ""; // Clear the file name display
-      } else if (file.size > maxSize) {
-        imageError.textContent =
-          "File size exceeds 3MB. Please choose a smaller image.";
-        imageError.style.display = "block";
-        displayImageInput.value = ""; // Clear the input
-        imageNameDisplay.textContent = ""; // Clear the file name display
-      } else {
-        imageError.style.display = "none";
-        imageNameDisplay.textContent = `Selected file: ${file.name}`; // Display the file name
-      }
     }
   });
 
@@ -127,8 +89,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         name: option.textContent,
       })
     );
-
-    console.log(selectedCategories);
 
     const selectedTags = Array.from(tagsSelect.selectedOptions).map(
       (option) => ({
@@ -147,14 +107,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     formData.append("tags", JSON.stringify(selectedTags));
     formData.append("collections", JSON.stringify(selectedCollections));
 
-    console.log(formData);
-
-    const file = displayImageInput.files[0];
-
-    if (file) {
-      formData.append("file", file);
+    // Debugging FormData
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
     }
-
     try {
       const response = await fetch("http://localhost:4000/api/products", {
         method: "POST",
@@ -164,11 +120,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       const data = await response.json();
 
-      console.log(data);
-
-      if (response.ok) {
+      if (response.status === "200") {
         alert("Product added successfully!");
-        // window.location.reload();
       } else {
         alert(data.errors?.message || "Failed to add product");
       }
