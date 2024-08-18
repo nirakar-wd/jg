@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", async () => {
               <div class="abox">
                 <div class="kecimgbox">
                   <a href="product.html?id=${product.id}">
-                    <img src="${product.imageUrl}" class="img-fluid" alt="${
+                    <img src="/img/Flat Front black FH.png" class="img-fluid" alt="${
           product.name
         }">
                   </a>

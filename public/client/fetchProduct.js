@@ -133,16 +133,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </div>
             </div>
             `;
-
-      $("input[name='demo1']").TouchSpin({
-        min: 0,
-        max: 100,
-        step: 1,
-        decimals: 0,
-        boostat: 5,
-        maxboostedstep: 10,
-        postfix: "%",
-      });
       productsContainer.innerHTML += productCard;
     } else {
       console.error("Failed to fetch products");

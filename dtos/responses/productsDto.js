@@ -27,7 +27,7 @@ function buildPagedList(
 }
 
 function buildDtos(products) {
-  console.log(products);
+  // console.log(products);
   return {
     products: products.map((product) => buildDto(product)),
   };

@@ -78,7 +78,7 @@ exports.getAll = (req, res, next) => {
 
 // Get Product by ID or Slug
 exports.getByIdOrSlug = function (req, res, next) {
-  // console.log(req.query);
+  console.log(req.query);
   const query = _.assign(req.query, {
     include: [
       {
@@ -87,6 +87,10 @@ exports.getByIdOrSlug = function (req, res, next) {
       },
       {
         model: Category,
+        attributes: ["id", "name"],
+      },
+      {
+        model: Collection,
         attributes: ["id", "name"],
       },
       {
@@ -353,18 +357,18 @@ exports.createProduct = async (req, res) => {
       )
     );
   } catch (err) {
-    if (err.name === 'SequelizeUniqueConstraintError') {
+    if (err.name === "SequelizeUniqueConstraintError") {
       await transaction.rollback();
       return res.status(400).json({
         success: false,
-        message: 'A product with the same unique attribute already exists.',
+        message: "A product with the same unique attribute already exists.",
         errors: err.errors,
       });
     }
     await transaction.rollback();
     return res.status(500).json({
       success: false,
-      message: 'An unexpected error occurred.',
+      message: "An unexpected error occurred.",
       errors: err.stack,
     });
   }
@@ -468,4 +472,53 @@ exports.deleteProduct = (req, res, next) => {
     .catch((err) => {
       res.json(AppResponseDto.buildWithErrorMessages(err));
     });
+};
+
+exports.sortProducts = async (req, res, next) => {
+  try {
+    const {
+      sortBy = "name",
+      order = "asc",
+      minPrice = 0,
+      maxPrice = Infinity,
+    } = req.query;
+
+    // Validate inputs
+    if (!["name", "price"].includes(sortBy)) {
+      return res
+        .status(400)
+        .json({ error: 'Invalid sort column. Use "name" or "price".' });
+    }
+
+    if (!["asc", "desc"].includes(order)) {
+      return res
+        .status(400)
+        .json({ error: 'Invalid order. Use "asc" or "desc".' });
+    }
+
+    if (isNaN(minPrice) || isNaN(maxPrice)) {
+      return res.status(400).json({ error: "Invalid price range." });
+    }
+
+    // Convert minPrice and maxPrice to numbers
+    const min = parseFloat(minPrice);
+    const max = parseFloat(maxPrice);
+
+    // Fetch products with filtering and sorting
+    const products = await Product.findAll({
+      where: {
+        price: {
+          [Op.between]: [min, max], // Filter by price range
+        },
+      },
+      order: [
+        [sortBy, order], // Sort by the specified column and order
+      ],
+    });
+
+    res.json(products);
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 };

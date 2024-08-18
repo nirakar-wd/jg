@@ -3,12 +3,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   const tagsSelect = document.getElementById("tags");
   const collectionsSelect = document.getElementById("collections");
 
-  // Fetch categories and tags when the page loads
+  // Fetch categories, tags, and collections when the page loads
   try {
     // Fetch categories
     const categoriesResponse = await fetch(
       "http://localhost:4000/api/categories",
-      { cache: "no-store" } // Disable caching
+      { cache: "no-store" }
     );
     const categories = await categoriesResponse.json();
 
@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   } catch (error) {
     console.error("Error:", error);
-    alert("An error occurred while fetching categories or tags or collections");
+    alert("An error occurred while fetching categories, tags, or collections");
   }
 
   // Handle form submission
@@ -82,6 +82,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     e.preventDefault();
 
     const formData = new FormData(form);
+    const name = formData.get("productName");
+    const description = formData.get("productDescription");
+    const features = formData.get("productFeatures");
+    const price = formData.get("productPrice");
+    const stock = formData.get("stock");
+    const vendor = formData.get("vendor");
+    const discounted_price = formData.get("discounted_price");
 
     const selectedCategories = Array.from(categoriesSelect.selectedOptions).map(
       (option) => ({
@@ -96,6 +103,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         name: option.textContent,
       })
     );
+
     const selectedCollections = Array.from(
       collectionsSelect.selectedOptions
     ).map((option) => ({
@@ -103,24 +111,33 @@ document.addEventListener("DOMContentLoaded", async () => {
       name: option.textContent,
     }));
 
-    formData.append("categories", JSON.stringify(selectedCategories));
-    formData.append("tags", JSON.stringify(selectedTags));
-    formData.append("collections", JSON.stringify(selectedCollections));
+    const payload = {
+      name: name,
+      description: description,
+      features: features,
+      price: price,
+      stock: stock,
+      vendor: vendor,
+      discounted_price: discounted_price,
+      categories: selectedCategories,
+      tags: selectedTags,
+      collections: selectedCollections,
+    };
 
-    // Debugging FormData
-    for (let [key, value] of formData.entries()) {
-      console.log(key, value);
-    }
     try {
       const response = await fetch("http://localhost:4000/api/products", {
         method: "POST",
-        body: formData,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload), // Convert payload to JSON
         credentials: "include",
       });
 
       const data = await response.json();
 
-      if (response.status === "200") {
+      if (response.ok) {
+        // Check if the response status is ok (200-299)
         alert("Product added successfully!");
       } else {
         alert(data.errors?.message || "Failed to add product");
