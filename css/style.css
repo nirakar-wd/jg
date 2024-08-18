@@ -343,7 +343,8 @@ ol.para li {
 }
 
 .logo {
-    max-width: 4rem;
+    max-width: 14rem;
+    
 }
 
 .nav-top {
@@ -389,7 +390,7 @@ ol.para li {
     font-size: 1.6rem;
     color: #070908;
     display: block;
-    padding: 2rem;
+    padding: 2.4rem 2rem;
     /* border-radius: 2rem; */
 }
 
@@ -432,7 +433,7 @@ ol.para li {
     border: 2px solid var(--text-color-2);
 }
 
-.na-link:before {
+/* .na-link:before {
     content: "";
     position: absolute;
     width: 9rem;
@@ -441,7 +442,7 @@ ol.para li {
     top: 50%;
     transform: skewX(30deg) translate(-150%, -50%);
     transition: all 0.5s;
-}
+} */
 
 .na-link:hover {
     background-color: var(--text-color-1);
@@ -476,7 +477,7 @@ ol.para li {
     width: 100%;
     background-color: #fff;
     padding: 3rem;
-    top: 64px;
+    top: 72px;
     opacity: 0;
     visibility: hidden;
     transition: transform 0.1s ease 0s, opacity 0ms linear 0.1s,
@@ -524,7 +525,7 @@ ol.para li {
 
 .search-form {
     height: 4rem;
-    width: 25rem;
+    width: 24rem;
 }
 
 header .form-control {
@@ -1438,6 +1439,37 @@ figure {
     margin: 4rem;
 }
 
+.comment-form {
+    width: 75%;
+    border: 1px solid #ebebeb;
+border-radius: .8rem;
+    padding: 2rem;
+}
+
+.contact-box .form-control {
+    border: 0;
+    text-transform: capitalize;
+    font-size: 1.6rem;
+    border-bottom: 1px solid #444;
+    border-radius: 0;
+    margin-bottom: 1rem;
+    font-family: var(--secondary-font);
+}
+
+.btn-send {
+    font-size: 1.6rem;
+    background-color: var(--fourth-color);
+    color: #fff;
+    padding: 0.8rem 1.6rem;
+    border-radius: 0.8rem;
+    font-weight: 700;
+}
+
+.btn-send span {
+    margin-left: 1rem;
+}
+
+
 /* ----- SHOPPING CART ----- */
 
 .shopping-cart,
@@ -1606,9 +1638,9 @@ thead tr th:first-child {
 
 .pay-opt {
     background-color: var(--secondary-color);
-    width: fit-content;
-    padding: 0.8rem 2.4rem 1.6rem;
+    padding: 0.8rem 2.4rem 2.4rem;
     border-radius: 1rem;
+    width: fit-content;
 }
 
 .night .pay-opt {
@@ -1628,20 +1660,32 @@ thead tr th:first-child {
 }
 
 .nep-pay {
-    margin-top: 2rem;
     border-left: 2px solid #444;
     /* width: max-content; */
-    padding-left: 2rem;
+    border-right:2px solid #444 ;
+    padding: 0 2rem;
 }
 
 .nep-pay-img {
     width: 8rem;
-    margin-right: 2rem;
+
 }
 
 .ime {
     height: 5rem;
     width: auto;
+}
+
+/* .cod {
+    font-weight: 700;
+    display: block;
+    width: 15rem;
+    text-align: center;
+} */
+
+.cod img {
+    width: 8rem;
+    margin-left: 2rem;
 }
 
 /* CATEGORIES */
@@ -2649,8 +2693,8 @@ aside {
 } */
 
 .admin-dashboard .content-wrapper {
-    margin-left: 245px;
-    padding-right: 15px;
+    margin-left: 15%;
+    /* padding-right: 15px; */
 }
 
 .contactprofiletab {
@@ -2770,7 +2814,8 @@ aside {
 .business-dash,
 .order-dash,
 .add-product,
-.userprofile {
+.userprofile,
+.invoice {
     display: none;
 }
 
@@ -3058,6 +3103,8 @@ aside {
     color: #555;
 }
 
+/* ----- ADD CATEGORY ----- */
+
 .cat-tag {
     margin: 3px 0 3px 5px;
     background-color: #f9f9f9;
@@ -3080,6 +3127,45 @@ aside {
 
 .add-category .order-box {
     background-color: transparent;
+}
+
+/* ----- INVOICE ----- */
+
+.invoice-wrapper {
+    box-shadow: var(--box-shadow);
+    padding: 2rem;
+    border-radius: .8rem;
+}
+
+.invoice-wrapper .text-dark,
+.invoice-wrapper address span {
+    font-weight: 500;
+}
+
+.invoice-wrapper address {
+    font-size: 1.4rem;
+}
+
+.invoice-wrapper table th {
+    font-weight: 700;
+}
+.invoice-wrapper .total ul li span {
+    float: right;
+}
+.invoice-wrapper .total {
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+.btn-print,
+.btn-dl {
+    padding: .8rem 1.2rem;
+    font-size: 1.4rem;
+}
+
+.btn-print i,
+.btn-dl i {
+    font-size: 1.4rem;
 }
 
 /* ----- RESPONSIVE ----- */
@@ -3288,4 +3374,77 @@ aside {
     100% {
         transform: scale(1);
     }
+}
+
+
+.loading-container {
+    position: fixed; /* Use fixed position to cover the entire viewport */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+    z-index: 1000; /* Higher z-index to overlay content */
+    display: none; /* Initially hidden */
+}
+
+
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #111;
+    position: fixed;
+}
+
+/* .loader-image {
+    width: 100px;
+    height: 100px;
+    animation: rotateImage 1.5s linear infinite;
+}
+
+@keyframes rotateImage {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+} */
+
+@keyframes pulseImage {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+/* .loader-image {
+    width: 100px;
+    height: 100px;
+    animation: pulseImage 1s infinite ease-in-out;
+} */
+
+@keyframes bounceImage {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-15px);
+    }
+    60% {
+        transform: translateY(-7px);
+    }
+}
+
+.loader-image {
+    width: 50%;
+    height: 50%;
+    animation: pulseImage 2s infinite;
 }
