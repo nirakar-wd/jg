@@ -7,8 +7,8 @@ const { verifyToken, isAdmin } = require("../middlewares/authMiddleware");
 require("./param_loaders/productsLoader").init(router);
 require("./param_loaders/tagsLoader").init(router);
 
-router.get("/:product_slug", productsController.getByIdOrSlug);
-router.get("/by_id/:productId", productsController.getByIdOrSlug);
+router.get("/by_slug/:slug", productsController.getProductBySlug);
+router.get("/by_id/:productId", productsController.getProductById);
 
 router.get("/by_tag/:tag_slug", productsController.getByTag);
 router.get("/by_tag_id/:tagId", productsController.getByTag);
@@ -18,6 +18,7 @@ router.get("/by_category_id/:categoryId", productsController.getByCategory);
 
 
 router.get("/", productsController.getAll);
+router.get("/filter", productsController.getFilteredProducts);
 
 router.post(
   "/",

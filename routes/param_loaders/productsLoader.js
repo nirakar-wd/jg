@@ -3,16 +3,16 @@ const AppResponseDto = require("./../../dtos/responses/appResponseDto");
 
 function init(router) {
   // Preload product objects on routes with ':product_slug'
-  router.param("product_slug", (req, res, next, slug) => {
-    req.query = { slug: req.params.product_slug };
-    next();
-  });
+  // router.param("product_slug", (req, res, next, slug) => {
+  //   req.query = { slug: req.params.product_slug };
+  //   next();
+  // });
 
   // Place the product in the request object when :productId is present in the path
-  router.param("productId", (req, res, next, slug) => {
-    req.query = { id: req.params.productId };
-    next();
-  });
+  // router.param("productId", (req, res, next, slug) => {
+  //   req.query = { id: req.params.productId };
+  //   next();
+  // });
 
   router.param("product_load_ids", async (req, res, next, slugOrId) => {
     const query = { attributes: ["id"] };

@@ -30,7 +30,10 @@ exports.getAll = (req, res, next) => {
         "name",
         "slug",
         "price",
+        "vendor",
+        "description",
         "stock",
+        "discountedPrice",
         "created_at",
         "updated_at",
       ],
@@ -76,38 +79,77 @@ exports.getAll = (req, res, next) => {
     .catch((err) => res.status(400).send(err.message));
 };
 
-// Get Product by ID or Slug
-exports.getByIdOrSlug = function (req, res, next) {
-  console.log(req.query);
-  const query = _.assign(req.query, {
-    include: [
-      {
-        model: Tag,
-        attributes: ["id", "name"],
-      },
-      {
-        model: Category,
-        attributes: ["id", "name"],
-      },
-      {
-        model: Collection,
-        attributes: ["id", "name"],
-      },
-      {
-        model: Comment,
-        attributes: ["id", "content"],
-        include: [{ model: User, attributes: ["id", "username"] }],
-      },
-    ],
-  });
+// get product by id
+exports.getProductById = async function (req, res, next) {
+  try {
+    const productId = req.params.productId;
 
-  Product.findOne(req.query)
-    .then((product) => {
-      return res.json(ProductResponseDto.buildDetails(product, true, false));
-    })
-    .catch((err) => {
-      return res.json(AppResponseDto.buildWithErrorMessages(err.message));
+    const product = await Product.findOne({
+      where: { id: productId },
+      attributes: [
+        "id",
+        "name",
+        "slug",
+        "description",
+        "vendor",
+        "price",
+        "discountedPrice",
+        "stock",
+        "created_at",
+        "updated_at",
+      ],
+      include: [
+        { model: Tag, attributes: ["id", "name"] },
+        { model: Category, attributes: ["id", "name"] },
+        { model: Collection, attributes: ["id", "name"] },
+        {
+          model: Comment,
+          attributes: ["id", "content"],
+          include: [{ model: User, attributes: ["id", "username"] }],
+        },
+      ],
     });
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    return res.status(200).json(product);
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ message: err.message || "Internal server error" });
+  }
+};
+
+exports.getProductBySlug = async function (req, res, next) {
+  try {
+    const productSlug = req.params.slug;
+
+    const product = await Product.findOne({
+      where: { slug: productSlug },
+      include: [
+        { model: Tag, attributes: ["id", "name"] },
+        { model: Category, attributes: ["id", "name"] },
+        { model: Collection, attributes: ["id", "name"] },
+        {
+          model: Comment,
+          attributes: ["id", "content"],
+          include: [{ model: User, attributes: ["id", "username"] }],
+        },
+      ],
+    });
+
+    if (!product) {
+      return res.status(404).json({ message: "product not found" });
+    }
+
+    return res.json(product);
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ message: err.message || "internal server error" });
+  }
 };
 
 exports.searchProduct = (req, res, next) => {
@@ -209,8 +251,11 @@ exports.getByCategory = async function (req, res, next) {
       attributes: [
         "id",
         "name",
+        "description",
+        "vendor",
         "slug",
         "price",
+        "discountedPrice",
         "stock",
         "created_at",
         "updated_at",
@@ -474,51 +519,62 @@ exports.deleteProduct = (req, res, next) => {
     });
 };
 
-exports.sortProducts = async (req, res, next) => {
+exports.getFilteredProducts = async (req, res, next) => {
   try {
-    const {
-      sortBy = "name",
-      order = "asc",
-      minPrice = 0,
-      maxPrice = Infinity,
-    } = req.query;
+    const { sort, minPrice, maxPrice } = req.query;
 
-    // Validate inputs
-    if (!["name", "price"].includes(sortBy)) {
-      return res
-        .status(400)
-        .json({ error: 'Invalid sort column. Use "name" or "price".' });
+    let order = [];
+    let where = {};
+
+    // Sorting logic
+    if (sort) {
+      switch (sort) {
+        case "name_asc":
+          order.push(["name", "ASC"]);
+          break;
+        case "name_desc":
+          order.push(["name", "DESC"]);
+          break;
+        case "price_asc":
+          order.push(["price", "ASC"]);
+          break;
+        case "price_desc":
+          order.push(["price", "DESC"]);
+          break;
+        default:
+          break;
+      }
     }
 
-    if (!["asc", "desc"].includes(order)) {
-      return res
-        .status(400)
-        .json({ error: 'Invalid order. Use "asc" or "desc".' });
+    // Price filtering logic
+    if (minPrice && maxPrice) {
+      where.price = { [Op.between]: [minPrice, maxPrice] };
+    } else if (minPrice) {
+      where.price = { [Op.gte]: minPrice };
+    } else if (maxPrice) {
+      where.price = { [Op.lte]: maxPrice };
     }
 
-    if (isNaN(minPrice) || isNaN(maxPrice)) {
-      return res.status(400).json({ error: "Invalid price range." });
-    }
-
-    // Convert minPrice and maxPrice to numbers
-    const min = parseFloat(minPrice);
-    const max = parseFloat(maxPrice);
-
-    // Fetch products with filtering and sorting
+    // Fetch filtered and sorted products from the database
     const products = await Product.findAll({
-      where: {
-        price: {
-          [Op.between]: [min, max], // Filter by price range
-        },
-      },
-      order: [
-        [sortBy, order], // Sort by the specified column and order
-      ],
+      where,
+      order,
+      // include: [
+        // { model: Tag, attributes: ["id", "name"] },
+        // { model: Category, attributes: ["id", "name"] },
+        // { model: Collection, attributes: ["id", "name"] },
+      //   {
+      //     model: Comment,
+      //     attributes: ["id", "rating"],
+      //     include: [{ model: User, attributes: ["id", "username"] }],
+      //   },
+      // ],
     });
 
-    res.json(products);
-  } catch (error) {
-    console.error("Error fetching products:", error);
-    res.status(500).json({ error: "Internal server error" });
+    return res.status(200).json(products);
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ message: err.message || "Internal server error" });
   }
 };

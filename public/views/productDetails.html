@@ -208,7 +208,7 @@
                                 <li class="breadcrumb-item active" aria-current="page">
                                     <a href="product.html"></a>Product
                                 </li>
-                                <li class="breadcrumb-item active" aria-current="page" id="productName">Felt One</li>
+                                <li class="breadcrumb-item active" aria-current="page" id="productName1">Felt One</li>
                             </ol>
                         </nav>
 
@@ -216,7 +216,7 @@
                             felt one
                         </h2>
 
-                        <span class="small-info" id="productDescription">Lorem ipsum dolor sit amet consectetur. </span>
+                        <!-- <span class="small-info" id="productDescription">Lorem ipsum dolor sit amet consectetur. </span> -->
 
                         <div class="rating mt-3">
                             <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
@@ -257,17 +257,19 @@
                         <input id="demo1" type="text" value="1" name="demo1" class="input-touchspin">
 
 
-                        <p class="pro-detail mt-5">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Omnis
+                        <p class="pro-detail mt-5" id="productDescription1">Lorem ipsum dolor, sit amet consectetur
+                            adipisicing elit. Omnis
                             accusantium tempora eum eaque quasi, consequatur harum, odio temporibus voluptate totam
                             neque repellat placeat illo a.</p>
                     </div>
 
                     <div class="prod-info">
-                        <h3 class="description-head" id="productDescription">
+                        <h3 class="description-head">
                             description
                         </h3>
 
-                        <p class="desc-para">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Suscipit
+                        <p class="desc-para" id="productDescription">Lorem, ipsum dolor sit amet consectetur adipisicing
+                            elit. Suscipit
                             reprehenderit eos consequuntur odit, voluptate id dicta ducimus labore itaque natus officiis
                             possimus nisi asperiores, amet distinctio obcaecati facere est eligendi.</p>
 
@@ -499,143 +501,74 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", async () => {
+
+            // Initialize elements for price calculation
+            const priceElement = document.getElementById("price");
+            const quantityInput = document.getElementById("quantity");
+            const packageRadios = document.querySelectorAll('input[name="package"]');
+
+            function updatePrice() {
+                console.log("Updating price...");
+
+                // Get the selected package
+                const selectedPackage = document.querySelector('input[name="package"]:checked');
+                // const packagePrice = parseFloat(selectedPackage.dataset.price);
+                // const quantity = parseInt(quantityInput.value);
+
+                // Calculate the total price
+                const totalPrice = packagePrice * quantity;
+                console.log(`Selected Package Price: ${packagePrice}, Quantity: ${quantity}, Total Price: ${totalPrice}`);
+
+                // Update the price element
+                priceElement.textContent = `$${totalPrice.toFixed(2)}`;
+                console.log(`Price updated to: $${totalPrice.toFixed(2)}`);
+            }
+
+            // Event listener for quantity change
+            // quantityInput.addEventListener("input", () => {
+            //     console.log("Quantity changed.");
+            //     updatePrice();
+            // });
+
+            // // Event listener for package change
+            // packageRadios.forEach(radio => {
+            //     radio.addEventListener("change", () => {
+            //         console.log("Package option changed.");
+            //         updatePrice();
+            //     });
+            // });
+
+            // Initial price calculation
+            // updatePrice();
+
             try {
-                // Extract the categoryId from the URL path
+                console.log("Fetching product details...");
+
+                // Extract the productId from the URL path
                 const path = window.location.pathname;
                 const productId = path.split("/").pop(); // Gets the last part of the path
+                console.log(`Extracted productId: ${productId}`);
 
-                // Fetch products for the selected category
-                const response = await fetch(
-                    `http://localhost:4000/api/products/by_id/${productId}`,
-                    {
-                        method: "GET",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                    }
-                );
+                // Fetch product details using the productId
+                const response = await fetch(`http://localhost:4000/api/products/by_id/${productId}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
 
                 if (response.ok) {
                     const product = await response.json();
-                    console.log(product);
-                    const productsContainer = document.querySelector("#productContainer");
+                    console.log("Product fetched successfully:", product);
 
-                    // Clear existing products (if any)
-                    productsContainer.innerHTML = "";
+                    // Populate product information
+                    document.getElementById("productName").textContent = product.name;
+                    document.getElementById("productDescription").textContent = product.description;
+                    document.getElementById("productDescription1").textContent = product.description;
 
-                    // Populate the products container with the fetched products
+                    document.getElementById("price").textContent = `$${product.price}`;
 
-                    const productCard = `
-            <div class="row g-0">
-                <div class="col-md-6">
-                    <div class="product-img position-relative">
-                        <img id="demo" src="/img/Flat Front black FH.png" data-zoom-image="img/Flat Front black FH.png"
-                            class="img-fluid zoomed-img" />
-
-                        <div id="gallery_demo">
-                            <a href="#" data-image="/img/Flat Front black FH.png"
-                                data-zoom-image="/img/Flat Front black FH.png">
-                                <img id="img_01" src="/img/Flat Front black FH.png" class="img-fluid" />
-                            </a>
-                            <a href="#" data-image="/img/polo tshirt whitw.png"
-                                data-zoom-image="/img/polo tshirt whitw.png">
-                                <img id="/img_01" src="/img/polo tshirt whitw.png" class="img-fluid" />
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-
-                    <div class="product-info">
-                        <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item">
-                                    <a href="index.html">Home</a>
-                                </li>
-                                <li class="breadcrumb-item active" aria-current="page">
-                                    <a href="product.html"></a>Product
-                                </li>
-                                <li class="breadcrumb-item active" aria-current="page" id="productName">${product.name}</li>
-                            </ol>
-                        </nav>
-
-                        <h2 class="heading-secondary text-start mt-5" id="productName">
-                            ${product.name}
-                        </h2>
-
-                        <span class="small-info" id="productDescription">Lorem ipsum dolor sit amet consectetur. </span>
-
-                        <div class="rating mt-3">
-                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
-                                class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
-                                class="fa-solid fa-star"></i>
-                        </div>
-
-                        <p class="select">select package</p>
-                        <div class="product-types">
-                            <ul class="d-flex position-relative">
-                                <li>
-                                    <input type="radio" class="input-radio" name="a">
-                                    <span class="radio-label">25 pieces</span>
-                                </li>
-                                <li>
-                                    <input type="radio" class="input-radio" name="a">
-                                    <span class="radio-label">35 pieces</span>
-
-                                </li>
-                                <li>
-                                    <input type="radio" class="input-radio" name="a">
-                                    <span class="radio-label">45 pieces</span>
-                                </li>
-                                <li>
-                                    <input type="radio" class="input-radio" name="a">
-                                    <span class="radio-label">55 pieces</span>
-                                </li>
-                            </ul>
-
-                        </div>
-
-                        <div class="cart-price">
-                            <button class="add-cart d-flex">add to cart
-                                <div class="price" id="price">${product.price}</div>
-                            </button>
-                        </div>
-
-                        <input id="demo1" type="text" value="1" name="demo1" class="input-touchspin">
-
-
-                        <p class="pro-detail mt-5">${product.description}</p>
-                    </div>
-
-                    <div class="prod-info">
-                        <h3 class="description-head" id="productDescription">
-                            description
-                        </h3>
-
-                        <p class="desc-para">${product.description}</p>
-
-                        <h3 class="description-head mt-4">
-                            Size and Features
-                        </h3>
-
-                        <div class="section-content">
-                            <ul style="list-style-type: none;" id="sizeAndFeatures">
-                                <li>☆ Weight: 7 grams</li>
-                                <li>☆ 100% Pure Wool/Felt from New Zealand</li>
-                                <li>☆ Handmade and customizable</li>
-                                <li>☆ Eco-Friendly</li>
-                                <li>☆ Made using felt stitching technique</li>
-                                <li>☆ Azo-free dyes</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            `;
-                    productsContainer.innerHTML += productCard;
-
-                    // Reinitialize TouchSpin on the dynamically added input
+                    // Initialize or reinitialize TouchSpin on the dynamically added input
                     $("input[name='demo1']").TouchSpin({
                         min: 0,
                         max: 100,
@@ -645,14 +578,15 @@
                         maxboostedstep: 10,
                         postfix: '%'
                     });
+
+                    console.log("Product information populated and TouchSpin initialized.");
                 } else {
-                    console.error("Failed to fetch products");
+                    console.error("Failed to fetch product details:", response.status, response.statusText);
                 }
             } catch (error) {
-                console.error("Error:", error);
+                console.error("Error occurred while fetching product details:", error);
             }
         });
-
     </script>
 
 
@@ -683,8 +617,6 @@
         });
 
     </script>
-
-    <!-- <script src="/client/fetchProduct.js"></script> -->
 
 </body>
 

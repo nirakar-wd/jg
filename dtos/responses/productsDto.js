@@ -38,9 +38,11 @@ function buildDto(product) {
     id: product.id,
     slug: product.slug,
     name: product.name,
+    description: product.description,
+    vendor: product.vendor,
     price: product.price,
     stock: product.stock,
-    discounted_price: product.discountedPrice,
+    discountedPrice: product.discountedPrice,
     features: product.features,
     image_urls: product.images
       ? product.images.map((image) => image.filePath)

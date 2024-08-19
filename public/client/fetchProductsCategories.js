@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (response.ok) {
       const products = await response.json();
       console.log(products);
-      const productsContainer = document.querySelector("#productsContainer");
+      const productsContainer = document.querySelector("#productContainer");
 
       // Clear existing products (if any)
       productsContainer.innerHTML = "";

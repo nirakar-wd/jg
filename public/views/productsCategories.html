@@ -205,26 +205,31 @@
                             <!-- Filter By Price -->
 
                             <h3 class="heading-tertiary mt-5">filter by price</h3>
-                            <div class="price-ranger">
-                                <div class="price-input">
-                                    <div class="field">
-                                        <span>Min</span>
-                                        <input type="number" class="input-min" value="2500">
+                            <form id="priceRangeForm">
+                                <div class="price-ranger">
+                                    <div class="price-input">
+                                        <div class="field">
+                                            <span>Min</span>
+                                            <input type="number" class="input-min" value="2500">
+                                        </div>
+                                        <div class="separator">-</div>
+                                        <div class="field">
+                                            <span>Max</span>
+                                            <input type="number" class="input-max" value="7500">
+                                        </div>
                                     </div>
-                                    <div class="separator">-</div>
-                                    <div class="field">
-                                        <span>Max</span>
-                                        <input type="number" class="input-max" value="7500">
+                                    <div class="slider">
+                                        <div class="progress"></div>
                                     </div>
+                                    <div class="range-input">
+                                        <input type="range" class="range-min" min="0" max="10000" value="2500"
+                                            step="100">
+                                        <input type="range" class="range-max" min="0" max="10000" value="7500"
+                                            step="100">
+                                    </div>
+                                    <button class="" type="submit">Filter</button>
                                 </div>
-                                <div class="slider">
-                                    <div class="progress"></div>
-                                </div>
-                                <div class="range-input">
-                                    <input type="range" class="range-min" min="0" max="10000" value="2500" step="100">
-                                    <input type="range" class="range-max" min="0" max="10000" value="7500" step="100">
-                                </div>
-                            </div>
+                            </form>
 
 
                         </div>
@@ -240,14 +245,12 @@
                                             <li class="fontsize_mks">Sort By : </li>
                                             <li>
                                                 <div class="custom_selectmks">
-                                                    <select class="form-select">
+                                                    <select class="form-select" id="sortOptions">
                                                         <option>Relevance</option>
                                                         <option>Name (A - Z)</option>
                                                         <option>Name (Z - A)</option>
                                                         <option>Price (Low &gt; High)</option>
-                                                        <option>Rating (Lowest)</option>
-                                                        <option>Model (A - Z)</option>
-                                                        <option>Model (Z - A)</option>
+                                                        <option>Price (High &gt; Low)</option>
                                                     </select>
                                                 </div>
                                             </li>
@@ -262,11 +265,11 @@
                             </div>
                         </div>
                         <div class="right-sidebar">
-                            <div class="row" id="productsContainer">
+                            <div class="row" id="productContainer">
 
                             </div>
 
-                            <!-- Pagination Section
+                            <!-- Pagination Section -->
                             <div class="pagination-sec">
                                 <nav class="pagination pagination_type1">
                                     <ol class="pagination__list">
@@ -282,7 +285,7 @@
                                         </li>
                                     </ol>
                                 </nav>
-                            </div> -->
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -411,8 +414,213 @@
             });
         });
     </script>
-    <script src="/client/getProductCategories.js"></script>
-    <script src="/client/fetchProductsCategories.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            try {
+                // Fetch the categories from the backend
+                const response = await fetch("http://localhost:4000/api/categories", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+
+                if (response.ok) {
+                    const categories = await response.json();
+                    console.log(categories);
+                    const categoryList = document.querySelector(".category-list"); // Add a class to your <ul> element for easier targeting
+
+                    // Clear existing categories (if any)
+                    categoryList.innerHTML = "";
+
+                    // Populate the category list with data from the backend
+                    categories.categories.forEach((category) => {
+                        const li = document.createElement("li");
+                        const a = document.createElement("a");
+                        a.href = `http://localhost:4000/categories/${category.id}`; // Link to the category page
+                        a.textContent = category.name; // Access the 'name' field of the category
+                        li.appendChild(a);
+                        categoryList.appendChild(li);
+                    });
+                } else {
+                    console.error("Failed to fetch categories");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const sortSelect = document.getElementById("sortOptions");
+
+            sortSelect.addEventListener("change", async () => {
+                const selectedOption = sortSelect.value;
+
+                // Define the base API URL
+                const baseUrl = "http://localhost:4000/api/products/filter";
+
+                // Build the query parameters based on the selected option
+                let queryParams = "";
+
+                switch (selectedOption) {
+                    case "name_asc":
+                        queryParams = "?sort=name_asc";
+                        break;
+                    case "name_desc":
+                        queryParams = "?sort=name_desc";
+                        break;
+                    case "price_asc":
+                        queryParams = "?sort=price_asc";
+                        break;
+                    case "price_desc":
+                        queryParams = "?sort=price_desc";
+                        break;
+                    default:
+                        queryParams = ""; // For "Relevance" or any other case
+                }
+
+                // Fetch data from the API with the selected sorting option
+                try {
+                    const response = await fetch(`${baseUrl}${queryParams}`);
+                    if (!response.ok) {
+                        throw new Error("Failed to fetch products");
+                    }
+
+                    const products = await response.json();
+                    console.log(products)
+                    // Display the products (you need to implement this part)
+                    displayProducts(products);
+
+                } catch (error) {
+                    console.error("Error:", error);
+                    alert("An error occurred while fetching products.");
+                }
+            });
+        });
+
+        // Function to display products (you can customize this based on your needs)
+        function displayProducts(products) {
+            const productContainer = document.getElementById("productContainer");
+
+            productContainer.innerHTML = "";
+
+            products.forEach(product => {
+                const productElement = document.createElement("div");
+                productElement.classList.add("col-md-4"); // Adjust the column width
+                productElement.innerHTML = `
+                                <div class="abox">
+                                    <div class="kecimgbox"> <a href="product.html"><img
+                                                src="img/Flat Front black FH.png" class="img-fluid"
+                                                alt="prod images"></a>
+                                    </div>
+                                    <div class="prod-desc">
+                                        <h4><a href="product.html">${product.name}</a></h4>
+                                        <div class="rating-mks"> <span><i class="fa fa-star"></i></span> <span><i
+                                                    class="fa fa-star"></i></span> <span><i
+                                                    class="fa fa-star"></i></span> <span><i
+                                                    class="fa fa-star"></i></span> <span><i
+                                                    class="fa fa-star"></i></span> </div>
+                                        <del>${product.price}</del> <ins>${product.discountedPrice}</ins>
+                                    </div>
+                                </div>
+    `;
+                productContainer.appendChild(productElement);
+            });
+        }
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const minInput = document.querySelector(".input-min");  // Min price input field
+            const maxInput = document.querySelector(".input-max");  // Max price input field
+            const rangeMinInput = document.querySelector(".range-min"); // Min price slider
+            const rangeMaxInput = document.querySelector(".range-max"); // Max price slider
+            const priceRangeForm = document.getElementById("priceRangeForm"); // The form element
+
+            // Function to update the price range input fields based on slider changes
+            function updateRangeInputs() {
+                const minPrice = rangeMinInput.value;  // Get the value of min price from slider
+                const maxPrice = rangeMaxInput.value;  // Get the value of max price from slider
+
+                minInput.value = minPrice;  // Set the min price input field to the slider value
+                maxInput.value = maxPrice;  // Set the max price input field to the slider value
+            }
+
+            // Function to fetch products within the selected price range
+            async function fetchProducts(minPrice, maxPrice) {
+                console.log(maxPrice);
+                try {
+                    const response = await fetch(`http://localhost:4000/api/products/filter?minPrice=${minPrice}&maxPrice=${maxPrice}`);
+                    const products = await response.json();
+                    console.log(products)
+                    // Display the products
+                    displayProducts(products);  // Call the display function to update the UI
+                } catch (error) {
+                    console.error("Error fetching products:", error);  // Handle any errors
+                }
+            }
+
+            // Event listeners for range inputs to update the input fields when sliders change
+            rangeMinInput.addEventListener("input", updateRangeInputs);  // Trigger when min slider changes
+            rangeMaxInput.addEventListener("input", updateRangeInputs);  // Trigger when max slider changes
+
+            // Handle form submission
+            priceRangeForm.addEventListener("submit", (event) => {
+                event.preventDefault();  // Prevent the default form submission behavior
+
+                const minPrice = minInput.value;  // Get the min price from the input field
+                const maxPrice = maxInput.value;  // Get the max price from the input field
+
+                console.log(minPrice);
+                console.log(maxPrice);
+
+                // Fetch and display products based on the selected price range
+                fetchProducts(minPrice, maxPrice);
+            });
+
+            // Initialize with default values (This will set the inputs to the slider's default values)
+            updateRangeInputs();
+        });
+
+        // Function to display products (you can customize this based on your needs)
+        function displayProducts(products) {
+            const productContainer = document.getElementById("productContainer");
+
+            console.log(products)
+
+            productContainer.innerHTML = "";  // Clear the previous products
+
+            products.forEach(product => {
+                const productElement = document.createElement("div");
+                productElement.classList.add("col-md-4"); // Adjust the column width
+                productElement.innerHTML = `
+        <div class="abox">
+            <div class="kecimgbox"> <a href="product.html"><img
+                        src="img/Flat Front black FH.png" class="img-fluid"
+                        alt="prod images"></a>
+            </div>
+            <div class="prod-desc">
+                <h4><a href="product.html">${product.name}</a></h4>
+                <div class="rating-mks"> <span><i class="fa fa-star"></i></span> <span><i
+                            class="fa fa-star"></i></span> <span><i
+                            class="fa fa-star"></i></span> <span><i
+                            class="fa fa-star"></i></span> <span><i
+                            class="fa fa-star"></i></span> </div>
+                <del>${product.price}</del> <ins>${product.discountedPrice}</ins>
+            </div>
+        </div>
+    `;
+                productContainer.appendChild(productElement);  // Append each product to the container
+            });
+        }
+
+
+    </script>
+
+    <!-- <script src="/client/fetchProductsCategories.js"></script> -->
 
 </body>
 
