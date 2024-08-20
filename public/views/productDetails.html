@@ -228,20 +228,23 @@
                         <div class="product-types">
                             <ul class="d-flex position-relative">
                                 <li>
-                                    <input type="radio" class="input-radio" name="a">
+                                    <input type="radio" class="input-radio" name="package" data-multiplier="25"
+                                        id="package25">
                                     <span class="radio-label">25 pieces</span>
                                 </li>
                                 <li>
-                                    <input type="radio" class="input-radio" name="a">
+                                    <input type="radio" class="input-radio" name="package" data-multiplier="35"
+                                        id="package35">
                                     <span class="radio-label">35 pieces</span>
-
                                 </li>
                                 <li>
-                                    <input type="radio" class="input-radio" name="a">
+                                    <input type="radio" class="input-radio" name="package" data-multiplier="45"
+                                        id="package45">
                                     <span class="radio-label">45 pieces</span>
                                 </li>
                                 <li>
-                                    <input type="radio" class="input-radio" name="a">
+                                    <input type="radio" class="input-radio" name="package" data-multiplier="55"
+                                        id="package55">
                                     <span class="radio-label">55 pieces</span>
                                 </li>
                             </ul>
@@ -502,44 +505,65 @@
     <script>
         document.addEventListener("DOMContentLoaded", async () => {
 
+            // Initialize the TouchSpin input
+            const quantityInput = $("input[name='demo1']").TouchSpin({
+                min: 0,
+                max: 100,
+                step: 1,
+                decimals: 0,
+                boostat: 5,
+                maxboostedstep: 10,
+                postfix: '%'
+            });
+
             // Initialize elements for price calculation
             const priceElement = document.getElementById("price");
-            const quantityInput = document.getElementById("quantity");
+            const quantity = document.getElementById("demo1");
             const packageRadios = document.querySelectorAll('input[name="package"]');
+            let basePrice = 0;
 
             function updatePrice() {
-                console.log("Updating price...");
-
-                // Get the selected package
                 const selectedPackage = document.querySelector('input[name="package"]:checked');
-                // const packagePrice = parseFloat(selectedPackage.dataset.price);
-                // const quantity = parseInt(quantityInput.value);
+                if (selectedPackage) {
+                    const packageMultiplier = parseInt(selectedPackage.dataset.multiplier);
 
-                // Calculate the total price
-                const totalPrice = packagePrice * quantity;
-                console.log(`Selected Package Price: ${packagePrice}, Quantity: ${quantity}, Total Price: ${totalPrice}`);
+                    // Calculate the total price
+                    const totalPrice = basePrice * packageMultiplier;
 
-                // Update the price element
-                priceElement.textContent = `$${totalPrice.toFixed(2)}`;
-                console.log(`Price updated to: $${totalPrice.toFixed(2)}`);
+                    // Update the price element
+                    priceElement.textContent = `Rs.${totalPrice.toFixed(2)}`;
+                }
             }
 
-            // Event listener for quantity change
-            // quantityInput.addEventListener("input", () => {
-            //     console.log("Quantity changed.");
-            //     updatePrice();
-            // });
+            function updatePriceTouchSpin(quantity) {
 
-            // // Event listener for package change
-            // packageRadios.forEach(radio => {
-            //     radio.addEventListener("change", () => {
-            //         console.log("Package option changed.");
-            //         updatePrice();
-            //     });
-            // });
+                // Calculate the total price
+                const totalPrice = basePrice * quantity;
 
-            // Initial price calculation
-            // updatePrice();
+                // Update the price element
+                priceElement.textContent = `Rs.${totalPrice.toFixed(2)}`;
+            }
+
+            quantityInput.on('change', function () {
+                // Get the current value from the input
+                const quantity = parseInt($(this).val()) || 1;
+
+                // Update the price or perform any other actions
+                updatePriceTouchSpin(quantity);
+            });
+
+            // Event listener for package change
+            packageRadios.forEach(radio => {
+                radio.addEventListener("change", updatePrice);
+            });
+
+            // Optionally, you can add a "Reset" functionality to unselect the package
+            function resetPackageSelection() {
+                packageRadios.forEach(radio => {
+                    radio.checked = false;
+                });
+                priceElement.textContent = `Rs.0.00`; // Reset the price
+            }
 
             try {
                 console.log("Fetching product details...");
@@ -565,21 +589,11 @@
                     document.getElementById("productName").textContent = product.name;
                     document.getElementById("productDescription").textContent = product.description;
                     document.getElementById("productDescription1").textContent = product.description;
+                    // document.getElementById("price").textContent = `$${product.price}`;
 
-                    document.getElementById("price").textContent = `$${product.price}`;
-
-                    // Initialize or reinitialize TouchSpin on the dynamically added input
-                    $("input[name='demo1']").TouchSpin({
-                        min: 0,
-                        max: 100,
-                        step: 1,
-                        decimals: 0,
-                        boostat: 5,
-                        maxboostedstep: 10,
-                        postfix: '%'
-                    });
-
-                    console.log("Product information populated and TouchSpin initialized.");
+                    // Set the base price from the backend
+                    basePrice = product.price;
+                    priceElement.textContent = `Rs.${basePrice.toFixed(2)}`;
                 } else {
                     console.error("Failed to fetch product details:", response.status, response.statusText);
                 }
@@ -589,10 +603,7 @@
         });
     </script>
 
-
-
     <!-- EZ ZOOM -->
-
     <script>
         $("input[name='demo1']").TouchSpin({
             min: 0,

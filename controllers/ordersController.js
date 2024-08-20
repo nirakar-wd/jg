@@ -5,7 +5,9 @@ const User = require("../models/index").User;
 const Product = require("../models/index").Product;
 const Address = require("../models/index").Address;
 const sequelize = require("../models/index").sequelize;
+const { Op } = require("sequelize");
 const OrderItem = require("../models/index").OrderItem;
+const ORDER_STATUS = require("../constants").ORDER_STATUS;
 
 exports.getAllOrders = async (req, res, next) => {
   const page = parseInt(req.query.page) || 1;
@@ -107,49 +109,40 @@ async function createOrderNewAddress(req, res, transaction) {
     });
 }
 
-exports.createOrder = async function (req, res, next) {
-  const addressId = req.body.address_id;
-  let transac = undefined;
-  sequelize
-    .transaction({ autocommit: false })
-    .then(async function (transaction) {
-      transac = transaction;
-      if (req.user != null && addressId != null) {
-        await _createOrderReuseAddress(req, res, addressId, transaction);
-      } else if (addressId == null) {
-        await createOrderNewAddress(req, res, transaction);
-      }
-      transaction.commit();
-    })
-    .catch((err) => {
-      transac.rollback();
-      return res.json(AppResponseDto.buildWithErrorMessages(err.message));
-    });
-};
+exports.getOrderDetails = async (req, res, next) => {
+  const { orderId } = req.params;
 
-exports.getOrderDetails = function (req, res, next) {
-  Order.findOne({
-    where: { id: req.order.id },
-    path: "address",
-    include: [
-      {
-        model: Address,
-        // this is just to show how to load nested relations, normally I would not do this, I would load user from Order for readability
-        include: [User],
-      },
-      {
-        model: OrderItem,
-        attributes: ["id", "name", "slug", "price"],
-      },
-    ],
-  })
-    .then((order) => {
-      order.user = order.address.user;
-      return res.json(OrderDto.buildDto(order, true, true, true));
-    })
-    .catch((err) => {
-      return res.json(AppResponseDto.buildWithErrorMessages(err));
+  try {
+    // Fetch order with associated Address, OrderItem, and User
+    const order = await Order.findOne({
+      where: { id: orderId },
+      include: [
+        {
+          model: Address,
+          include: [{ model: User, attributes: ["id", "email", "phone"] }],
+        },
+        {
+          model: OrderItem,
+          attributes: ["id", "name", "slug", "price"],
+        },
+      ],
     });
+
+    // Check if order exists
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    // Send the order details as JSON response
+    return res.status(200).json(order);
+  } catch (err) {
+    console.error("Error fetching order details:", err);
+
+    // Return generic error message to avoid exposing internal details
+    return res
+      .status(500)
+      .json({ message: "An error occurred while retrieving order details" });
+  }
 };
 
 // TODO
@@ -157,73 +150,323 @@ exports.updateOrder = (req, res, next) => {
   return res.json(AppResponseDto.buildWithErrorMessages("not implemented"));
 };
 
-async function _createOrderReuseAddress(req, res, addressId, transaction) {
-  await Address.findOne({
-    where: { id: addressId },
-    attributes: ["id", "userId", "firstName", "lastName", "zipCode", "address"],
-  })
-    .then(async (address) => {
-      if (address.userId !== req.user.id) {
-        throw new Error("You do not own this address");
-      } else {
-        await _createOrderFromAddress(req, res, address, transaction);
+// exports.createOrder = async (req, res, next) => {
+//   const addressId = req.body.address_id;
+
+//   let transaction;
+
+//   try {
+//     // Start a new transaction
+//     transaction = await sequelize.transaction();
+
+//     if (req.user && addressId) {
+//       // Reuse existing address
+//       await _createOrderReuseAddress(req, res, addressId, transaction);
+//     } else {
+//       // Create new address if addressId is not provided
+//       await createOrderNewAddress(req, res, transaction);
+//     }
+
+//     // Commit the transaction
+//     await transaction.commit();
+
+//     // Send a success response
+//     return res.status(201).json({ message: "Order created successfully" });
+//   } catch (err) {
+//     // Rollback the transaction if any error occurs
+//     if (transaction) {
+//       try {
+//         await transaction.rollback();
+//       } catch (rollbackError) {
+//         console.error("Error rolling back transaction:", rollbackError);
+//       }
+//     }
+
+//     // Log the error for debugging purposes
+//     console.error("Error creating order:", err);
+
+//     // Return a generic error response
+//     return res
+//       .status(500)
+//       .json({ message: "An error occurred while creating the order" });
+//   }
+// };
+
+// async function _createOrderReuseAddress(req, res, addressId, transaction) {
+//   try {
+//     // Fetch the address based on the provided addressId
+//     const address = await Address.findOne({
+//       where: { id: addressId },
+//       attributes: [
+//         "id",
+//         "userId",
+//         "firstName",
+//         "lastName",
+//         "zipCode",
+//         "address",
+//       ],
+//       transaction,
+//     });
+
+//     // Check if the address exists
+//     if (!address) {
+//       throw new Error("Address not found");
+//     }
+
+//     // Verify that the address belongs to the currently authenticated user
+//     if (address.userId !== req.user.id) {
+//       throw new Error("You do not own this address");
+//     }
+
+//     // Create the order from the address
+//     await _createOrderFromAddress(req, res, address, transaction);
+//   } catch (err) {
+//     // Log the error for debugging
+//     console.error("Error creating order with existing address:", err);
+
+//     // Throw the error to be caught in the calling function
+//     throw err;
+//   }
+// }
+
+// async function _createOrderFromAddress(req, res, address, transaction) {
+//   try {
+//     // Create a new order
+//     const order = await Order.create(
+//       {
+//         userId: address.userId,
+//         addressId: address.id,
+//       },
+//       { transaction }
+//     );
+
+//     // Retrieve cart items from the request body
+//     const cartItems = req.body.cart_items;
+
+//     console.log(cartItems);
+
+//     // Fetch the products corresponding to the cart items
+//     const products = await Product.findAll({
+//       where: {
+//         id: {
+//           [Op.in]: cartItems.map((item) => item.id),
+//         },
+//       },
+//       transaction,
+//     });
+//     console.log(products);
+
+//     // Verify that all cart items correspond to existing products
+//     if (products.length !== cartItems.length) {
+//       return res.status(400).json({
+//         message: "Some products in the cart no longer exist.",
+//       });
+//     }
+
+//     // Create order items
+//     const orderItems = await Promise.all(
+//       products.map((product, index) => {
+//         const cartItem = cartItems.find((item) => item.id === product.id);
+//         if (!cartItem) {
+//           throw new Error(`Cart item with product ID ${product.id} not found.`);
+//         }
+//         return OrderItem.create(
+//           {
+//             name: product.name,
+//             slug: product.slug,
+//             price: product.price,
+//             quantity: cartItem.quantity,
+//             userId: req.user ? req.user.id : null,
+//             orderId: order.id,
+//             productId: product.id,
+//           },
+//           { transaction }
+//         );
+//       })
+//     );
+
+//     // Attach additional details to the order object
+//     order.order_items = orderItems;
+//     order.address = address;
+//     order.user = req.user;
+
+//     // Return the order details in the response
+//     return res.json(OrderDto.buildDto(order, false, true, true));
+//   } catch (err) {
+//     // Log the error for debugging
+//     console.error("Error creating order from address:", err);
+
+//     // Return an error response
+//     return res.status(500).json({
+//       message: "An error occurred while creating the order.",
+//       error: err.message,
+//     });
+//   }
+// }
+
+exports.createOrder = async (req, res, next) => {
+  const addressId = req.body.address_id;
+  let transaction;
+
+  try {
+    // Start a new transaction
+    transaction = await sequelize.transaction();
+
+    if (req.user && addressId) {
+      // Reuse existing address
+      await _createOrderReuseAddress(req, res, addressId, transaction);
+    } else if (!addressId) {
+      // Create new address if addressId is not provided
+      await createOrderNewAddress(req, res, transaction);
+    }
+
+    // Commit the transaction
+    await transaction.commit();
+
+    // Send a success response only once
+    // return res.status(201).json({ message: "Order created successfully" });
+  } catch (err) {
+    // Rollback the transaction only if it hasn't been committed
+    if (transaction && !transaction.finished) {
+      try {
+        await transaction.rollback();
+      } catch (rollbackError) {
+        console.error("Error rolling back transaction:", rollbackError);
       }
-    })
-    .catch((err) => {
-      throw err;
+    }
+
+    // Log the error
+    console.error("Error creating order:", err);
+
+    // Send a generic error response only if headers have not been sent
+    // Send a generic error response only if headers have not been sent
+    if (!res.headersSent) {
+      return res
+        .status(500)
+        .json({ message: "An error occurred while creating the order" });
+    } else {
+      console.error("Headers were already sent, cannot send another response.");
+    }
+  }
+};
+
+async function _createOrderReuseAddress(req, res, addressId, transaction) {
+  try {
+    // Fetch the address based on the provided addressId
+    const address = await Address.findOne({
+      where: { id: addressId },
+      attributes: [
+        "id",
+        "userId",
+        "firstName",
+        "lastName",
+        "zipCode",
+        "address",
+      ],
+      transaction, // Use the transaction
     });
+
+    // Check if the address exists
+    if (!address) {
+      throw new Error("Address not found");
+    }
+
+    // Verify that the address belongs to the currently authenticated user
+    if (address.userId !== req.user.id) {
+      throw new Error("You do not own this address");
+    }
+
+    // Create the order from the address
+    await _createOrderFromAddress(req, res, address, transaction);
+  } catch (err) {
+    // Log the error
+    console.error("Error creating order with existing address:", err);
+
+    // Re-throw the error to be handled by the calling function
+    throw err;
+  }
 }
 
 async function _createOrderFromAddress(req, res, address, transaction) {
-  await Order.create(
-    {
-      userId: address.userId,
-      addressId: address.id,
-    },
-    { transaction }
-  )
-    .then(async (order) => {
-      const cartItems = req.body.cart_items;
-      await Product.findAll({
-        where: {
-          id: {
-            [sequelize.Op.in]: cartItems.map((product) => product.id),
-          },
-        },
-      })
-        .then(async (products) => {
-          // if a cartItem has a productId which no longer exists(or the user has tampered with that param) then error
-          if (products.length !== cartItems.length)
-            return AppResponseDto.buildWithErrorMessages(
-              "Make sure the products still exist"
-            );
+  try {
+    const cartItems = req.body.cart_items;
 
-          const promises = products.map((product, index) => {
-            return new OrderItem({
-              name: product.name,
-              slug: product.slug,
-              price: product.price,
-              quantity: cartItems[index].quantity,
-              userId: req.user ? req.user.id : undefined,
-              orderId: order.id,
-            }).save({ transaction });
-          });
-          await Promise.all(promises)
-            .then((orderItems) => {
-              order.order_items = orderItems;
-              order.address = address;
-              order.user = req.user;
-              return res.json(OrderDto.buildDto(order, false, true, true));
-            })
-            .catch((err) => {
-              throw err;
-            });
-        })
-        .catch((err) => {
-          throw err;
-        });
-    })
-    .catch((err) => {
-      throw err;
+    // Fetch the products corresponding to the cart items
+    const products = await Product.findAll({
+      where: {
+        id: {
+          [Op.in]: cartItems.map((item) => item.id),
+        },
+      },
     });
+
+    // Verify that all cart items correspond to existing products
+    if (products.length !== cartItems.length) {
+      return res.status(400).json({
+        message: "Some products in the cart no longer exist.",
+      });
+    }
+
+    // Calculate the total order amount
+    const total = products.reduce((sum, product) => {
+      const cartItem = cartItems.find((item) => item.id === product.id);
+      return sum + product.price * cartItem.quantity;
+    }, 0);
+
+    // Generate tracking number
+    const trackingNumber = generateTrackingNumber(); // Implement this function to generate a tracking number
+
+    // Create the order
+    const order = await Order.create(
+      {
+        userId: address.userId,
+        addressId: address.id,
+        trackingNumber,
+        orderStatus: ORDER_STATUS.processed.ordinal,
+        total,
+      },
+      { transaction }
+    );
+
+    // Create order items
+    const orderItems = await Promise.all(
+      products.map((product) => {
+        const cartItem = cartItems.find((item) => item.id === product.id);
+        return OrderItem.create(
+          {
+            name: product.name,
+            slug: product.slug,
+            price: product.price,
+            quantity: cartItem.quantity,
+            userId: req.user ? req.user.id : null,
+            orderId: order.id,
+            productId: product.id,
+          },
+          { transaction }
+        );
+      })
+    );
+
+    // Attach additional details to the order object
+    order.order_items = orderItems;
+    order.address = address;
+    order.user = req.user;
+
+    // Return the order details in the response
+    return res.json(OrderDto.buildDto(order, false, true, true));
+  } catch (err) {
+    console.error("Error creating order from address:", err);
+    if (!res.headersSent) {
+      return res.status(500).json({
+        message: "An error occurred while creating the order.",
+        error: err.message,
+      });
+    }
+  }
+}
+
+// Example function to generate a tracking number
+function generateTrackingNumber() {
+  // Generate a unique tracking number (e.g., using UUID or another logic)
+  return `${Math.floor(Math.random() * 1000000)}`;
 }
