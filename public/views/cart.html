@@ -194,8 +194,8 @@
                                     <th scope="col">delete</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
+                            <tbody id="cartItems">
+                                <!-- <tr>
                                     <th scope="row">
                                         <img src="img/Flat Back Brown TFF.png" alt="">
                                     </th>
@@ -205,79 +205,31 @@
                                     <td>
                                         <a href="#"><i class="fa-solid fa-trash-can"></i></a>
                                     </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">
-                                        <img src="img/Flat Back Brown TFF.png" alt="">
-                                    </th>
-                                    <td>tshirt</td>
-                                    <td>4</td>
-                                    <td>$500</td>
-                                    <td><a href="#"><i class="fa-solid fa-trash-can"></i></a></td>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">
-                                        <img src="img/Flat Back Brown TFF.png" alt="">
-                                    </th>
-                                    <td>tshirt</td>
-                                    <td>4</td>
-                                    <td>$500</td>
-                                    <td><a href="#"><i class="fa-solid fa-trash-can"></i></a></td>
-                                    </td>
-                                </tr>
-
+                                </tr> -->
                             </tbody>
                         </table>
-                        <!-- <div class="row">
-                        <div class="col-md-3">
-                            <h3 class="heading-tertiary">product</h3>
-                        </div>
-                        <div class="col-md-3">
-                            <h3 class="heading-tertiary">description</h3>
-                        </div>
-                        <div class="col-md-3">
-                            <h3 class="heading-tertiary">quantity</h3>
-                        </div>
-                        <div class="col-md-3">
-                            <h3 class="heading-tertiary">price</h3>
-                        </div>
-                    </div>
 
-                    <div class="row">
-                        <div class="col-md-3">
-                            <img src="https://images.unsplash.com/photo-1595341595379-cf1cb694ea1f?q=80&w=1460&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="">
-                        </div>
-                        <div class="col-md-3">
-                            <p>wool pigs and pandas</p>
-                        </div>
-                        <div class="col-md-3">
-                            <p>4</p>
-                        </div>
-                        <div class="col-md-3">
-                            <p>$20</p>
-                        </div>
-                    </div> -->
                     </div>
 
                     <div class="col-md-3">
                         <div class="order-summary">
                             <div class="order-heading">order summary</div>
-                            <div class="pro-price d-flex">
-                                <span>2 products</span>
-                                <span>$500</span>
+
+                            <div id="cartItemsContainer">
+                                <!-- <span>product name</span>
+                                    <span>$500</span> -->
                             </div>
+
                             <div class="pro-price d-flex pp-2 ">
                                 <span>shipping</span>
                                 <span>free</span>
                             </div>
                             <div class="total-cost d-flex">
                                 <span>total</span>
-                                <span>$1200</span>
+                                <span id="totalOrderPrice">Rs.1200</span>
                             </div>
                             <div class="order-checkout">
-                                <a href="checkout.html"><button class="btn btn-checkout">checkout</button></a>
-
+                                <button class="btn btn-checkout">place order</button>
                             </div>
                         </div>
 
@@ -387,12 +339,13 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/min/tiny-slider.js"></script>
 
-    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="/js/bootstrap.bundle.min.js"></script>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.1.2/redux.min.js"></script>
 
-    <script src="../js/script.js"></script>
+    <script src="/js/script.js"></script>
 
     <script>
         $(document).ready(function () {
@@ -407,7 +360,7 @@
             });
         });
     </script>
-
+    <script src="/client/cart.js"></script>
 </body>
 
 </html>

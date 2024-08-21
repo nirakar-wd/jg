@@ -39,6 +39,7 @@ db.Product = require("../models/ProductModel.js")(sequelize, Sequelize);
 db.Comment = require("../models/CommentModel.js")(sequelize, Sequelize);
 
 db.Order = require("../models/OrderModel.js")(sequelize, Sequelize);
+db.Cart = require("../models/CartModel.js")(sequelize, Sequelize);
 db.OrderItem = require("../models/OrderItemModel.js")(sequelize, Sequelize);
 
 db.FileUpload = require("../models/FileUploadModel.js")(sequelize, Sequelize);
@@ -99,6 +100,7 @@ db.Product.associate(db);
 db.Comment.associate(db);
 
 db.Order.associate(db);
+db.Cart.associate(db);
 db.OrderItem.associate(db);
 db.Payment.associate(db);
 db.Feedback.associate(db);

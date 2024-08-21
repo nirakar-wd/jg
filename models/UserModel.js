@@ -73,6 +73,8 @@ module.exports = function (sequelize, DataTypes) {
 
   User.associate = function (models) {
     User.hasMany(models.Order);
+    User.hasMany(models.Cart);
+
 
     // here is how we add defaultScope programmatically
     User.addScope(

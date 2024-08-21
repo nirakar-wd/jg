@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(payload),
+        credentials: "include", // Ensure cookies are sent with the request
       });
 
       const data = await response.json();
@@ -31,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (response.ok) {
         localStorage.setItem("userId", data.user.id);
         alert("login successful!");
-        window.location.href = "http://localhost:4000/contacts";
+        // window.location.href = "http://localhost:4000/contacts";
       } else {
         // Display validation errors returned by the server
         const errorMessages = Object.values(

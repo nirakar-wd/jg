@@ -2,13 +2,11 @@ require("dotenv").config();
 const jwt = require("jsonwebtoken");
 // const { expressjwt: checkToken } = require("express-jwt");
 const AppResponseDto = require("../dtos/responses/appResponseDto");
-
 const User = require("../models/index").User;
 const Role = require("../models/index").Role;
 
 const verifyToken = async (req, res, next) => {
   const { accessToken } = req.cookies;
-
   console.log(req.cookies);
 
   if (!accessToken) {

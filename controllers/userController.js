@@ -1,5 +1,5 @@
 require("dotenv").config();
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 const _ = require("lodash");
 const jwt = require("jsonwebtoken");
 const { User, Role, Address, Sequelize } = require("../models/index");
@@ -75,14 +75,14 @@ exports.register = async (req, res) => {
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "none",
+      sameSite: "None",
       maxAge: 15 * 60 * 1000, // 15 minutes
     });
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "none",
+      sameSite: "None",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
@@ -129,14 +129,14 @@ exports.login = async (req, res) => {
       res.cookie("accessToken", accessToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "none",
+        sameSite: "None",
         maxAge: 15 * 60 * 1000, // 15 minutes
       });
 
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "none",
+        sameSite: "None",
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       });
 
@@ -148,35 +148,6 @@ exports.login = async (req, res) => {
     }
   } catch (err) {
     return res.status(500).json(AppResponseDto.buildWithErrorMessages(err));
-  }
-};
-
-exports.refreshToken = async (req, res) => {
-  const refreshToken = req.cookies.refreshToken;
-
-  if (!refreshToken) {
-    return res.status(401).json({ error: "No refresh token provided" });
-  }
-
-  try {
-    const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
-
-    const accessToken = jwt.sign(
-      { id: decoded.id, username: decoded.username },
-      process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "15m" }
-    );
-
-    res.cookie("accessToken", accessToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "none",
-      maxAge: 15 * 60 * 1000,
-    });
-
-    return res.status(200).json({ message: "Access token refreshed" });
-  } catch (err) {
-    return res.status(403).json({ error: "Invalid refresh token" });
   }
 };
 
@@ -202,7 +173,6 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
-
 // Get current user profile (assuming user ID is passed via JWT token or similar auth mechanism)
 exports.getCurrentUser = async (req, res) => {
   try {
@@ -223,7 +193,7 @@ exports.getCurrentUser = async (req, res) => {
         {
           model: Address,
           as: "addresses", // Adjust the alias if needed based on your associations
-          attributes: ["address", "city", "country","state", "zipCode"], // Include the address fields you want
+          attributes: ["address", "city", "country", "state", "zipCode"], // Include the address fields you want
         },
       ],
     });

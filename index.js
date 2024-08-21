@@ -2,7 +2,7 @@ require("dotenv").config();
 const createError = require("http-errors");
 const express = require("express");
 const cors = require("cors");
-const logger = require("morgan");
+// const logger = require("morgan");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 const helmet = require("helmet");
@@ -15,10 +15,9 @@ const commentsRouter = require("./routes/commentsRoutes");
 const tagAndCategoriesRouter = require("./routes/tagsCategoriesRoutes");
 const pagesRouter = require("./routes/pagesRoutes");
 const ordersRouter = require("./routes/ordersRoutes");
+const cartsRouter = require("./routes/cartRoutes");
 
-const AuthMiddleware = require("./middlewares/authMiddleware");
-const AppResponseDto = require("./dtos/responses/appResponseDto");
-const BenchmarkMiddleware = require("./middlewares/benchmarkMiddleware");
+const { verifyToken } = require("./middlewares/authMiddleware");
 
 const app = express();
 
@@ -29,16 +28,17 @@ app.use(bodyParser.json());
 
 // Use CORS middleware to allow cross-origin requests
 const corsOptions = {
-  origin: "http://127.0.0.1:4000", // Allow this origin
+  origin: "http://localhost:4000", // Allow this origin
   credentials: true, // Allow credentials (cookies, etc.)
 };
 // app.use(BenchmarkMiddleware.benchmark);
 // app.use(AuthMiddleware.loadUser);
 app.use(cors(corsOptions));
 app.use(cookieParser());
-app.use(logger("dev"));
+// app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
 app.use((req, res, next) => {
   res.setHeader(
     "Cache-Control",
@@ -49,6 +49,10 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use("/api/protected-route", verifyToken, (req, res) => {
+  res.send("This is a protected route");
+});
+
 // Serve static files from the "public" directory
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -56,6 +60,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/api/products", productsRouter);
 app.use("/api/users", usersRouter);
 app.use("/api", commentsRouter);
+app.use("/api", cartsRouter);
 app.use("/api", addressesRouter);
 app.use("/api/orders", ordersRouter);
 app.use("/api", tagAndCategoriesRouter);

@@ -99,6 +99,7 @@ module.exports = (sequelize, DataTypes) => {
     );
 
     Product.hasMany(models.Comment);
+    Product.hasMany(models.Cart);
     Product.hasMany(models.ProductImage, { as: "images" });
     // Product.hasMany(models.ProductCategory);
     Product.belongsToMany(models.Category, {
