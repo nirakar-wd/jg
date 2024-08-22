@@ -1,6 +1,5 @@
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
-// const { expressjwt: checkToken } = require("express-jwt");
 const AppResponseDto = require("../dtos/responses/appResponseDto");
 const User = require("../models/index").User;
 const Role = require("../models/index").Role;
@@ -36,7 +35,7 @@ const generateAccessToken = ({ id, username, email }) => {
     { id, username, email },
     process.env.JWT_SECRET,
     {
-      expiresIn: "15m",
+      expiresIn: "1h",
     }
   );
   return {
@@ -81,77 +80,6 @@ const isAdmin = (req, res, next) => {
   });
 };
 
-// const getFreshUser = (required) => {
-//   return async (req, res, next) => {
-//     if (!req.decodedJwt || !req.decodedJwt.userId) {
-//       if (required) {
-//         console.log("Permission denied: No decoded JWT or user ID");
-//         return res
-//           .status(401)
-//           .json(AppResponseDto.buildWithErrorMessages("Permission denied"));
-//       } else {
-//         return next();
-//       }
-//     }
-
-//     try {
-//       const user = await User.findOne({
-//         where: { id: req.decodedJwt.userId },
-//         include: [Role],
-//       });
-
-//       if (!user) {
-//         console.log("User not found");
-//         return res.status(401).send({ error: "Unauthorized" });
-//       } else {
-//         // console.log("User found", user);
-//         req.user = user;
-//         next();
-//       }
-//     } catch (err) {
-//       next(err);
-//     }
-//   };
-// };
-
-// exports.isAuthenticated = (req, res, next) => {
-//   if (req.user != null) {
-//     next();
-//     return;
-//   }
-//   return res.json(
-//     AppResponseDto.buildWithErrorMessages(
-//       "Permission denied, you must be authenticated"
-//     )
-//   );
-// };
-
-// exports.signToken = (id) => {
-//   const token = jwt.sign({ userId: id }, process.env.JWT_SECRET, {
-//     expiresIn: process.env.JWT_EXPIRE_TIME || "30m",
-//   });
-//   console.log("Generated JWT:", token);
-//   return token;
-// };
-
-// exports.mustBeAuthenticated = [verifyToken, getFreshUser(true)];
-// exports.loadUser = [readToken, getFreshUser(false)];
-
-// exports.userOwnsItOrIsAdmin = (req, res, next) => {
-//   if (
-//     req.user != null &&
-//     (req.user.isAdminSync() || req.userOwnable.userId === req.user.id)
-//   ) {
-//     next();
-//   } else {
-//     return res.json(
-//       AppResponseDto.buildWithErrorMessages(
-//         "This resource does not belong to you"
-//       )
-//     );
-//   }
-// };
-
 const userOwnsItOrIsAdmin = (req, res, next) => {
   if (
     req.user != null &&
@@ -166,23 +94,6 @@ const userOwnsItOrIsAdmin = (req, res, next) => {
     );
   }
 };
-
-// // TODO: replace by userOwnsItOrIsOnly
-// exports.ownsCommentOrIsAdmin = (req, res, next) => {
-//   if (
-//     req.user != null &&
-//     (req.user.roles.some((role) => role.name === "ROLE_ADMIN") ||
-//       req.comment.userId === req.user.id)
-//   ) {
-//     next();
-//   } else {
-//     return res.json(
-//       AppResponseDto.buildWithErrorMessages(
-//         "This comment does not belong to you"
-//       )
-//     );
-//   }
-// };
 
 const ownsCommentOrIsAdmin = (req, res, next) => {
   if (

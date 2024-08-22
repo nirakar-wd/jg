@@ -96,6 +96,10 @@ app.get("/cart", (req, res) => {
   res.sendFile(path.join(__dirname, "public/views", "cart.html"));
 });
 
+app.get("/orders", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/views", "orders.html"));
+});
+
 app.get("/checkout", (req, res) => {
   res.sendFile(path.join(__dirname, "public/views", "checkout.html"));
 });

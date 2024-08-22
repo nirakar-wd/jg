@@ -117,8 +117,6 @@
 
                             </form>
 
-
-
                             <div class="cart-icon">
                                 <a href="http://localhost:4000/login" class="cart-btn mx-3">
                                     <i class="fa-solid fa-user fa-xl"></i>
@@ -172,50 +170,73 @@
             </ul>
         </nav>
 
+
     </header>
 
-    <main>
+    <main class="shopping-cart">
 
         <div class="container">
-            <div class="login">
-                <div class="container">
-                    <h2 class="heading-secondary">Login</h2>
+            <h2 class="heading-secondary mb-5">
+                shopping cart
+            </h2>
 
-                    <div class="login-form-grids">
-                        <form id="loginForm">
-                            <input type="hidden" name="">
+            <div class="cart-box">
+                <div class="row justify-content-center">
+                    <div class="col-md-9">
 
-                            <input type="text" class="form-control" placeholder="Username" name="username" value="" required
-                                autofocus />
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">product</th>
+                                    <th scope="col">decription</th>
+                                    <th scope="col">quantity</th>
+                                    <th scope="col">price</th>
+                                    <th scope="col">delete</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cartItems">
+                                <!-- <tr>
+                                    <th scope="row">
+                                        <img src="img/Flat Back Brown TFF.png" alt="">
+                                    </th>
+                                    <td>tshirt</td>
+                                    <td>4</td>
+                                    <td>$500</td>
+                                    <td>
+                                        <a href="#"><i class="fa-solid fa-trash-can"></i></a>
+                                    </td>
+                                </tr> -->
+                            </tbody>
+                        </table>
 
-
-                            <input type="password" class="form-control" placeholder="Password" name="password"
-                                required />
-
-                            <div class="forgot">
-                                <a href="#" data-dismiss="modal" data-toggle="modal"
-                                    data-target="#ForgetPasswordformModal">Forgot Password?</a>
-                            </div>
-                            <!-- <div class="CBox">
-                        <label>
-                          <input type="checkbox" name="remember" >
-                          Remember me
-                        </label>
-                      </div> -->
-                            <input type="submit" value="Login">
-                            <p> </p>
-                        </form>
                     </div>
-                    <!-- <h4 class="">For New People</h4> -->
-                    <p class="login-para">
-                        Dont have an account?
-                        <a href="register.html"> Register Here</a>
-                    </p>
+
+                    <div class="col-md-3">
+                        <div class="order-summary">
+                            <div class="order-heading">order summary</div>
+
+                            <div id="cartItemsContainer">
+                                <!-- <span>product name</span>
+                                    <span>$500</span> -->
+                            </div>
+
+                            <div class="pro-price d-flex pp-2 ">
+                                <span>shipping</span>
+                                <span>free</span>
+                            </div>
+                            <div class="total-cost d-flex">
+                                <span>total</span>
+                                <span id="totalOrderPrice">Rs.1200</span>
+                            </div>
+                            <div class="order-checkout">
+                                <button class="btn btn-checkout">place order</button>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>
-
-
 
     </main>
 
@@ -316,30 +337,30 @@
 
     </footer>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/min/tiny-slider.js"></script>
+
+    <script src="/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.1.2/redux.min.js"></script>
+
+    <script src="/js/script.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#tooglenight").change(function () {
+                if (this.checked) {
+                    $("#bd").addClass("night");
+                    $(".content i").css("color", "#333");
+                } else {
+                    $("#bd").removeClass("night");
+                    $(".content i").css("color", "white");
+                }
+            });
+        });
+    </script>
 
 </body>
-
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"
-    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-
-<script>
-    $(document).ready(function () {
-        $("#tooglenight").change(function () {
-            if (this.checked) {
-                $("#bd").addClass("night");
-                $(".content i").css("color", "#333");
-            } else {
-                $("#bd").removeClass("night");
-                $(".content i").css("color", "white");
-            }
-        });
-    });
-</script>
-
-<script src="../../client/login.js">
-
-</script>
-
-
 
 </html>

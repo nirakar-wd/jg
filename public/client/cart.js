@@ -83,7 +83,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
 
       totalPriceContainer.innerHTML = `Rs.${totalPrice}`;
-      console.log(cartItemsOrder);
 
       // Attach delete event listeners to each delete button
       document.querySelectorAll(".delete-cart-item").forEach((button) => {
@@ -118,6 +117,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
       });
 
+      console.log(cartItemsOrder);
+
       const orderBtn = document.querySelector(".btn-checkout");
       console.log(addressId);
       orderBtn.addEventListener("click", async () => {
@@ -125,7 +126,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           // Prepare the payload for the POST request
           const payload = {
             address_id: addressId,
-            cartItem: cartItemsOrder,
+            cart_items: cartItemsOrder,
           };
 
           // Send a POST request to place the order
@@ -142,7 +143,29 @@ document.addEventListener("DOMContentLoaded", async () => {
             const result = await response.json();
             console.log("Order placed successfully:", result);
             alert("Order placed successfully!");
-            // Optionally, you can redirect the user or update the UI
+            // Clear all cart items for the user
+
+            try {
+              const clearCartResponse = await fetch(`http://localhost:4000/api/cart/clear/${userId}`, {
+                method: "DELETE",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              });
+
+              if (clearCartResponse.ok) {
+                console.log("Cart cleared successfully.");
+                // Optionally redirect the user to the homepage
+                window.location.href = "http://localhost:4000/"; // Redirect to homepage
+              } else {
+                console.error("Failed to clear the cart.");
+              }
+            } catch (error) {
+              console.error(
+                "An error occurred while clearing the cart:",
+                error
+              );
+            }
           } else {
             console.error(
               "Failed to place order:",

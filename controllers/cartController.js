@@ -67,3 +67,27 @@ exports.getCartItems = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+// Remove all items from Cart by userId
+exports.clearCart = async (req, res) => {
+  try {
+    const userId = req.params.userId; // Assuming userId is passed as a route parameter
+
+    // Delete all cart items for the specified user
+    const deletedCount = await Cart.destroy({
+      where: { userId },
+    });
+
+    if (deletedCount > 0) {
+      res
+        .status(200)
+        .json({ message: "All items removed from the cart successfully" });
+    } else {
+      res
+        .status(404)
+        .json({ message: "No items found in the cart for this user" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

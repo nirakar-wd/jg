@@ -306,6 +306,8 @@ exports.updateOrder = (req, res, next) => {
 
 exports.createOrder = async (req, res, next) => {
   const addressId = req.body.address_id;
+
+  console.log(req.body);
   let transaction;
 
   try {
@@ -320,6 +322,7 @@ exports.createOrder = async (req, res, next) => {
       await createOrderNewAddress(req, res, transaction);
     }
 
+    console.log("created ....");
     // Commit the transaction
     await transaction.commit();
 
@@ -410,7 +413,7 @@ async function _createOrderFromAddress(req, res, address, transaction) {
     // Calculate the total order amount
     const total = products.reduce((sum, product) => {
       const cartItem = cartItems.find((item) => item.id === product.id);
-      return sum + product.price * cartItem.quantity;
+      return sum + product.discountedPrice * cartItem.quantity;
     }, 0);
 
     // Generate tracking number
@@ -436,7 +439,7 @@ async function _createOrderFromAddress(req, res, address, transaction) {
           {
             name: product.name,
             slug: product.slug,
-            price: product.price,
+            price: product.discountedPrice,
             quantity: cartItem.quantity,
             userId: req.user ? req.user.id : null,
             orderId: order.id,
