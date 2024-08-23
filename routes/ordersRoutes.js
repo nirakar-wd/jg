@@ -8,14 +8,14 @@ const {
   isAdmin,
 } = require("../middlewares/authMiddleware");
 
-router.get("",
-   verifyToken,
-   ordersController.getOrders);
+router.get("", verifyToken, ordersController.getOrders);
 
-router.get("/all",
+router.get(
+  "/all",
   //  verifyToken,
   //  isAdmin,
-    ordersController.getAllOrders);
+  ordersController.getAllOrders
+);
 
 router.get(
   "/:orderId",
@@ -23,8 +23,8 @@ router.get(
   // userOwnsItOrIsAdmin,
   ordersController.getOrderDetails
 );
-router.post("",
-   verifyToken,
-   ordersController.createOrder);
+router.post("", verifyToken, ordersController.createOrder);
+
+router.post("/payment", verifyToken, ordersController.payment);
 
 module.exports = router;

@@ -177,7 +177,7 @@
 
         <div class="container">
             <h2 class="heading-secondary mb-5">
-                shopping cart
+                My orders
             </h2>
 
             <div class="cart-box">
@@ -187,53 +187,21 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th scope="col">product</th>
-                                    <th scope="col">decription</th>
-                                    <th scope="col">quantity</th>
-                                    <th scope="col">price</th>
-                                    <th scope="col">delete</th>
+                                    <th scope="col">order id</th>
+                                    <th scope="col">order status</th>
+                                    <th scope="col">order items</th>
+                                    <th scope="col">total</th>
+                                    <th scope="col">pay online</th>
                                 </tr>
                             </thead>
-                            <tbody id="cartItems">
-                                <!-- <tr>
-                                    <th scope="row">
-                                        <img src="img/Flat Back Brown TFF.png" alt="">
-                                    </th>
-                                    <td>tshirt</td>
-                                    <td>4</td>
-                                    <td>$500</td>
-                                    <td>
-                                        <a href="#"><i class="fa-solid fa-trash-can"></i></a>
-                                    </td>
-                                </tr> -->
+                            <tbody id="orderItems">
+                                <tr>
+                                </tr>
                             </tbody>
                         </table>
 
                     </div>
 
-                    <div class="col-md-3">
-                        <div class="order-summary">
-                            <div class="order-heading">order summary</div>
-
-                            <div id="cartItemsContainer">
-                                <!-- <span>product name</span>
-                                    <span>$500</span> -->
-                            </div>
-
-                            <div class="pro-price d-flex pp-2 ">
-                                <span>shipping</span>
-                                <span>free</span>
-                            </div>
-                            <div class="total-cost d-flex">
-                                <span>total</span>
-                                <span id="totalOrderPrice">Rs.1200</span>
-                            </div>
-                            <div class="order-checkout">
-                                <button class="btn btn-checkout">place order</button>
-                            </div>
-                        </div>
-
-                    </div>
                 </div>
             </div>
         </div>
@@ -360,6 +328,53 @@
             });
         });
     </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            fetchOrders();
+        });
+
+        async function fetchOrders() {
+            try {
+                const response = await fetch(`http://localhost:4000/api/orders`,
+                    {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    });
+
+
+                if (response.ok) {
+                    const orders = await response.json();
+                    console.log(orders)
+                    const orderItemsContainer = document.getElementById('orderItems');
+
+                    orders.rows.forEach(order => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                        <td>${order.id}</td>
+                        <td>${order.orderStatusStr === "processed" ? "pending" : "processing"}</td>
+                        <td>${order.order_items.length}</td>
+                        <td>${order.total}</td>
+                         <td><a href="http://localhost:4000/checkout/${order.id}">Checkout</a></td>
+                    `;
+                        orderItemsContainer.appendChild(tr);
+                    });
+                } else {
+                    console.error('Failed to fetch orders');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        function viewDetails(orderId) {
+            alert('View details for order: ' + orderId);
+            // Implement the logic to show order details
+        }
+    </script>
+
 
 </body>
 

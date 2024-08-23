@@ -2667,6 +2667,13 @@ aside {
     text-align: center;
 }
 
+
+.cod img {
+    width: 8rem;
+    margin-left: 2rem;
+}
+
+
 .profile_photo {
     width: 70px;
     height: 70px;

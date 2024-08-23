@@ -104,6 +104,10 @@ app.get("/checkout", (req, res) => {
   res.sendFile(path.join(__dirname, "public/views", "checkout.html"));
 });
 
+app.get("/checkout/:orderId", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/views", "checkoutOrder.html"));
+});
+
 app.get("/termsAndConditions", (req, res) => {
   res.sendFile(path.join(__dirname, "public/views", "t&c.html"));
 });

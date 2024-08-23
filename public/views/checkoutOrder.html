@@ -25,10 +25,10 @@
         integrity="sha512-06CZo7raVnbbD3BlY8/hGUoUCuhk8sTdVGV3m3nuh9i2R+UmkLbLRTE/My8TuJ3ALbDulhBObJQWtOUt0mXzNQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
 
 
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="/css/style.css">
 
 </head>
 
@@ -52,7 +52,7 @@
 
                     <div class="col-md-2">
                         <a href="index.html">
-                            <img src="img/jglogotxt.png" alt="logo" class="logo">
+                            <img src="/img/jglogotxt.png" alt="logo" class="logo">
                         </a>
                     </div>
 
@@ -800,13 +800,13 @@
                                         <input class="form-check-input" type="radio" name="inlineRadioOptions"
                                             id="inlineRadio1" value="option1">
                                         <label class="form-check-label" for="inlineRadio1"><img
-                                                src="img/credit-card.png" alt="card"
+                                                src="/img/credit-card.png" alt="card"
                                                 class="img-fluid pay-opt-img ccimg"></label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="inlineRadioOptions"
                                             id="inlineRadio2" value="option2">
-                                        <label class="form-check-label" for="inlineRadio2"><img src="img/paypal.png"
+                                        <label class="form-check-label" for="inlineRadio2"><img src="/img/paypal.png"
                                                 alt="paypal" class="pay-opt-img"></label>
                                     </div>
                                 </div>
@@ -816,17 +816,17 @@
                                     <div class="nep-pay d-flex align-items-center">
                                         <div>
                                             <a href="#">
-                                                <img src="img/khalti_logo.png" alt="" class="nep-pay-img">
+                                                <img src="/img/khalti_logo.png" alt="" class="nep-pay-img">
                                             </a>
                                         </div>
                                         <div>
                                             <a href="#">
-                                                <img src="img/esewa.png" alt="" class="nep-pay-img">
+                                                <img src="/img/esewa.png" alt="" class="nep-pay-img">
                                             </a>
                                         </div>
                                         <div>
                                             <a href="#">
-                                                <img src="img/ime.png" alt="" class="nep-pay-img ime">
+                                                <img src="/img/ime.png" alt="" class="nep-pay-img ime">
                                             </a>
                                         </div>
 
@@ -835,7 +835,7 @@
 
                                 <div class="cod">
                                     <a href="#" class="cod">
-                                        <img src="img/cash-on-delivery.png" alt="cod" class="img-fluid">
+                                        <img src="/img/cash-on-delivery.png" alt="cod" class="img-fluid">
 
                                     </a>
                                 </div>
@@ -861,17 +861,21 @@
                     <div class="col-md-3">
                         <div class="order-summary">
                             <div class="order-heading">order summary</div>
-                            <div class="pro-price d-flex">
-                                <span>2 products</span>
-                                <span>$500</span>
+                            <div id="productList">
+                                <!-- <span>2 products</span>
+                                <span>$500</span> -->
                             </div>
                             <div class="pro-price d-flex pp-2 ">
                                 <span>shipping</span>
                                 <span>free</span>
                             </div>
+                            <div class="pro-price d-flex pp-2 ">
+                                <span>Delivery fee</span>
+                                <span id="deliveryFee">Rs.150</span>
+                            </div>
                             <div class="total-cost d-flex">
                                 <span>total</span>
-                                <span>$1200</span>
+                                <span id="totalPrice">$1200</span>
                             </div>
                             <div class="order-checkout">
                                 <button class="btn btn-checkout">checkout</button>
@@ -948,7 +952,7 @@
                                         <img src="/img/instagram(1).png" alt="">
                                     </a>
                                     <a href="#" class="social-icon">
-                                        <img src="img/whatsapp.png" alt="">
+                                        <img src="/img/whatsapp.png" alt="">
                                     </a>
                                 </li>
                             </ul>
@@ -1008,7 +1012,13 @@
         });
     </script>
 
-    <script src="../client/fetchCheckoutDetails.js">
+    <script src="/client/fetchCheckoutDetails.js">
+
+
+    </script>
+
+    <script src="/client/orderDetails.js">
+
 
     </script>
 
