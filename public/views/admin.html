@@ -26,10 +26,10 @@
         integrity="sha512-06CZo7raVnbbD3BlY8/hGUoUCuhk8sTdVGV3m3nuh9i2R+UmkLbLRTE/My8TuJ3ALbDulhBObJQWtOUt0mXzNQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
 
 
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="/css/style.css">
 
 </head>
 
@@ -51,40 +51,55 @@
 
                 <div class="row align-items-center">
 
-                    <div class="col-md-1">
+                    <div class="col-md-2">
                         <a href="index.html">
-                            <img src="img/for humans.PNG" alt="logo" class="logo">
+                            <img src="/img/jglogotxt.png" alt="logo" class="logo">
                         </a>
                     </div>
 
-                    <div class="col-md-8">
+                    <div class="col-md-7">
                         <nav>
                             <ul class="navbar-nav d-flex flex-row align-items-center justify-content-center">
 
 
                                 <li class="nav-item-list">
-                                    <a href="tshirt.html" class="nav-item-link">
-                                        Tshirt
+                                    <a href="http://localhost:4000/" class="nav-item-link">
+                                        Home
                                     </a>
-                                    <ul class="nav-sub">
+                                    <!-- <ul class="nav-sub">
 
                                         <li class="offset-2"><a href="product.html">for human</a></li>
                                         <li class="offset-2"><a href='product.html'>the free fall</a></li>
                                         <li class="offset-2"><a href='product.html'>product</a></li>
+
+                                    </ul> -->
+                                </li>
+
+                                <li class="nav-item-list">
+                                    <a href="http://localhost:4000/categories" class="nav-item-link">
+                                        products
+                                    </a>
+
+                                    <ul class="nav-sub">
+
+                                        <li class="offset-2"><a href="categories.html">tshirts</a></li>
+                                        <li class="offset-2"><a href='categories.html'>polo</a></li>
+                                        <li class="offset-2"><a href='categories.html'>shirts</a></li>
 
                                     </ul>
                                 </li>
 
                                 <li class="nav-item-list">
                                     <a href="tshirt.html" class="nav-item-link">
-                                        polo
+                                        editions
                                     </a>
-                                </li>
 
-                                <li class="nav-item-list">
-                                    <a href="tshirt.html" class="nav-item-link">
-                                        sweatshirt
-                                    </a>
+                                    <ul class="nav-sub">
+
+                                        <li class="offset-2"><a href="categories.html">jglogotxt</a></li>
+                                        <li class="offset-2"><a href='categories.html'>freefall</a></li>
+
+                                    </ul>
                                 </li>
 
                                 <li class="nav-item-list">
@@ -109,6 +124,7 @@
                             <form class="d-flex search-form justify-content-end" role="search">
                                 <input class="form-control" type="search" placeholder="search" aria-label="Search">
                                 <span></span>
+                                <span>&nbsp;</span>
 
                                 <!-- <button class="btn btn-search" type="submit"><i
                                         class="fa-solid fa-magnifying-glass fa-xl"></i>
@@ -198,9 +214,12 @@
                         </div>
                         <div>
                             <a href="#" data-id="5"><i class="fa-solid fa-user-tie"></i>Profile</a>
-                        </div>
+                            <!-- </div>
+                                                <div>
+                            <a href="#" data-id="6"><i class="fa-solid fa-user-tie"></i>Invoice</a>
+                        </div> -->
 
-                    </div>
+                        </div>
                 </aside>
 
                 <section class="content-wrapper">
@@ -447,7 +466,8 @@
                                         <div class="product-left">
                                             <div class="form-group mb-4">
                                                 <label for="product-name" class="form-label">product name</label>
-                                                <input type="text" class="form-control" id="productname" name="productName">
+                                                <input type="text" class="form-control" id="productname"
+                                                    name="productName">
                                             </div>
                                             <div class="mb-3">
                                                 <label for="productDescription" class="form-label">product
@@ -469,16 +489,13 @@
                                                 <div class="media-preview">
                                                     <input type="file" name="file" id="displayImage" accept="image/*"
                                                         style="display: none;">
-                                                    <button id="selectImageButton" class="btn btn-primary">Select
-                                                        Image</button>
-                                                    <small id="imageError" class="text-danger"
-                                                        style="display: none;"></small>
-                                                    <div id="imageName"></div>
-                                                    <!-- Display the name of the selected image -->
-                                                    <br>
-                                                    <i class="fa-solid fa-image"></i>
+                                                    <i class="fa-solid fa-image"
+                                                        onclick="document.getElementById('displayImage').click();"></i>
+                                                    <button id="uploadBtn">Upload Image</button>
                                                 </div>
                                             </div>
+
+
                                         </div>
                                     </div>
 
@@ -487,8 +504,8 @@
 
                                             <label for="price" class="form-label">Price</label>
                                             <div class="input-group mb-3">
-                                                <input type="text" class="form-control" id="priceInput" name="productPrice"
-                                                    aria-label="Text input with dropdown button">
+                                                <input type="text" class="form-control" id="priceInput"
+                                                    name="productPrice" aria-label="Text input with dropdown button">
                                                 <button class="btn dropdown-toggle" type="button"
                                                     data-bs-toggle="dropdown" aria-expanded="false"
                                                     id="currencyDropdown">USD</button>
@@ -522,7 +539,8 @@
                                                 </div>
 
                                                 <div class="mb-3">
-                                                    <label for="discount" class="form-label">Discounted Price(if any)</label>
+                                                    <label for="discount" class="form-label">Discounted Price(if
+                                                        any)</label>
                                                     <input type="text" id="discount" placeholder="Stock"
                                                         class="form-control" name="discounted_price">
                                                 </div>
@@ -788,7 +806,7 @@
 
                                         </li>
                                         <li class="list-inline-item">
-                                            <h5 class="heading-fifth"  id="totalUsers">$2500</h5>
+                                            <h5 class="heading-fifth" id="totalUsers">$2500</h5>
                                             <p class="fs-5">total customers</p>
                                         </li>
                                     </ul>
