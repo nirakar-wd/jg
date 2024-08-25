@@ -123,7 +123,6 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <form class="d-flex search-form justify-content-end" role="search">
                                 <input class="form-control" type="search" placeholder="search" aria-label="Search">
-                                <span></span>
                                 <span>&nbsp;</span>
 
                                 <!-- <button class="btn btn-search" type="submit"><i
@@ -355,10 +354,10 @@
                                             <thead>
                                                 <tr>
                                                     <th scope="col">order id</th>
-                                                    <th scope="col">total</th>
+                                                    <th scope="col">tracking number</th>
                                                     <th scope="col">customer</th>
-                                                    <th scope="col">payment status</th>
-                                                    <th scope="col">fulfilment status</th>
+                                                    <th scope="col">total</th>
+                                                    <th scope="col">Order status</th>
                                                     <th scope="col">date</th>
                                                 </tr>
                                             </thead>
@@ -489,9 +488,9 @@
                                                 <div class="media-preview">
                                                     <input type="file" name="file" id="displayImage" accept="image/*"
                                                         style="display: none;">
-                                                    <i class="fa-solid fa-image"
-                                                        onclick="document.getElementById('displayImage').click();"></i>
-                                                    <button id="uploadBtn">Upload Image</button>
+                                                    <i class="fa-solid fa-image" id="iconImageUpload"
+                                                        style="cursor: pointer;"></i>
+                                                    <button id="uploadBtn" type="button">Upload Image</button>
                                                 </div>
                                             </div>
 
@@ -1256,13 +1255,13 @@
             });
         });
     </script>
-    <script src="../../client/addProduct.js"></script>
+    <script src="/client/addProduct.js"></script>
 
-    <script src="../../client/getProfile.js"></script>
+    <script src="/client/getProfile.js"></script>
 
-    <script src="../../client/postCategories.js"></script>
+    <script src="/client/postCategories.js"></script>
 
-    <!-- <script src="../../client/fetchOrdersTable.js"></script> -->
+    <script src="/client/fetchOrdersTable.js"></script>
 
     <!-- <script>
      const inputElement = document.querySelector('input[type="file"]');

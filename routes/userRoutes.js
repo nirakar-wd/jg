@@ -4,6 +4,8 @@ const { verifyToken, isAdmin } = require("../middlewares/authMiddleware");
 
 router.post("/register", controller.register);
 router.post("/login", controller.login);
+router.post("/feedback", verifyToken, controller.createFeedback);
+
 router.get("/",
     //  verifyToken, 
     //  isAdmin, 

@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       ordersTableBody.innerHTML = "";
 
       // Populate the table with fetched orders
-      orders.forEach((order) => {
+      orders.orders.forEach((order) => {
         const row = document.createElement("tr");
 
         row.innerHTML = `
@@ -25,12 +25,12 @@ document.addEventListener("DOMContentLoaded", async () => {
               <a href="#">#${order.id}</a>
             </th>
             <td>$${order.trackingNumber}</td>
-            <td>${order.addressId}</td>
+            <td>${order.userId}</td>
             <td><span>
-              ${order.id}
+              ${order.total}
             </span></td>
             <td><span>
-              ${order.id}
+              ${order.orderStatus}
             </span></td>
             <td>${order.createdAt}</td>
           `;

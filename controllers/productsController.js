@@ -95,6 +95,7 @@ exports.getProductById = async function (req, res, next) {
         "price",
         "discountedPrice",
         "stock",
+        "features",
         "created_at",
         "updated_at",
       ],
@@ -165,6 +166,7 @@ exports.getByTag = function (req, res, next) {
   const pageSize = parseInt(req.query.pageSize) || 5;
   const offset = (page - 1) * pageSize;
   const limit = pageSize;
+
   ProductTag.findAll({
     where: { tagId: req.tagId },
     attributes: ["productId"],
@@ -176,7 +178,7 @@ exports.getByTag = function (req, res, next) {
       productIds = _.slice(productIds, offset, offset + limit);
       Promise.all([
         Product.findAll({
-          attributes: ["id", "name", "slug", "created_at", "updated_at"],
+          attributes: ["id", "name", "slug", "price", "discountedPrice" ,"description", "created_at", "updated_at"],
           where: {
             id: {
               [Op.in]: productIds,
@@ -296,8 +298,6 @@ exports.getByCategory = async function (req, res, next) {
 };
 
 exports.createProduct = async (req, res) => {
-  console.log(req.body);
-
   console.log(req.files);
 
   const bindingResult = ProductRequestDto.createProductResponseDto(req);
@@ -560,9 +560,9 @@ exports.getFilteredProducts = async (req, res, next) => {
       where,
       order,
       // include: [
-        // { model: Tag, attributes: ["id", "name"] },
-        // { model: Category, attributes: ["id", "name"] },
-        // { model: Collection, attributes: ["id", "name"] },
+      // { model: Tag, attributes: ["id", "name"] },
+      // { model: Category, attributes: ["id", "name"] },
+      // { model: Collection, attributes: ["id", "name"] },
       //   {
       //     model: Comment,
       //     attributes: ["id", "rating"],
@@ -576,5 +576,34 @@ exports.getFilteredProducts = async (req, res, next) => {
     return res
       .status(500)
       .json({ message: err.message || "Internal server error" });
+  }
+};
+
+exports.getSimilarProducts = async (req, res, next) => {
+  const productId = req.params.id;
+
+  try {
+    // Fetch the current product details
+    const product = await Product.findById(productId).populate(
+      "categories tags collections"
+    );
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    // Find similar products
+    const similarProducts = await Product.find({
+      _id: { $ne: productId }, // Exclude the current product
+      $or: [
+        { categories: { $in: product.categories } },
+        { tags: { $in: product.tags } },
+        { collections: { $in: product.collections } },
+      ],
+    }).limit(4); // Limit the number of similar products returned
+
+    res.json(similarProducts);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching similar products", error });
   }
 };

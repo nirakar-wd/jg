@@ -2,7 +2,7 @@ require("dotenv").config();
 const bcrypt = require("bcrypt");
 const _ = require("lodash");
 const jwt = require("jsonwebtoken");
-const { User, Role, Address, Sequelize } = require("../models/index");
+const { User, Role, Address, Feedback, Sequelize } = require("../models/index");
 const { Op } = Sequelize;
 const {
   generateAccessToken,
@@ -277,5 +277,27 @@ exports.deleteUser = async (req, res) => {
     res.json({ message: "User deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: "Failed to delete user", error });
+  }
+};
+
+// Post feedback
+exports.createFeedback = async (req, res) => {
+  const { content } = req.body;
+
+  if (!content) {
+      return res.status(400).json({ message: "message is required." });
+  }
+
+  try {
+      // Create feedback
+      const feedback = await Feedback.create({
+          content: content,
+          userId: req.user.id
+      });
+
+      res.status(201).json(feedback);
+  } catch (error) {
+      console.error("Error creating feedback:", error);
+      res.status(500).json({ message: "Failed to create feedback." });
   }
 };

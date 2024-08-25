@@ -62,7 +62,7 @@ exports.getCollections = async (req, res, next) => {
 
 exports.getCategories = function (req, res, next) {
   const page = parseInt(req.query.page) || 1;
-  const pageSize = parseInt(req.query.page_size) || 5;
+  const pageSize = parseInt(req.query.page_size) || 10;
   const offset = (page - 1) * pageSize;
 
   Category.findAndCountAll({
