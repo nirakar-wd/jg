@@ -2,17 +2,17 @@ document.addEventListener("DOMContentLoaded", async () => {
   const categoriesSelect = document.getElementById("categories");
   const tagsSelect = document.getElementById("tags");
   const collectionsSelect = document.getElementById("collections");
-  const uploadBtn = document.getElementById("uploadBtn");
-  const iconImageUpload = document.getElementById("iconImageUpload");
-  const displayImage = document.getElementById("displayImage");
+  // const uploadBtn = document.getElementById("uploadBtn");
+  // const iconImageUpload = document.getElementById("iconImageUpload");
+  // const displayImage = document.getElementById("displayImage");
 
-  uploadBtn.addEventListener("click", () => {
-    displayImage.click();
-  });
+  // uploadBtn.addEventListener("click", () => {
+  //   displayImage.click();
+  // });
 
-  iconImageUpload.addEventListener("click", () => {
-    displayImage.click();
-  });
+  // iconImageUpload.addEventListener("click", () => {
+  //   displayImage.click();
+  // });
 
   // Fetch categories, tags, and collections when the page loads
   try {
@@ -93,75 +93,42 @@ document.addEventListener("DOMContentLoaded", async () => {
     e.preventDefault();
 
     const formData = new FormData(form);
-    const name = formData.get("productName");
-    const description = formData.get("productDescription");
-    const features = formData.get("productFeatures");
-    const price = formData.get("productPrice");
-    const stock = formData.get("stock");
-    const vendor = formData.get("vendor");
-    const discounted_price = formData.get("discounted_price");
 
-    if (
-      !name ||
-      !description ||
-      !features ||
-      !price ||
-      !stock ||
-      !vendor ||
-      !discounted_price
-    ) {
-      alert("Please fill in all the required fields and upload an image.");
-      return;
-    }
-
+    // Append the selected categories with both id and name
     const selectedCategories = Array.from(categoriesSelect.selectedOptions).map(
       (option) => ({
-        id: option.value,
         name: option.textContent,
       })
     );
+    formData.append("categories", JSON.stringify(selectedCategories));
 
+    // Append the selected tags with both id and name
     const selectedTags = Array.from(tagsSelect.selectedOptions).map(
       (option) => ({
-        id: option.value,
         name: option.textContent,
       })
     );
+    formData.append("tags", JSON.stringify(selectedTags));
 
+    // Append the selected collections with both id and name
     const selectedCollections = Array.from(
       collectionsSelect.selectedOptions
     ).map((option) => ({
-      id: option.value,
       name: option.textContent,
     }));
 
-    const payload = {
-      name: name,
-      description: description,
-      features: features,
-      price: price,
-      stock: stock,
-      vendor: vendor,
-      discounted_price: discounted_price,
-      categories: selectedCategories,
-      tags: selectedTags,
-      collections: selectedCollections,
-    };
+    formData.append("collections", JSON.stringify(selectedCollections));
 
     try {
       const response = await fetch("http://localhost:4000/api/products", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload), // Convert payload to JSON
+        body: formData, // Send the FormData with all data including files
         credentials: "include",
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        // Check if the response status is ok (200-299)
         alert("Product added successfully!");
       } else {
         alert(data.errors?.message || "Failed to add product");

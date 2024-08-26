@@ -16,8 +16,6 @@ router.get("/by_tag_id/:tagId", productsController.getByTag);
 router.get("/by_category/:category_slug", productsController.getByCategory);
 router.get("/by_category_id/:categoryId", productsController.getByCategory);
 
-router.get("/:id/similar", productsController.getSimilarProducts);
-
 router.get("/", productsController.getAll);
 router.get("/filter", productsController.getFilteredProducts);
 

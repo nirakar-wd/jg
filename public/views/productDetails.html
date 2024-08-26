@@ -181,18 +181,18 @@
             <div class="row g-0">
                 <div class="col-md-6">
                     <div class="product-img position-relative">
-                        <img id="demo" src="/img/Flat Front black FH.png" data-zoom-image="/img/Flat Front black FH.png"
-                            class="/img-fluid zoomed-img" />
+                        <img src="/img/Flat Front black FH.png" data-zoom-image="/img/Flat Front black FH.png"
+                            class="/img-fluid zoomed-img" id="productImage" />
 
                         <div id="gallery_demo">
                             <a href="#" data-image="/img/Flat Front black FH.png"
                                 data-zoom-image="/img/Flat Front black FH.png">
-                                <img id="img_01" src="/img/Flat Front black FH.png" class="img-fluid" />
+                                <img src="/img/Flat Front black FH.png" class="img-fluid" id="productImage1" />
                             </a>
-                            <a href="#" data-image="/img/polo tshirt whitw.png"
+                            <!-- <a href="#" data-image="/img/polo tshirt whitw.png"
                                 data-zoom-image="/img/polo tshirt whitw.png">
                                 <img id="img_01" src="/img/polo tshirt whitw.png" class="img-fluid" />
-                            </a>
+                            </a> -->
                         </div>
                     </div>
                 </div>
@@ -590,8 +590,30 @@
                     document.getElementById("productName").textContent = product.name;
                     document.getElementById("productDescription").textContent = product.description;
                     document.getElementById("productDescription1").textContent = product.description;
+                    const productImage = document.getElementById("productImage");
+                    const productImage1 = document.getElementById("productImage1");
                     const features = product.features;
                     // document.getElementById("price").textContent = `$${product.price}`;
+                    console.log(productImage)
+                    // Safely access the image path using optional chaining
+                    const imagePath = product.images[0].filePath || [];
+
+                    // Ensure the image path is valid and update the image
+                    if (productImage) {  // Check if productImage exists
+                        if (imagePath !== null) {
+                            productImage.src = imagePath;
+                            productImage1.src = imagePath;
+
+                            productImage.setAttribute("data-zoom-image", imagePath);
+                            productImage.className = "img-fluid zoomed-img";
+                        } else {
+                            console.log('Invalid Image Path:', imagePath);
+                        }
+                    } else {
+                        console.log('Error: productImage element not found.');
+                    }
+
+
 
                     // Check if features exist and is a string
                     if (features && typeof features === 'string') {

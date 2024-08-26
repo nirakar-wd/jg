@@ -55,6 +55,7 @@ app.use("/api/protected-route", verifyToken, (req, res) => {
 
 // Serve static files from the "public" directory
 app.use(express.static(path.join(__dirname, "public")));
+// app.use(express.static("public"));
 
 // routers
 app.use("/api/products", productsRouter);

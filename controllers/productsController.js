@@ -178,7 +178,16 @@ exports.getByTag = function (req, res, next) {
       productIds = _.slice(productIds, offset, offset + limit);
       Promise.all([
         Product.findAll({
-          attributes: ["id", "name", "slug", "price", "discountedPrice" ,"description", "created_at", "updated_at"],
+          attributes: [
+            "id",
+            "name",
+            "slug",
+            "price",
+            "discountedPrice",
+            "description",
+            "created_at",
+            "updated_at",
+          ],
           where: {
             id: {
               [Op.in]: productIds,
@@ -297,13 +306,140 @@ exports.getByCategory = async function (req, res, next) {
   }
 };
 
+// exports.createProduct = async (req, res) => {
+//   console.log(req.files);
+
+//   console.log(req.body);
+
+//   const bindingResult = ProductRequestDto.createProductResponseDto(req);
+//   console.log(bindingResult);
+//   const promises = [];
+
+//   if (!_.isEmpty(bindingResult.errors)) {
+//     return res.json(
+//       AppResponseDto.buildWithErrorMessages(bindingResult.errors)
+//     );
+//   }
+
+//   let transaction;
+
+//   try {
+//     transaction = await sequelize.transaction({ autocommit: false });
+
+//     const tags = req.body.tags || [];
+//     const categories = req.body.categories || [];
+//     const collections = req.body.collections || [];
+
+//     console.log(tags);
+//     console.log(categories);
+//     console.log(collections);
+
+//     tags.forEach(({ name, description }) => {
+//       promises.push(
+//         Tag.findOrCreate({ where: { name }, defaults: { description } })
+//       );
+//     });
+
+//     categories.forEach(({ name, description }) => {
+//       promises.push(
+//         Category.findOrCreate({ where: { name }, defaults: { description } })
+//       );
+//     });
+
+//     collections.forEach(({ name, description }) => {
+//       promises.push(
+//         Collection.findOrCreate({ where: { name }, defaults: { description } })
+//       );
+//     });
+
+//     promises.push(Product.create(bindingResult.validatedData, { transaction }));
+
+//     const results = await Promise.all(promises);
+
+//     promises.length = 0;
+//     const product = results.pop();
+//     const createdTags = [];
+//     const createdCategories = [];
+//     const createdCollections = [];
+
+//     results.forEach((result) => {
+//       if (result[0].constructor.getTableName() === "tags") {
+//         createdTags.push(result[0]);
+//       } else if (result[0].constructor.getTableName() === "categories") {
+//         createdCategories.push(result[0]);
+//       } else if (result[0].constructor.getTableName() === "collections") {
+//         createdCollections.push(result[0]);
+//       }
+//     });
+
+//     promises.push(product.setTags(createdTags, { transaction }));
+//     promises.push(product.setCategories(createdCategories, { transaction }));
+//     promises.push(product.setCollections(createdCollections, { transaction }));
+
+//     if (req.files) {
+//       req.files.forEach((file) => {
+//         const filePath = file.path
+//           .replace(new RegExp("\\\\", "g"), "/")
+//           .replace("public", "");
+//         promises.push(
+//           ProductImage.create(
+//             {
+//               fileName: file.filename,
+//               filePath: filePath,
+//               originalName: file.originalname,
+//               fileSize: file.size,
+//               productId: product.id,
+//             },
+//             { transaction }
+//           )
+//         );
+//       });
+//     }
+
+//     const finalResults = await Promise.all(promises);
+//     const images = finalResults.filter(
+//       (result) =>
+//         result.constructor.getTableName &&
+//         result.constructor.getTableName() === "file_uploads"
+//     );
+
+//     product.images = images;
+//     product.tags = createdTags;
+//     product.categories = createdCategories;
+//     product.collections = createdCollections;
+
+//     await transaction.commit();
+//     return res.json(
+//       AppResponseDto.buildWithDtoAndMessages(
+//         ProductResponseDto.buildDto(product),
+//         "Product created successfully"
+//       )
+//     );
+//   } catch (err) {
+//     if (err.name === "SequelizeUniqueConstraintError") {
+//       await transaction.rollback();
+//       return res.status(400).json({
+//         success: false,
+//         message: "A product with the same unique attribute already exists.",
+//         errors: err.errors,
+//       });
+//     }
+//     await transaction.rollback();
+//     return res.status(500).json({
+//       success: false,
+//       message: "An unexpected error occurred.",
+//       errors: err.stack,
+//     });
+//   }
+// };
+
 exports.createProduct = async (req, res) => {
-  console.log(req.files);
+  console.log(req.files); // Debugging: logs uploaded files
+  console.log(req.body); // Debugging: logs incoming form data
 
   const bindingResult = ProductRequestDto.createProductResponseDto(req);
-  console.log(bindingResult);
-  const promises = [];
 
+  // If there are validation errors, return them
   if (!_.isEmpty(bindingResult.errors)) {
     return res.json(
       AppResponseDto.buildWithErrorMessages(bindingResult.errors)
@@ -315,33 +451,57 @@ exports.createProduct = async (req, res) => {
   try {
     transaction = await sequelize.transaction({ autocommit: false });
 
-    const tags = req.body.tags || [];
-    const categories = req.body.categories || [];
-    const collections = req.body.collections || [];
+    // Parse JSON strings into objects
+    const tags = req.body.tags ? JSON.parse(req.body.tags[1]) : [];
+    const categories = req.body.categories
+      ? JSON.parse(req.body.categories[1])
+      : [];
+    const collections = req.body.collections
+      ? JSON.parse(req.body.collections[1])
+      : [];
 
+    const promises = [];
+
+    // Create or find tags
     tags.forEach(({ name, description }) => {
       promises.push(
-        Tag.findOrCreate({ where: { name }, defaults: { description } })
+        Tag.findOrCreate({
+          where: { name },
+          defaults: { description },
+          transaction,
+        })
       );
     });
 
+    // Create or find categories
     categories.forEach(({ name, description }) => {
       promises.push(
-        Category.findOrCreate({ where: { name }, defaults: { description } })
+        Category.findOrCreate({
+          where: { name },
+          defaults: { description },
+          transaction,
+        })
       );
     });
 
+    // Create or find collections
     collections.forEach(({ name, description }) => {
       promises.push(
-        Collection.findOrCreate({ where: { name }, defaults: { description } })
+        Collection.findOrCreate({
+          where: { name },
+          defaults: { description },
+          transaction,
+        })
       );
     });
 
+    // Create the product
     promises.push(Product.create(bindingResult.validatedData, { transaction }));
 
+    // Execute all promises
     const results = await Promise.all(promises);
 
-    promises.length = 0;
+    // Separate the product and related items
     const product = results.pop();
     const createdTags = [];
     const createdCategories = [];
@@ -357,44 +517,39 @@ exports.createProduct = async (req, res) => {
       }
     });
 
-    promises.push(product.setTags(createdTags, { transaction }));
-    promises.push(product.setCategories(createdCategories, { transaction }));
-    promises.push(product.setCollections(createdCollections, { transaction }));
+    // Associate tags, categories, and collections with the product
+    await Promise.all([
+      product.setTags(createdTags, { transaction }),
+      product.setCategories(createdCategories, { transaction }),
+      product.setCollections(createdCollections, { transaction }),
+    ]);
 
+    // Handle file uploads
     if (req.files) {
-      console.log(req.files);
-      req.files.forEach((file) => {
+      const filePromises = req.files.map((file) => {
         const filePath = file.path
           .replace(new RegExp("\\\\", "g"), "/")
           .replace("public", "");
-        promises.push(
-          ProductImage.create(
-            {
-              fileName: file.filename,
-              filePath: filePath,
-              originalName: file.originalname,
-              fileSize: file.size,
-              productId: product.id,
-            },
-            { transaction }
-          )
+        return ProductImage.create(
+          {
+            fileName: file.filename,
+            filePath: filePath,
+            originalName: file.originalname,
+            fileSize: file.size,
+            productId: product.id,
+          },
+          { transaction }
         );
       });
+
+      const uploadedImages = await Promise.all(filePromises);
+      product.images = uploadedImages;
     }
 
-    const finalResults = await Promise.all(promises);
-    const images = finalResults.filter(
-      (result) =>
-        result.constructor.getTableName &&
-        result.constructor.getTableName() === "file_uploads"
-    );
-
-    product.images = images;
-    product.tags = createdTags;
-    product.categories = createdCategories;
-    product.collections = createdCollections;
-
+    // Commit the transaction
     await transaction.commit();
+
+    // Respond with the created product
     return res.json(
       AppResponseDto.buildWithDtoAndMessages(
         ProductResponseDto.buildDto(product),
@@ -402,15 +557,19 @@ exports.createProduct = async (req, res) => {
       )
     );
   } catch (err) {
-    if (err.name === "SequelizeUniqueConstraintError") {
+    if (transaction) {
       await transaction.rollback();
+    }
+
+    // Handle specific and general errors
+    if (err.name === "SequelizeUniqueConstraintError") {
       return res.status(400).json({
         success: false,
         message: "A product with the same unique attribute already exists.",
         errors: err.errors,
       });
     }
-    await transaction.rollback();
+
     return res.status(500).json({
       success: false,
       message: "An unexpected error occurred.",
@@ -576,34 +735,5 @@ exports.getFilteredProducts = async (req, res, next) => {
     return res
       .status(500)
       .json({ message: err.message || "Internal server error" });
-  }
-};
-
-exports.getSimilarProducts = async (req, res, next) => {
-  const productId = req.params.id;
-
-  try {
-    // Fetch the current product details
-    const product = await Product.findById(productId).populate(
-      "categories tags collections"
-    );
-
-    if (!product) {
-      return res.status(404).json({ message: "Product not found" });
-    }
-
-    // Find similar products
-    const similarProducts = await Product.find({
-      _id: { $ne: productId }, // Exclude the current product
-      $or: [
-        { categories: { $in: product.categories } },
-        { tags: { $in: product.tags } },
-        { collections: { $in: product.collections } },
-      ],
-    }).limit(4); // Limit the number of similar products returned
-
-    res.json(similarProducts);
-  } catch (error) {
-    res.status(500).json({ message: "Error fetching similar products", error });
   }
 };

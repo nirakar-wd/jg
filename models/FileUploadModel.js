@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       userId: {
         type: DataTypes.INTEGER,
         allowNull: true,
-        field: "productId",
+        field: "userId",
       },
 
       fileName: { type: DataTypes.STRING, allowNull: false },

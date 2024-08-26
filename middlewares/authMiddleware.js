@@ -4,8 +4,34 @@ const AppResponseDto = require("../dtos/responses/appResponseDto");
 const User = require("../models/index").User;
 const Role = require("../models/index").Role;
 
+// const verifyToken = async (req, res, next) => {
+//   const { accessToken } = req.cookies;
+//   console.log(req.cookies);
+
+//   if (!accessToken) {
+//     return res.status(401).send("Not Authorized, no token");
+//   }
+
+//   jwt.verify(accessToken, process.env.JWT_SECRET, async (err, decodedUser) => {
+//     if (err) {
+//       return res.status(401).send("Not Authorized, invalid token");
+//     }
+//     const foundUser = await User.findOne({
+//       where: { id: decodedUser.id },
+//       include: [{ model: Role, attributes: ["name"] }],
+//     });
+
+//     // console.log(foundUser);
+//     if (!foundUser) {
+//       return res.status(401).send("Unauthorized! User not found");
+//     }
+//     req.user = foundUser;
+//     next();
+//   });
+// };
+
 const verifyToken = async (req, res, next) => {
-  const { accessToken } = req.cookies;
+  const { accessToken, refreshToken } = req.cookies;
   console.log(req.cookies);
 
   if (!accessToken) {
@@ -14,19 +40,71 @@ const verifyToken = async (req, res, next) => {
 
   jwt.verify(accessToken, process.env.JWT_SECRET, async (err, decodedUser) => {
     if (err) {
-      return res.status(401).send("Not Authorized, invalid token");
-    }
-    const foundUser = await User.findOne({
-      where: { id: decodedUser.id },
-      include: [{ model: Role, attributes: ["name"] }],
-    });
+      if (err.name === "TokenExpiredError" && refreshToken) {
+        // Refresh the access token using the refresh token
+        jwt.verify(
+          refreshToken,
+          process.env.JWT_SECRET,
+          async (refreshErr, decodedRefresh) => {
+            if (refreshErr) {
+              return res
+                .status(401)
+                .send("Not Authorized, invalid refresh token");
+            }
 
-    // console.log(foundUser);
-    if (!foundUser) {
-      return res.status(401).send("Unauthorized! User not found");
+            const foundUser = await User.findOne({
+              where: { id: decodedRefresh.id },
+              include: [{ model: Role, attributes: ["name"] }],
+            });
+
+            if (!foundUser) {
+              return res.status(401).send("Unauthorized! User not found");
+            }
+
+            // Generate new tokens
+            const { newAccessToken } = generateAccessToken({
+              id: foundUser.id,
+              username: foundUser.username,
+              email: foundUser.email,
+            });
+            const { newRefreshToken } = generateRefreshToken({
+              id: foundUser.id,
+              username: foundUser.username,
+              email: foundUser.email,
+            });
+
+            // Set new tokens as cookies
+            res.cookie("accessToken", newAccessToken, {
+              httpOnly: true,
+              secure: process.env.NODE_ENV === "production",
+              sameSite: "None",
+            });
+            res.cookie("refreshToken", newRefreshToken, {
+              httpOnly: true,
+              secure: process.env.NODE_ENV === "production",
+              sameSite: "None",
+            });
+
+            req.user = foundUser;
+            next();
+          }
+        );
+      } else {
+        return res.status(401).send("Not Authorized, invalid token");
+      }
+    } else {
+      const foundUser = await User.findOne({
+        where: { id: decodedUser.id },
+        include: [{ model: Role, attributes: ["name"] }],
+      });
+
+      if (!foundUser) {
+        return res.status(401).send("Unauthorized! User not found");
+      }
+
+      req.user = foundUser;
+      next();
     }
-    req.user = foundUser;
-    next();
   });
 };
 
