@@ -223,7 +223,7 @@ exports.getCurrentUser = async (req, res) => {
 exports.editUser = async (req, res) => {
   try {
     const userId = req.userId; // Assume req.userId is set by authentication middleware
-    const { firstName, lastName, profilePic, bio, email, password } = req.body;
+    const { firstName, lastName, bio, email, password } = req.body;
 
     // Find the user by ID
     const user = await User.find({
@@ -238,7 +238,6 @@ exports.editUser = async (req, res) => {
     // Update user fields
     if (firstName) user.firstName = firstName;
     if (lastName) user.lastName = lastName;
-    if (profilePic) user.profilePic = profilePic;
     if (bio) user.bio = bio;
     if (email) user.email = email;
 

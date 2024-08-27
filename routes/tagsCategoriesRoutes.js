@@ -10,18 +10,14 @@ router.get("/tags", tagCategoriesController.getTags);
 router.get("/collections", tagCategoriesController.getCollections);
 router.post(
   "/categories",
-  // verifyToken,
-  // isAdmin,
-  // setUploadPath("./public/images/categories"),
-  // upload.array("images", 6),
+  verifyToken,
+  isAdmin,
   tagCategoriesController.createCategory
 );
 router.post(
   "/tags",
   verifyToken,
   isAdmin,
-  setUploadPath("./public/images/tags"),
-  upload.array("images", 6),
   tagCategoriesController.createTag
 );
 router.post(

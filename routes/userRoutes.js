@@ -7,12 +7,13 @@ router.post("/login", controller.login);
 router.post("/feedback", verifyToken, controller.createFeedback);
 
 router.get("/",
-    //  verifyToken, 
-    //  isAdmin, 
+     verifyToken, 
+     isAdmin, 
      controller.getAllUsers);
 router.get("/:id", 
-    // verifyToken,
+    verifyToken,
      controller.getCurrentUser);
+     
 router.put("/:id", verifyToken, controller.editUser);
 router.delete("/:id", verifyToken, isAdmin, controller.deleteUser);
 

@@ -629,7 +629,7 @@
                     }
 
                     // Set the base price from the backend
-                    basePrice = product.discountedPrice;
+                    basePrice = product.price;
                     priceElement.textContent = `Rs.${basePrice.toFixed(2)}`;
 
                     product.tags.forEach((tag) => {
@@ -669,7 +669,7 @@
                                 <a href="http://localhost:4000/products/${product.id}" class="cat-link">
                                     <img src="/images/products/polo.jpg" alt="${product.name}">
                                     <span class="title">${product.name}</span>
-                                    <span class="price">Rs. ${product.discountedPrice}</span>
+                                    <span class="price">Rs. ${product.price}</span>
                                 </a>
                             </h6>
                         </div>

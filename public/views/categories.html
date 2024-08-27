@@ -240,6 +240,7 @@
                                                         <option value="name_desc">Name (Z - A)</option>
                                                         <option value="price_asc">Price (Low > High)</option>
                                                         <option value="price_desc">Price (High > Low)</option>
+                                                        <option value="name_asc">Discounts</option>
                                                     </select>
                                                 </div>
                                             </li>
@@ -500,8 +501,7 @@
                             <span><i class="fa fa-star"></i></span>
                             <span><i class="fa fa-star"></i></span>
                         </div>
-                        <del>${product.price}</del>
-                        <ins>${product.discountedPrice}</ins>
+                        <ins>${product.price}</ins>
                     </div>
                 </div>
             `;
@@ -582,7 +582,7 @@
                                                         class="fa fa-star"></i></span> <span><i
                                                         class="fa fa-star"></i></span> <span><i
                                                         class="fa fa-star"></i></span> </div>
-                                            <del>${product.price}</del> <ins>${product.discountedPrice}</ins>
+                                            <ins>${product.price}</ins>
                                         </div>
                                     </div>
         `;
@@ -668,7 +668,7 @@
                                 class="fa fa-star"></i></span> <span><i
                                 class="fa fa-star"></i></span> <span><i
                                 class="fa fa-star"></i></span> </div>
-                    <del>${product.price}</del> <ins>${product.discountedPrice}</ins>
+                    <ins>${product.price}</ins>
                 </div>
             </div>
         `;
@@ -718,7 +718,7 @@
                                         <span><i class="fa fa-star"></i></span>
                                     </div>
                                     <del>${product.price}</del>
-                                    <ins>${product.discountedPrice}</ins>
+                                    <ins>${product.price}</ins>
                                 </div>
                             </div>
             `;
