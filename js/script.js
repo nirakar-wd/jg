@@ -1,3 +1,15 @@
+document.addEventListener('DOMContentLoaded', function () {
+  const loader = document.getElementById('loader');
+  const content = document.getElementById('content');
+
+  // Simulate loading time (e.g., fetching data, loading images)
+  setTimeout(() => {
+      // Hide the loader and show the content
+      loader.style.display = 'none';
+      content.style.display = 'flex';
+  }, 2000); // Adjust the time as needed
+});
+
 /* scroll menu  */
 
 window.addEventListener("scroll", function () {
