@@ -25,10 +25,10 @@
         integrity="sha512-06CZo7raVnbbD3BlY8/hGUoUCuhk8sTdVGV3m3nuh9i2R+UmkLbLRTE/My8TuJ3ALbDulhBObJQWtOUt0mXzNQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
 
 
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="css/style.css">
 
 </head>
 
@@ -189,84 +189,191 @@
 
     <main>
 
-        <div class="container">
+        <!-- Shop Grid Page Section Start -->
+        <div class="product-detail">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 col-lg-3">
+                        <div class="left-sidebar">
+
+                            <!-- product categories Section Start -->
+                            <div class="sidebar-box pb30">
+                                <h3 class="heading-tertiary">New Arrivals</h3>
+                                <ul>
+                                    <li>
+                                        <a href="#">Polos</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">T-shirts</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Sweatshirts</a>
+                                    </li>
 
 
-            <div class="delipoli">
-                <h2 class="heading-secondary">
-                    Delivery Policy
-                </h2>
+                                </ul>
+                            </div>
 
-                <p class="para">
-                    Please be aware that delivery might be delayed because of unforeseen occurrences like road
-                    blockades, harsh
-                    weather, and natural disasters like landslides, earthquakes, and floods, which could cause air or
-                    road traffic
-                    congestion. We will notify our clients as soon as possible if unforeseen events cause a delivery
-                    delay.
-                </p>
+                            <!-- Filter By Price -->
 
-                <h3 class="heading-tertiary">
-                    Delivery Time frame
-
-                </h3>
-                <p class="para">
-
-                    Once your order is verified, we will process, pack, and schedule your package for delivery. We
-                    typically deliver
-                    your items within 48 hours inside Kathmandu valley (Kathmandu, Lalitpur, Bhaktapur).
-
-
-                </p>
-
-                <p class="para">
-                    Delivery is anticipated to take 1-2 working days in Kathmandu, Bhaktapur, and Lalitpur. We will need
-                    two working
-                    days after placing your purchase in order to process, schedule, and deliver it.
-                </p>
-
-                <h3 class="heading-tertiary">
-                    Delivery Fees
-
-                </h3>
-
-                <p class="para">
-                    Delivery charge is obliged to be paid on current rate to our outsourced logistics comapnies.
+                            <h3 class="heading-tertiary mt-5">filter by price</h3>
+                            <div class="price-ranger">
+                                <div class="price-input">
+                                    <div class="field">
+                                        <span>Min</span>
+                                        <input type="number" class="input-min" value="2500">
+                                    </div>
+                                    <div class="separator">-</div>
+                                    <div class="field">
+                                        <span>Max</span>
+                                        <input type="number" class="input-max" value="7500">
+                                    </div>
+                                </div>
+                                <div class="slider">
+                                    <div class="progress"></div>
+                                </div>
+                                <div class="range-input">
+                                    <input type="range" class="range-min" min="0" max="10000" value="2500" step="100">
+                                    <input type="range" class="range-max" min="0" max="10000" value="7500" step="100">
+                                </div>
+                            </div>
 
 
-                </p>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-lg-9 order-first order-lg-last">
+                        <!-- List, Grid View and Sort by Section -->
+                        <div class="list-grid-sort">
+                            <div class="row">
 
-                <p class="para fw-medium">
-                    Expected Delivery Charge:
+                                <div class="col-md-6">
+                                    <div class="sizeinproduct">
+                                        <ul>
+                                            <li class="fontsize_mks">Sort By : </li>
+                                            <li>
+                                                <div class="custom_selectmks">
+                                                    <select class="form-select">
+                                                        <option>Relevance</option>
+                                                        <option>Name (A - Z)</option>
+                                                        <option>Name (Z - A)</option>
+                                                        <option>Price (Low &gt; High)</option>
+                                                        <option>Rating (Lowest)</option>
+                                                        <option>Model (A - Z)</option>
+                                                        <option>Model (Z - A)</option>
+                                                    </select>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="show-result">
+                                        <p>Showing 1–12 of 15 results</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="right-sidebar">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="abox">
+                                        <div class="kecimgbox"> <a href="product.html"><img
+                                                    src="img/Flat Front black FH.png" class="img-fluid"
+                                                    alt="prod images"></a>
+                                            <!-- <div class="addcard-wishlist">
+                                                <ul>
+                                                    <li><a href="#"><i class="fa fa-shopping-cart"></i> add to cart</a>
+                                                    </li>
+                                                    <li><a href="#"><i class="fa fa-heart"></i> Wishlist</a></li>
+                                                </ul>
+                                            </div> -->
+                                        </div>
+                                        <div class="prod-desc">
+                                            <h4><a href="product.html">Polo</a></h4>
+                                            <div class="rating-mks"> <span><i class="fa fa-star"></i></span> <span><i
+                                                        class="fa fa-star"></i></span> <span><i
+                                                        class="fa fa-star"></i></span> <span><i
+                                                        class="fa fa-star"></i></span> <span><i
+                                                        class="fa fa-star"></i></span> </div>
+                                            <del>Rs1500.00</del> <ins>Rs1000.00</ins>
+                                        </div>
+                                    </div>
+                                </div>
 
-                    <br> Inside Ring-road (Kathmandu): NRS 100
+                                <div class="col-md-4">
+                                    <div class="abox">
+                                        <div class="kecimgbox"> <a href="product.html"><img
+                                                    src="img/Flat Front black FH.png" class="img-fluid"
+                                                    alt="prod images"></a>
+                                            <!-- <div class="addcard-wishlist">
+                                                <ul>
+                                                    <li><a href="#"><i class="fa fa-shopping-cart"></i> add to cart</a>
+                                                    </li>
+                                                    <li><a href="#"><i class="fa fa-heart"></i> Wishlist</a></li>
+                                                </ul>
+                                            </div> -->
+                                        </div>
+                                        <div class="prod-desc">
+                                            <h4><a href="product.html">Polo</a></h4>
+                                            <div class="rating-mks"> <span><i class="fa fa-star"></i></span> <span><i
+                                                        class="fa fa-star"></i></span> <span><i
+                                                        class="fa fa-star"></i></span> <span><i
+                                                        class="fa fa-star"></i></span> <span><i
+                                                        class="fa fa-star"></i></span> </div>
+                                            <del>Rs1500.00</del> <ins>Rs1000.00</ins>
+                                        </div>
+                                    </div>
+                                </div>
 
-                    <br> Outside Ring-road (Kathmadnu):NRS 150
-                </p>
+                                <div class="col-md-4">
+                                    <div class="abox">
+                                        <div class="kecimgbox"> <a href="product.html"><img
+                                                    src="img/Flat Front black FH.png" class="img-fluid"
+                                                    alt="prod images"></a>
+                                            <!-- <div class="addcard-wishlist">
+                                                <ul>
+                                                    <li><a href="#"><i class="fa fa-shopping-cart"></i> add to cart</a>
+                                                    </li>
+                                                    <li><a href="#"><i class="fa fa-heart"></i> Wishlist</a></li>
+                                                </ul>
+                                            </div> -->
+                                        </div>
+                                        <div class="prod-desc">
+                                            <h4><a href="product.html">Polo</a></h4>
+                                            <div class="rating-mks"> <span><i class="fa fa-star"></i></span> <span><i
+                                                        class="fa fa-star"></i></span> <span><i
+                                                        class="fa fa-star"></i></span> <span><i
+                                                        class="fa fa-star"></i></span> <span><i
+                                                        class="fa fa-star"></i></span> </div>
+                                            <del>Rs1500.00</del> <ins>Rs1000.00</ins>
+                                        </div>
+                                    </div>
+                                </div>
 
+                            </div>
 
-
-
-
-
-                <p>
-                    Please be aware that delivery might be delayed because of unforeseen occurrences like road
-                    blockades, harsh
-                    weather, and natural disasters like landslides, earthquakes, and floods, which could cause air or
-                    road traffic
-                    congestion. We will notify our clients as soon as possible if unforeseen events cause a delivery
-                    delay.
-                </p>
-
+                            <!-- Pagination Section
+                            <div class="pagination-sec">
+                                <nav class="pagination pagination_type1">
+                                    <ol class="pagination__list">
+                                        <li class="pagination__group"><a href="#0"
+                                                class="pagination__item pagination__control pagination__control_prev">prev</a>
+                                        </li>
+                                        <li class="pagination__group"><span
+                                                class="pagination__item pagination__item_active">1</span></li>
+                                        <li class="pagination__group"><a href="#0" class="pagination__item">2</a></li>
+                                        <li class="pagination__group"><a href="#0" class="pagination__item">3</a></li>
+                                        <li class="pagination__group"><a href="#0"
+                                                class="pagination__item pagination__control pagination__control_next">next</a>
+                                        </li>
+                                    </ol>
+                                </nav>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
             </div>
-
         </div>
-
-
-
-
-
-
 
 
     </main>
@@ -371,6 +478,10 @@
 
     </footer>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/min/tiny-slider.js"></script>
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+
     <script src="js/script.js"></script>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
@@ -389,6 +500,7 @@
             });
         });
     </script>
+
 </body>
 
 </html>
