@@ -7,6 +7,10 @@ const cookieParser = require("cookie-parser");
 const path = require("path");
 const helmet = require("helmet");
 const bodyParser = require("body-parser");
+const {
+  verifyToken,
+  isAdmin,
+} = require("./middlewares/authMiddleware");
 
 const productsRouter = require("./routes/productsRoutes");
 const usersRouter = require("./routes/userRoutes");
@@ -16,8 +20,6 @@ const tagAndCategoriesRouter = require("./routes/tagsCategoriesRoutes");
 const pagesRouter = require("./routes/pagesRoutes");
 const ordersRouter = require("./routes/ordersRoutes");
 const cartsRouter = require("./routes/cartRoutes");
-
-const { verifyToken } = require("./middlewares/authMiddleware");
 
 const app = express();
 
@@ -49,9 +51,9 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/api/protected-route", verifyToken, (req, res) => {
-  res.send("This is a protected route");
-});
+// app.use("/api/protected-route", verifyToken, (req, res) => {
+//   res.send("This is a protected route");
+// });
 
 // Serve static files from the "public" directory
 app.use(express.static(path.join(__dirname, "public")));
@@ -85,7 +87,7 @@ app.get("/categories/:categoryId", (req, res) => {
   res.sendFile(path.join(__dirname, "public/views", "productsCategories.html"));
 });
 
-app.get("/admin", (req, res) => {
+app.get("/admin", verifyToken, isAdmin, (req, res) => {
   res.sendFile(path.join(__dirname, "public/views", "admin.html"));
 });
 
@@ -135,6 +137,34 @@ app.get("/deliveryPolicy", (req, res) => {
 
 app.get("/contacts", (req, res) => {
   res.sendFile(path.join(__dirname, "public/views", "contact.html"));
+});
+
+app.get("/newArrivals", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/views", "newarrivals.html"));
+});
+
+app.get("/digitalMarketing", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/views", "digitalmarketing.html"));
+});
+
+app.get("/editCategory", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/views", "editcategory.html"));
+});
+
+app.get("/edition", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/views", "edition.html"));
+});
+
+app.get("/editProduct", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/views", "editproduct.html"));
+});
+
+app.get("/manageProduct", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/views", "manageproduct.html"));
+});
+
+app.get("/checkoutSuccess", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/views", "checkoutsuccess.html"));
 });
 
 // Error handling middleware

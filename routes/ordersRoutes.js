@@ -4,7 +4,6 @@ const router = require("express").Router();
 const ordersController = require("../controllers/ordersController");
 const {
   verifyToken,
-  userOwnsItOrIsAdmin,
   isAdmin,
 } = require("../middlewares/authMiddleware");
 
@@ -12,15 +11,14 @@ router.get("", verifyToken, ordersController.getOrders);
 
 router.get(
   "/all",
-  //  verifyToken,
-  //  isAdmin,
+   verifyToken,
+   isAdmin,
   ordersController.getAllOrders
 );
 
 router.get(
   "/:orderId",
-  // verifyToken,
-  // userOwnsItOrIsAdmin,
+  verifyToken,
   ordersController.getOrderDetails
 );
 router.post("", verifyToken, ordersController.createOrder);

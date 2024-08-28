@@ -1,9 +1,10 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const orderId = window.location.pathname.split("/").pop(); // Extract orderId from the URL
-
-  console.log(orderId);
+  const totalPriceSpan = document.getElementById("totalPrice");
+  let orderTotal;
 
   let paymentAmount;
+  let deliveryFee = 150; // Default delivery fee
 
   try {
     const response = await fetch(
@@ -25,40 +26,53 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.error("Error fetching order details:", error);
   }
 
+  document
+    .querySelectorAll('input[name="deliveryOptions"]')
+    .forEach((radio) => {
+      radio.addEventListener("change", handleOptionChange);
+    });
+
+  function handleOptionChange() {
+    const selectedOption = document.querySelector(
+      'input[name="deliveryOptions"]:checked'
+    );
+    if (selectedOption) {
+      deliveryFee = parseFloat(selectedOption.value); // Update delivery fee
+      updateTotalCost(); // Update total cost when delivery option changes
+    }
+  }
+
   function displayOrderSummary(order) {
     const productContainer = document.getElementById("productList");
-    const totalPriceSpan = document.getElementById("totalPrice");
-    const deliveryFeeSpan = document.getElementById("deliveryFee");
-
-    let deliveryFee = 150.0;
-    let totalCost = order.total + deliveryFee;
-    productContainer.innerHTML = "";
-
     console.log(order);
+    orderTotal = order.total;
 
-    paymentAmount = totalCost;
+    productContainer.innerHTML = "";
 
     order.order_items.forEach((product) => {
       const productElement = document.createElement("div");
       productElement.classList.add("pro-price", "d-flex");
 
-      // Create elements for product name and price
       const productName = document.createElement("span");
       productName.textContent = `${product.name} x ${product.quantity}`;
 
       const productPrice = document.createElement("span");
       productPrice.textContent = `Rs.${product.price.toFixed(2)}`;
 
-      // Append name and price to the product element
       productElement.appendChild(productName);
       productElement.appendChild(productPrice);
 
-      // Append the product element to the container
       productContainer.appendChild(productElement);
     });
 
-    deliveryFeeSpan.textContent = `Rs.${deliveryFee}`;
-    totalPriceSpan.textContent = `Rs.${totalCost}`;
+    // Initially update total cost
+    updateTotalCost();
+  }
+
+  function updateTotalCost() {
+    const totalCost = orderTotal + deliveryFee;
+    totalPriceSpan.textContent = `Rs.${totalCost.toFixed(2)}`;
+    paymentAmount = totalCost; // Update payment amount
   }
 
   document

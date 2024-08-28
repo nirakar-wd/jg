@@ -25,18 +25,18 @@
         integrity="sha512-06CZo7raVnbbD3BlY8/hGUoUCuhk8sTdVGV3m3nuh9i2R+UmkLbLRTE/My8TuJ3ALbDulhBObJQWtOUt0mXzNQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
 
 
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="/css/style.css">
 
 </head>
 
 <body id="bd">
 
-    <div id="loader" class="loading-container">
+    <!-- <div id="loader" class="loading-container">
         <img src="img/FOR_HUMANS__2_.png" alt="Loading" class="loader-image">
-    </div>
+    </div> -->
 
     <div class="content">
         <i class="fas fa-sun"></i>
@@ -119,18 +119,11 @@
 
                     <div class="col-md-3">
                         <div class="d-flex justify-content-between align-items-center">
-                            <form class="d-flex search-form justify-content-end" role="search">
-                                <input class="form-control" type="search" placeholder="search" aria-label="Search">
-                                <span>&nbsp;</span>
-
-                                <!-- <button class="btn btn-search" type="submit"><i
-                                        class="fa-solid fa-magnifying-glass fa-xl"></i>
-                                </button> -->
-
-
+                            <form class="d-flex search-form justify-content-end" role="search" id="searchForm">
+                                <input class="form-control" type="search" placeholder="search" aria-label="Search"
+                                    id="searchInput" autocomplete="off">
+                                <button type="submit"><span>&nbsp;</span></button>
                             </form>
-
-
 
                             <div class="cart-icon">
                                 <a href="http://localhost:4000/login" class="cart-btn mx-3">
@@ -669,7 +662,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/min/tiny-slider.js"></script>
 
-    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="/js/bootstrap.bundle.min.js"></script>
 
 
 
@@ -965,18 +958,49 @@
     </script>
 
     <script>
-        
+
 
     </script>
 
 
-
-
-
-
-    <script src="../js/script.js"></script>
+    <script src="/js/script.js"></script>
     <!-- <script src="/client/getProducts.js"></script> -->
     <!-- <script src="/client/getReviews.js"></script> -->
+
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const query = document.getElementById('searchInput').value;
+
+            console.log(query);
+
+            fetch(`/api/products/search?q=${query}`)
+                .then(response => response.json())
+                .then(data => {
+
+                    console.log(data)
+                    // const resultsList = document.getElementById('results');
+                    // resultsList.innerHTML = '';  // Clear previous results
+
+                    // console.log(data)
+                    // if (data.length === 0) {
+                    //     const li = document.createElement('li');
+                    //     li.textContent = 'No products found';
+                    //     li.className = 'list-group-item'; // Add styling
+                    //     resultsList.appendChild(li);
+                    // } else {
+
+                    //     data.forEach(item => {
+                    //         const li = document.createElement('li');
+                    //         li.textContent = item.name;
+                    //         li.className = 'list-group-item'; // Add styling
+                    //         resultsList.appendChild(li);
+                    //     });
+                    // }
+                })
+                .catch(error => console.error('Error fetching search results:', error));
+        });
+    </script>
 
 
 </body>
