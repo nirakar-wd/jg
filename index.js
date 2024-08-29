@@ -167,6 +167,14 @@ app.get("/checkoutSuccess", (req, res) => {
   res.sendFile(path.join(__dirname, "public/views", "checkoutsuccess.html"));
 });
 
+app.get("/myProfile", verifyToken, (req, res) => {
+  res.sendFile(path.join(__dirname, "public/views", "userProfile.html"));
+});
+
+app.get("/myLocation", verifyToken, (req, res) => {
+  res.sendFile(path.join(__dirname, "public/views", "userLocation.html"));
+});
+
 // Error handling middleware
 app.use(function (err, req, res, next) {
   console.error(err.stack);

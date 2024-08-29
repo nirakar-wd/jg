@@ -181,12 +181,10 @@
             <div class="row g-0">
                 <div class="col-md-6">
                     <div class="product-img position-relative">
-                        <img src="/img/Flat Front black FH.png" data-zoom-image="/img/Flat Front black FH.png"
-                            class="/img-fluid zoomed-img" id="productImage" />
+                        <img id="productImage" src="/img/Flat Front black FH.png" />
 
                         <div id="gallery_demo">
-                            <a href="#" data-image="/img/Flat Front black FH.png"
-                                data-zoom-image="/img/Flat Front black FH.png">
+                            <a>
                                 <img src="/img/Flat Front black FH.png" class="img-fluid" id="productImage1" />
                             </a>
                             <!-- <a href="#" data-image="/img/polo tshirt whitw.png"
@@ -296,7 +294,104 @@
                 </div>
             </div>
 
+            <div class="cusreviews mt-5">
+                <div class="container">
+                    <div>
+                        <h2 class="heading-secondary text-center mb-5">customer reviews
+                            <div class="separator mx-auto"></div>
+                        </h2>
 
+                        <div class="testimonials-box" id="base">
+                            <div class="testimonials-details">
+                                <div class="row align-items-center">
+                                    <div class="col-md-2">
+                                        <div class="client-pd">
+                                            <img src="/img/pexels-andrea-piacquadio-774909 1.png" alt="client photo"
+                                                class="client-img">
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-10">
+                                        <div>
+                                            <span class="reviewstar">
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                            </span>
+                                            <div class="client-name">
+                                                Jane Doe
+
+                                            </div>
+                                            <p class="para test-para">Lorem ipsum dolor sit amet, consectetur adipiscing
+                                                elit. Nunc
+                                                vulputate libero et velit interdum, ac aliquet odio mattis.Lorem ipsum
+                                                dolor sit amet,
+                                                consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac
+                                                aliquet odio
+                                                mattis.
+
+                                            </p>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+                            </div>
+
+
+
+                        </div>
+
+                        <div class="review text-center w-75 mx-auto">
+                            <h3 class="heading-tertiary">
+                                add a review
+                            </h3>
+
+                            <form id="postCommentForm">
+                                <div class="comment-form-rating mt-5">
+                                    <label for="rating" class="me-5">
+                                        Your rating
+                                    </label>
+
+                                    <span class="stars">
+                                        <a href="#">
+                                            <i class="fa fa-star"></i>
+                                        </a>
+                                        <a href="#">
+                                            <i class="fa fa-star"></i>
+                                        </a>
+                                        <a href="#">
+                                            <i class="fa fa-star"></i>
+                                        </a>
+                                        <a href="#">
+                                            <i class="fa fa-star"></i>
+                                        </a>
+                                        <a href="#">
+                                            <i class="fa fa-star"></i>
+                                        </a>
+                                    </span>
+
+                                    <textarea placeholder="Your review" cols="45" rows="8"
+                                        class="form-control my-5" id="commentContent"></textarea>
+
+                                    <div>
+                                        <button type="submit" class="btn-send btn mt-5">SUBMIT</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
 
         </section>
         <div class="peepbought">
@@ -572,7 +667,6 @@
                 // Extract the productId from the URL path
                 const path = window.location.pathname;
                 const productId = path.split("/").pop(); // Gets the last part of the path
-                console.log(`Extracted productId: ${productId}`);
 
                 // Fetch product details using the productId
                 const response = await fetch(`http://localhost:4000/api/products/by_id/${productId}`, {
@@ -594,26 +688,26 @@
                     const productImage1 = document.getElementById("productImage1");
                     const features = product.features;
                     // document.getElementById("price").textContent = `$${product.price}`;
-                    console.log(productImage)
-                    // Safely access the image path using optional chaining
-                    const imagePath = product.images[0].filePath || [];
+
+                    const imagePath = (product.images && product.images.length > 0) ? product.images[0].filePath : '';
+
 
                     // Ensure the image path is valid and update the image
-                    if (productImage) {  // Check if productImage exists
-                        if (imagePath !== null) {
-                            productImage.src = imagePath;
-                            productImage1.src = imagePath;
+                    if (imagePath) {  // Check if productImage exists
+                        productImage.className = "demo img-fluid zoomed-img";
+                        productImage.src = imagePath;
+                        productImage1.src = imagePath;
 
-                            productImage.setAttribute("data-zoom-image", imagePath);
-                            productImage.className = "img-fluid zoomed-img";
-                        } else {
-                            console.log('Invalid Image Path:', imagePath);
-                        }
+                        // const concatenatedPath = "http://localhost:4000" + imagePath;
+
+                        productImage.setAttribute("data-zoom-image", imagePath);
+                        productImage1.setAttribute("data-zoom-image", imagePath);
+                        productImage1.setAttribute("data-image", imagePath);
+                        productImage1.className = "img-fluid";
+                        console.log(productImage);
                     } else {
                         console.log('Error: productImage element not found.');
                     }
-
-
 
                     // Check if features exist and is a string
                     if (features && typeof features === 'string') {
@@ -634,7 +728,51 @@
 
                     product.tags.forEach((tag) => {
                         tagName = tag.name;
-                    })
+                    });
+
+                    const testimonialsContainer = document.getElementById('base');
+
+                    // Clear any existing content
+                    testimonialsContainer.innerHTML = '';
+
+                    product.comments.forEach(comment => {
+                        const testimonialHTML = `
+                                <div class="testimonials-details">
+                                <div class="row align-items-center">
+                                    <div class="col-md-2">
+                                    <div class="client-pd">
+                                        <img src="" alt="client photo" class="client-img">
+                                    </div>
+                                    </div>
+                                    <div class="col-md-10">
+                                    <div>
+                                        <span class="reviewstar">
+                                        ${generateStars(comment.rating)}
+                                        </span>
+                                        <div class="client-name">
+                                        ${comment.user.username}
+                                        </div>
+                                        <p class="para test-para">
+                                        ${comment.content}
+                                        </p>
+                                    </div>
+                                    </div>
+                                </div>
+                                </div>
+                             `;
+
+                        // Insert the generated HTML into the container
+                        testimonialsContainer.innerHTML += testimonialHTML;
+                    });
+
+                    function generateStars(rating) {
+                        let starsHTML = '';
+                        for (let i = 0; i < 5; i++) {
+                            starsHTML += i < rating ? '<i class="fa fa-star"></i>' : '<i class="fa fa-star-o"></i>';
+                        }
+                        return starsHTML;
+                    }
+
 
 
                 } else {
@@ -654,8 +792,6 @@
                         "Content-Type": "application/json",
                     },
                 });
-
-                console.log(response)
 
                 if (response.ok) {
                     const result = await response.json();
@@ -732,6 +868,8 @@
         });
     </script>
 
+    <script src="/client/postComments.js"></script>
+
     <!-- EZ ZOOM -->
     <script>
         $("input[name='demo1']").TouchSpin({
@@ -747,7 +885,7 @@
 
     <script>
 
-        $("#demo").ezPlus({
+        $(".demo").ezPlus({
             gallery: 'gallery_demo',
             cursor: 'pointer',
             galleryActiveClass: "active",

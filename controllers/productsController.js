@@ -105,7 +105,7 @@ exports.getProductById = async function (req, res, next) {
         { model: Collection, attributes: ["id", "name"] },
         {
           model: Comment,
-          attributes: ["id", "content"],
+          attributes: ["id", "content", "rating"],
           include: [{ model: User, attributes: ["id", "username"] }],
         },
       ],

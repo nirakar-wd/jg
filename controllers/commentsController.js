@@ -72,21 +72,42 @@ exports.getCommentsFromProduct = function (req, res, next) {
 };
 
 exports.createComment = function (req, res, next) {
-  const bindingResult = CommentRequestDto.createCommentDto(req.body);
-  if (!_.isEmpty(bindingResult.errors)) {
-  }
-
-  Comment.create({
-    productId: req.product_id,
-    userId: req.user.id,
-    content: req.body.content,
-    rating: req.body.rating,
+  // Check if the user has already posted a comment on the same product
+  Comment.findOne({
+    where: {
+      productId: req.body.productId, // Use req.body.productId for consistency
+      userId: req.user.id,
+    },
   })
-    .then((comment) => {
-      return res.json(CommentResponseDto.buildDetails(comment, false, false));
+    .then((existingComment) => {
+      if (existingComment) {
+        return res.status(400).json({
+          error: "You have already posted a comment on this product.",
+        });
+      }
+
+      // If no existing comment, proceed to create the new comment
+      Comment.create({
+        productId: req.body.productId, // Use req.body.productId
+        userId: req.user.id,
+        content: req.body.content,
+        rating: req.body.rating,
+      })
+        .then((comment) => {
+          return res.json(
+            CommentResponseDto.buildDetails(comment, false, false)
+          );
+        })
+        .catch((err) => {
+          return res
+            .status(500)
+            .json(AppResponseDto.buildWithErrorMessages(err.message));
+        });
     })
     .catch((err) => {
-      return res.json(AppResponseDto.buildWithErrorMessages(err.message));
+      return res
+        .status(500)
+        .json(AppResponseDto.buildWithErrorMessages(err.message));
     });
 };
 

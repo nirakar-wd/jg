@@ -1,7 +1,5 @@
 const { Cart } = require("../models/index");
 const { Product, User, Address } = require("../models/index");
-
-console.log("Cart model:", Cart); // Should log the Cart model
 // Add to Cart
 exports.addToCart = async (req, res) => {
   try {
