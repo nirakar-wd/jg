@@ -34,6 +34,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.getElementById("lastName").value = user.user.lastName;
         document.getElementById("userBio1").value = user.user.bio;
         document.getElementById("userEmail1").value = user.user.email;
+        const avatarImage = document.getElementById("userAvatar");
+
+        if (user.user.images && user.user.images.length > 0) {
+          avatarImage.src = user.user.images[0].filePath;
+        } else {
+          console.log("no user image");
+        }
       } else {
         console.error("Failed to fetch user information");
       }
@@ -109,4 +116,55 @@ document.addEventListener("DOMContentLoaded", async () => {
   } catch (error) {
     console.error("Error:", error);
   }
+
+  // put request for admin
+  const id = localStorage.getItem("userId");
+  document
+    .getElementById("userProfileForm")
+    .addEventListener("submit", async function (event) {
+      event.preventDefault(); // Prevent the default form submission behavior
+
+      // Get the form field values
+      const firstName = document.getElementById("firstName").value;
+      const lastName = document.getElementById("lastName").value;
+      const bio = document.getElementById("userBio1").value;
+      // const email = document.getElementById("userEmail1").value;
+      const password = document.getElementById("userPassword").value;
+      const userImg = document.getElementById("userImg").files[0]; // File input
+
+      // Create a FormData object to handle the form data including the file
+      const formData = new FormData();
+      formData.append("firstName", firstName);
+      formData.append("lastName", lastName);
+      formData.append("bio", bio);
+      // formData.append("email", email);
+      formData.append("password", password);
+      if (userImg) {
+        formData.append("images", userImg); // Append the image file
+      }
+
+      if (id) {
+        try {
+          // Await the fetch request to handle the response properly
+          const editResponse = await fetch(
+            `http://localhost:4000/api/users/${id}`,
+            {
+              method: "PUT",
+              body: formData, // No need for headers with FormData
+              credentials: "include", // Ensure cookies are sent with the request
+            }
+          );
+
+          // Check the response status
+          if (editResponse.ok) {
+            console.log("User edited successfully");
+          } else {
+            const errorData = await editResponse.json();
+            console.error("Error editing user:", errorData);
+          }
+        } catch (error) {
+          console.error("Failed to edit user:", error);
+        }
+      }
+    });
 });

@@ -804,8 +804,7 @@
                             <div class="row align-items-center">
                                 <div class="col-auto">
                                     <div class="avatar">
-                                        <img src="img/pexels-andrea-piacquadio-774909 1.png" alt="pp"
-                                            class="rounded-circle img-thumbnail">
+                                        <img src="/images/users/defaultUser.png" id="userAvatar" alt="pp" class="rounded-circle img-thumbnail">
                                     </div>
                                 </div>
                                 <div class="col">
@@ -1015,7 +1014,7 @@
                                                 <div class="col-4">
                                                     <div class="mb-3">
                                                         <label for="userimg" class="form-label">User Image</label>
-                                                        <input type="file" name="userimg" id="userImg"
+                                                        <input type="file" name="images" id="userImg"
                                                             class="form-control">
                                                     </div>
                                                 </div> <!-- end col -->
@@ -1027,8 +1026,8 @@
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
                                                         <label for="useremail" class="form-label">Email Address</label>
-                                                        <input type="email" class="form-control" id="userEmail1"
-                                                            placeholder="Enter email">
+                                                        <input type="text" class="form-control" id="userEmail1"
+                                                            placeholder="Enter email" readonly>
                                                         <span class="form-text text-muted"><small>If you want to change
                                                                 email please <a href="javascript: void(0);">click</a>
                                                                 here.</small></span>
@@ -1392,7 +1391,7 @@
     </script>
     <script src="/client/addProduct.js"></script>
 
-    <script src="/client/getProfile.js"></script>
+    <script src="/client/getAdminProfile.js"></script>
 
     <script src="/client/postCategories.js"></script>
 

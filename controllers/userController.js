@@ -2,7 +2,14 @@ require("dotenv").config();
 const bcrypt = require("bcrypt");
 const _ = require("lodash");
 const jwt = require("jsonwebtoken");
-const { User, Role, Address, Feedback, Sequelize } = require("../models/index");
+const {
+  User,
+  Role,
+  Address,
+  Feedback,
+  UserImage,
+  Sequelize,
+} = require("../models/index");
 const { Op } = Sequelize;
 const {
   generateAccessToken,
@@ -221,18 +228,45 @@ exports.getCurrentUser = async (req, res) => {
 
 // Edit user
 exports.editUser = async (req, res) => {
+  console.log(req.files);
+  console.log(req.body);
   try {
-    const userId = req.userId; // Assume req.userId is set by authentication middleware
-    const { firstName, lastName, bio, email, password } = req.body;
+    const userId = req.params.userId;
+    console.log(userId);
+    const { firstName, lastName, bio, email, password, phone } = req.body;
 
     // Find the user by ID
-    const user = await User.find({
-      where: { id: userId }, // Exclude the password field
-      include: [{ model: Role, as: "roles" }],
+    const user = await User.findOne({
+      where: { id: userId },
+      include: [
+        { model: Role, as: "roles" },
+        { model: UserImage, as: "images" },
+      ],
     });
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
+    }
+
+    if (req.files && req.files.length > 0) {
+      // Delete the existing images from the database
+      await UserImage.destroy({ where: { userId: userId } });
+
+      const filePromises = req.files.map((file) => {
+        const filePath = file.path
+          .replace(new RegExp("\\\\", "g"), "/")
+          .replace("public", "");
+        return UserImage.create({
+          fileName: file.filename,
+          filePath: filePath,
+          originalName: file.originalname,
+          fileSize: file.size,
+          userId: userId,
+        });
+      });
+
+      const uploadedImages = await Promise.all(filePromises);
+      user.images = uploadedImages;
     }
 
     // Update user fields
@@ -240,6 +274,7 @@ exports.editUser = async (req, res) => {
     if (lastName) user.lastName = lastName;
     if (bio) user.bio = bio;
     if (email) user.email = email;
+    if(phone) user.phone = phone;
 
     // Handle password update with hashing
     if (password) {
@@ -257,9 +292,10 @@ exports.editUser = async (req, res) => {
         id: user.id,
         firstName: user.firstName,
         lastName: user.lastName,
-        profilePic: user.profilePic,
+        phone: user.phone,
         bio: user.bio,
         email: user.email,
+        images: user.images, // Include the images in the response
       },
     });
   } catch (error) {
@@ -284,19 +320,19 @@ exports.createFeedback = async (req, res) => {
   const { content } = req.body;
 
   if (!content) {
-      return res.status(400).json({ message: "message is required." });
+    return res.status(400).json({ message: "message is required." });
   }
 
   try {
-      // Create feedback
-      const feedback = await Feedback.create({
-          content: content,
-          userId: req.user.id
-      });
+    // Create feedback
+    const feedback = await Feedback.create({
+      content: content,
+      userId: req.user.id,
+    });
 
-      res.status(201).json(feedback);
+    res.status(201).json(feedback);
   } catch (error) {
-      console.error("Error creating feedback:", error);
-      res.status(500).json({ message: "Failed to create feedback." });
+    console.error("Error creating feedback:", error);
+    res.status(500).json({ message: "Failed to create feedback." });
   }
 };
