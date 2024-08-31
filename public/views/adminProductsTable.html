@@ -58,9 +58,7 @@
 
                     <div class="col-md-2">
                         <a href="index.html">
-                            <img src="/img/jglogofinal.png" alt="logo" class="logo logo-black">
-                            <img src="/img/jglogofinalwhite.png" alt="logo" class="logo logo-white">
-
+                            <img src="/img/jglogotxt.png" alt="logo" class="logo">
                         </a>
                     </div>
 
@@ -80,6 +78,20 @@
                                     <a href="#" class="nav-item-link">
                                         products
                                     </a>
+                                    <!-- <ul class="nav-sub">
+
+                                        <li class="offset-2"><a href="categories.html">tshirts</a></li>
+                                        <li class="offset-2"><a href='categories.html'>polo</a></li>
+                                        <li class="offset-2"><a href='categories.html'>shirts</a></li>
+
+                                    </ul> -->
+                                </li>
+
+                                <li class="nav-item-list">
+                                    <a href="http://localhost:4000/categories" class="nav-item-link">
+                                        products
+                                    </a>
+
                                     <ul class="nav-sub">
 
                                         <li class="offset-2"><a href="categories.html">tshirts</a></li>
@@ -133,10 +145,10 @@
 
 
                             <div class="cart-icon">
-                                <a href="signin.html" class="cart-btn mx-3">
+                                <a href="http://localhost:4000/login" class="cart-btn mx-3">
                                     <i class="fa-solid fa-user fa-xl"></i>
                                 </a>
-                                <a href="cart.html" class=" cart-btn">
+                                <a href="http://localhost:4000/cart" class=" cart-btn">
                                     <i class="fa-solid fa-cart-shopping fa-xl"></i>
                                 </a>
                             </div>
@@ -193,107 +205,145 @@
 
 
 
-            <div>
+            <div class="admin-dashboard">
+                <aside>
 
-                <section class="content-wrapper">
+                    <div class="seller-nav">
+                        <div class="active">
+                            <a href="#" data-id="1"><i class="fas fa-home"></i>Dashboard</a>
 
-                    <div class="add-product busi active">
-                        <div class="heading-business mb-4">edit product</div>
-                        <div class="add-product-box">
-                            <form>
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <div class="product-left">
-                                            <div class="form-group mb-4">
-                                                <label for="product-name" class="form-label">product name</label>
-                                                <input type="text" class="form-control" id="product-name"
-                                                    name="product">
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="productDescription" class="form-label">product
-                                                    description</label>
-                                                <textarea class="form-control" id="productDescription" rows="5"
-                                                    placeholder="Write a description here..."></textarea>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="productFeatures" class="form-label">product
-                                                    features</label>
-                                                <textarea class="form-control" id="productFeatures" rows="5"
-                                                    placeholder="Write the product's features here..."
-                                                    name="features"></textarea>
-                                            </div>
-
-                                            <div class="display-media">
-                                                <label for="productDescription" class="form-label">Upload Image</label>
-                                                <div class="media-preview">
-                                                    <!-- <input type="file" name="images" id="displayImage"
-                                                        style="display: none;" name="images">
-                                                    <i class="fa-solid fa-image" id="iconImageUpload"
-                                                        style="cursor: pointer;"></i>
-                                                    <button id="uploadBtn" type="button">Upload Image</button> -->
-                                                </div>
-                                            </div>
-                                            <div class="col-8">
-                                                <div class="mb-3">
-                                                    <input type="file" name="images" id="productImg"
-                                                        class="form-control">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                    <div class="col-md-4">
-                                        <div class="product-right">
-                                            <form>
-
-                                                <label for="price" class="form-label">
-                                                    price</label>
-                                                <div class="input-group mb-3">
-
-                                                    <input type="text" class="form-control"
-                                                        aria-label="Text input with dropdown button" id="price">
-                                                </div>
-
-
-                                                <div class="organisation">
-                                                    <div class="mb-3">
-                                                        <label for="vendor" class="form-label">Vendor</label>
-                                                        <input type="text" id="vendor" placeholder="eg. Nike"
-                                                            class="form-control">
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="stock" class="form-label">Stock</label>
-                                                        <input type="text" id="stock" placeholder="Stock"
-                                                            class="form-control" name="stock">
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="discount" class="form-label">Discounted Price(if
-                                                            any)</label>
-                                                        <input type="text" id="discount" placeholder="price after discount"
-                                                            class="form-control" name="discounted_price">
-                                                    </div>
-                                                </div>
-
-                                                <div class="btns">
-                                                    <button type="submit" class="btn btn-save">Save</button>
-                                                    <button type="submit" class="btn btn-delete">Delete</button>
-
-                                                </div>
-
-                                            </form>
-
-                                        </div>
-
-
-                                    </div>
-
-                                </div>
-                            </form>
+                        </div>
+                        <div>
+                            <a href="#" data-id="2"><i class="fa-solid fa-file"></i>Orders</a>
+                        </div>
+                        <div>
+                            <a href="#" data-id="3"><i class="fa-solid fa-square-plus"></i>Add Product</a>
+                        </div>
+                        <div>
+                            <a href="#" data-id="4"><i class="fa-solid fa-user-tie"></i>Add Category</a>
+                        </div>
+                        <div>
+                            <a href="#" data-id="5"><i class="fa-solid fa-user-tie"></i>Profile</a>
+                        </div>
+                        <div>
+                            <a href="#" data-id="6"><i class="fa-solid fa-user-tie"></i>Invoice</a>
                         </div>
 
                     </div>
+                </aside>
 
+                <section class="content-wrapper">
+
+                    <div class="order-dash busi">
+                        <div class="heading-business mb-4">orders</div>
+                        <div class="order-box">
+                            <div class="row justify-content-center">
+                                <div class="col-md-12">
+                                    <div class="table-responsive">
+                                        <table class="table" id="ordersTable">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">order id</th>
+                                                    <th scope="col">tracking number</th>
+                                                    <th scope="col">customer</th>
+                                                    <th scope="col">total</th>
+                                                    <th scope="col">Order status</th>
+                                                    <th scope="col">date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th scope="row">
+                                                        <a href="#">#121212</a>
+                                                    </th>
+                                                    <td>$490</td>
+                                                    <td>Mary Jane</td>
+                                                    <td><span class="paid">
+                                                            paid
+                                                        </span></td>
+                                                    <td>
+                                                        <span class="paid">shipped</span>
+                                                    </td>
+                                                    <td>2023-10-30</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">
+                                                        <a href="#">#121212</a>
+
+                                                    </th>
+                                                    <td>$490</td>
+                                                    <td>Mary Jane</td>
+                                                    <td>
+                                                        <span class="pending">pending</span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="cancelled">
+                                                            cancelled
+                                                        </span>
+
+                                                    </td>
+                                                    <td>2023-10-30</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">
+                                                        <a href="#">#121212</a>
+
+                                                    </th>
+                                                    <td>$490</td>
+                                                    <td>Mary Jane</td>
+                                                    <td><span class="cancelled">
+                                                            cancelled
+                                                        </span></td>
+                                                    <td>
+                                                        <span class="pending">processing</span>
+                                                    </td>
+                                                    <td>2023-10-30</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">
+                                                        <a href="#">#121212</a>
+
+                                                    </th>
+                                                    <td>$490</td>
+                                                    <td>Mary Jane</td>
+                                                    <td>
+                                                        <span class="failed">
+                                                            failed
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="pending">processing</span>
+                                                    </td>
+                                                    <td>2023-10-30</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">
+                                                        <a href="#">#121212</a>
+
+                                                    </th>
+                                                    <td>$490</td>
+                                                    <td>Mary Jane</td>
+                                                    <td><span class="paid">
+                                                            paid
+                                                        </span></td>
+                                                    <td>
+                                                        <span class="pending">processing</span>
+                                                    </td>
+                                                    <td>2023-10-30</td>
+                                                </tr>
+
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
                 </section>
 
 
@@ -362,13 +412,13 @@
                             <ul>
                                 <li class="d-flex">
                                     <a href="#" class="social-icon">
-                                        <img src="/img/facebook.png" alt="fbicon">
+                                        <img src="img/facebook.png" alt="fbicon">
                                     </a>
                                     <a href="#" class="social-icon">
-                                        <img src="/img/instagram(1).png" alt="">
+                                        <img src="img/instagram(1).png" alt="">
                                     </a>
                                     <a href="#" class="social-icon">
-                                        <img src="/img/whatsapp.png" alt="">
+                                        <img src="img/whatsapp.png" alt="">
                                     </a>
                                 </li>
                             </ul>
@@ -385,16 +435,16 @@
 
                     <div class="payopt d-flex">
                         <figure>
-                            <img src="/img/american-express.png" alt="">
+                            <img src="img/american-express.png" alt="">
                         </figure>
                         <figure>
-                            <img src="/img/card.png" alt="">
+                            <img src="img/card.png" alt="">
                         </figure>
                         <figure>
-                            <img src="/img/discover.png" alt="">
+                            <img src="img/discover.png" alt="">
                         </figure>
                         <figure>
-                            <img src="/img/visa.png" alt="">
+                            <img src="img/visa.png" alt="">
                         </figure>
                     </div>
                 </div>
@@ -412,15 +462,83 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/min/tiny-slider.js"></script>
 
-    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="/js/bootstrap.bundle.min.js"></script>
 
-    <script src="js/script.js"></script>
+    <script src="/js/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script> -->
 
     <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
 
+    <script>
+        const ctx = document.getElementById('myChart');
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                datasets: [{
+                    label: '# of Sales',
+                    data: [12, 19, 3, 5, 2, 3, 7, 6, 15, 4, 23, 0],
+                    borderWidth: 1
+
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+
+            }
+        });
+    </script>
+
+    <script>
+        const ctx1 = document.getElementById('myChart2');
+
+        new Chart(ctx1, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                datasets: [{
+                    label: '# of Sales',
+                    data: [12, 19, 3, 5, 2, 3, 7, 6, 15, 4, 23, 0],
+                    borderWidth: 1
+
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+
+            }
+        });
+    </script>
+
+    <script>
+        document.querySelectorAll('aside a')
+            .forEach(e => e.addEventListener('click', _ => change(e.dataset.id)))
+
+
+        function change(n) {
+            let panels = document.querySelectorAll('.busi')
+            panels.forEach(p => p.classList.remove('active'))
+            panels[n - 1].classList.add('active')
+        }
+
+
+        $('.seller-nav div').click(function () {
+            $(this).siblings('div').removeClass("active"); // remove active class from sibling anchors
+            $(this).toggleClass("active");
+        })
+
+    </script>
 
     <script>
         $(document).ready(function () {
@@ -436,8 +554,7 @@
         });
     </script>
 
-    <script src="/client/editProduct.js"></script>
-
+</script>
 
 </body>
 

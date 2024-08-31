@@ -155,7 +155,7 @@ app.get("/edition", (req, res) => {
   res.sendFile(path.join(__dirname, "public/views", "edition.html"));
 });
 
-app.get("/editProduct", (req, res) => {
+app.get("/editProduct/:productId", (req, res) => {
   res.sendFile(path.join(__dirname, "public/views", "editproduct.html"));
 });
 

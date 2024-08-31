@@ -16,67 +16,40 @@ const ProductResponseDto = require("./../dtos/responses/productsDto");
 // const CommentModel = require("../models/CommentModel");
 
 // Get All Products
-exports.getAll = (req, res, next) => {
-  const page = parseInt(req.query.page) || 1;
-  const pageSize = parseInt(req.query.pageSize) || 5;
-
-  Promise.all([
-    Product.findAll({
-      offset: (page - 1) * pageSize,
-      limit: pageSize,
-      order: [["createdAt", "DESC"]],
+exports.getAll = async function (req, res, next) {
+  try {
+ 
+    const product = await Product.findAndCountAll({
       attributes: [
         "id",
         "name",
         "slug",
-        "price",
-        "vendor",
         "description",
-        "stock",
+        "vendor",
+        "price",
         "discountedPrice",
+        "stock",
+        "features",
         "created_at",
         "updated_at",
       ],
-      include: [
-        { model: Tag, attributes: ["id", "name"] },
-        { model: Category, attributes: ["id", "name"] },
-      ],
-    }),
-    Product.findAndCountAll({ attributes: ["id"] }),
-  ])
-    .then(([products, productsCount]) => {
-      Comment.findAll({
-        where: {
-          productId: {
-            [Op.in]: products.map((product) => product.id),
-          },
-        },
-        attributes: [
-          "productId",
-          [sequelize.fn("COUNT", sequelize.col("id")), "commentsCount"],
-        ],
-        group: "productId",
-      })
-        .then((comments) => {
-          products.forEach((product) => {
-            let comment = comments.find((c) => product.id === c.productId);
-            product.comments_count = comment ? comment.get("commentsCount") : 0;
-          });
-          res.json(
-            ProductResponseDto.buildPagedList(
-              products,
-              page,
-              pageSize,
-              productsCount.count,
-              req.baseUrl
-            )
-          );
-        })
-        .catch((err) =>
-          res.json(AppResponseDto.buildWithErrorMessages(err.message))
-        );
-    })
-    .catch((err) => res.status(400).send(err.message));
+      // include: [
+      //   { model: Tag, attributes: ["id", "name"] },
+      //   { model: Category, attributes: ["id", "name"] },
+      //   { model: Collection, attributes: ["id", "name"] },
+      // ],
+    });
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    return res.status(200).json(product);
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ message: err.message || "Internal server error" });
+  }
 };
 
 // get product by id

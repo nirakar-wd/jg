@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     const productsResponse = await fetch(
-      `http://localhost:4000/api/products/?page=1&pageSize=8`,
+      `http://localhost:4000/api/products`,
       {
         method: "GET",
         headers: {
@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       productsTableBody.innerHTML = "";
 
       // Populate the table with fetched products
-      products.products.forEach((product) => {
+      products.rows.forEach((product) => {
         const row = document.createElement("tr");
 
         row.innerHTML = `

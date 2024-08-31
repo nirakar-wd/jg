@@ -228,8 +228,18 @@
                         <div>
                             <a href="#" data-id="6"><i class="fa-solid fa-user-tie"></i>Invoice</a>
                         </div>
-
+                        <div>
+                            <a href="#" data-id="7"><i class="fa-solid fa-user-tie"></i>products</a>
                         </div>
+                        <div>
+                            <a href="#" data-id="8"><i class="fa-solid fa-user-tie"></i>tags</a>
+                        </div>
+                        <div>
+                            <a href="#" data-id="9"><i class="fa-solid fa-user-tie"></i>collections</a>
+                        </div>
+
+
+                    </div>
                 </aside>
 
                 <section class="content-wrapper">
@@ -505,7 +515,8 @@
                                             </div>
                                             <div class="col-8">
                                                 <div class="mb-3">
-                                                    <input type="file" name="images" id="productImg" class="form-control">
+                                                    <input type="file" name="images" id="productImg"
+                                                        class="form-control">
                                                 </div>
                                             </div>
 
@@ -636,22 +647,6 @@
                                                         placeholder="Write a description here..."
                                                         name="description"></textarea>
                                                 </div>
-
-                                                <!-- <div class="mb-3">
-                                                    <label for="productDescription" class="form-label">full
-                                                        description</label>
-                                                    <textarea class="form-control" id="productDescription"
-                                                        rows="5"></textarea>
-                                                </div> -->
-
-                                                <!-- <div class="form-group mb-4">
-                                                    <label for="product-tags" class="form-label">product tags
-                                                        <span>(Type
-                                                            and
-                                                            make comma to separate tags)</span></label>
-                                                    <input type="text" class="form-control" id="product-tags"
-                                                        name="product">
-                                                </div> -->
 
                                                 <div class="btns">
                                                     <button type="submit" class="btn btn-save">Save</button>
@@ -804,7 +799,8 @@
                             <div class="row align-items-center">
                                 <div class="col-auto">
                                     <div class="avatar">
-                                        <img src="/images/users/defaultUser.png" id="userAvatar" alt="pp" class="rounded-circle img-thumbnail">
+                                        <img src="/images/users/defaultUser.png" id="userAvatar" alt="pp"
+                                            class="rounded-circle img-thumbnail">
                                     </div>
                                 </div>
                                 <div class="col">
@@ -1180,6 +1176,400 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="order-dash busi">
+                        <div class="heading-business mb-4">Products</div>
+                        <div class="order-box">
+                            <div class="row justify-content-center">
+                                <div class="col-md-12">
+                                    <div class="table-responsive">
+                                        <table class="table" id="productsTable">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">product id</th>
+                                                    <th scope="col">product name</th>
+                                                    <th scope="col">vendor</th>
+                                                    <th scope="col">stock</th>
+                                                    <th scope="col">price</th>
+                                                    <th scope="col">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="add-product add-category busi">
+                        <div class="heading-business mb-4">add tags</div>
+                        <div class="add-product-box">
+                            <form id="tagsForm">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <form>
+                                            <div class="product-left">
+                                                <div class="form-group mb-4">
+                                                    <label for="categoryName" class="form-label">name</label>
+                                                    <input type="text" class="form-control" id="categoryName"
+                                                        name="name">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="categoryDescription" class="form-label">full
+                                                        description</label>
+                                                    <textarea class="form-control" id="categoryDescription" rows="5"
+                                                        placeholder="Write a description here..."
+                                                        name="description"></textarea>
+                                                </div>
+
+                                                <!-- <div class="mb-3">
+                                                    <label for="productDescription" class="form-label">full
+                                                        description</label>
+                                                    <textarea class="form-control" id="productDescription"
+                                                        rows="5"></textarea>
+                                                </div> -->
+
+                                                <!-- <div class="form-group mb-4">
+                                                    <label for="product-tags" class="form-label">product tags
+                                                        <span>(Type
+                                                            and
+                                                            make comma to separate tags)</span></label>
+                                                    <input type="text" class="form-control" id="product-tags"
+                                                        name="product">
+                                                </div> -->
+
+                                                <div class="btns">
+                                                    <button type="submit" class="btn btn-save">Save</button>
+                                                    <button type="submit" class="btn btn-delete">Delete</button>
+
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                    </div>
+
+                                    <div class="col-md-8 order-box">
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">name</th>
+                                                        <th scope="col">tags</th>
+                                                        <th scope="col">product</th>
+                                                        <th scope="col">total sale</th>
+                                                        <th scope="col">status</th>
+                                                        <th scope="col">action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <th scope="row">
+                                                            <a href="#">clothes</a>
+                                                        </th>
+                                                        <td>
+                                                            <span class="cat-tag">T-shirt</span>
+                                                            <span class="cat-tag">Shirt</span>
+                                                            <span class="cat-tag">Dress</span>
+                                                            <span class="cat-tag">Jeans</span>
+                                                            <span class="cat-tag">Top</span>
+                                                        </td>
+                                                        <td>100</td>
+                                                        <td>10</td>
+                                                        <td>
+                                                            <span class="paid">active</span>
+                                                        </td>
+                                                        <td>
+                                                            <div class="btn-group">
+                                                                <button class="btn btn-primary">
+                                                                    edit
+                                                                </button>
+                                                                <button class="btn btn-danger">
+                                                                    delete
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">
+                                                            <a href="#">clothes</a>
+                                                        </th>
+                                                        <td>
+                                                            <span class="cat-tag">T-shirt</span>
+                                                            <span class="cat-tag">Shirt</span>
+                                                            <span class="cat-tag">Dress</span>
+                                                            <span class="cat-tag">Jeans</span>
+                                                            <span class="cat-tag">Top</span>
+                                                        </td>
+                                                        <td>100</td>
+                                                        <td>10</td>
+                                                        <td>
+                                                            <span class="paid">active</span>
+                                                        </td>
+                                                        <td>
+                                                            <div class="btn-group">
+                                                                <button class="btn btn-primary">
+                                                                    edit
+                                                                </button>
+                                                                <button class="btn btn-danger">
+                                                                    delete
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">
+                                                            <a href="#">clothes</a>
+                                                        </th>
+                                                        <td>
+                                                            <span class="cat-tag">T-shirt</span>
+                                                            <span class="cat-tag">Shirt</span>
+                                                            <span class="cat-tag">Dress</span>
+                                                            <span class="cat-tag">Jeans</span>
+                                                            <span class="cat-tag">Top</span>
+                                                        </td>
+                                                        <td>100</td>
+                                                        <td>10</td>
+                                                        <td>
+                                                            <span class="paid">active</span>
+                                                        </td>
+                                                        <td>
+                                                            <div class="btn-group">
+                                                                <button class="btn btn-primary">
+                                                                    edit
+                                                                </button>
+                                                                <button class="btn btn-danger">
+                                                                    delete
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">
+                                                            <a href="#">clothes</a>
+                                                        </th>
+                                                        <td>
+                                                            <span class="cat-tag">T-shirt</span>
+                                                            <span class="cat-tag">Shirt</span>
+                                                            <span class="cat-tag">Dress</span>
+                                                            <span class="cat-tag">Jeans</span>
+                                                            <span class="cat-tag">Top</span>
+                                                        </td>
+                                                        <td>100</td>
+                                                        <td>10</td>
+                                                        <td>
+                                                            <span class="paid">active</span>
+                                                        </td>
+                                                        <td>
+                                                            <div class="btn-group">
+                                                                <button class="btn btn-primary">
+                                                                    edit
+                                                                </button>
+                                                                <button class="btn btn-danger">
+                                                                    delete
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+
+                    <div class="add-product add-category busi">
+                        <div class="heading-business mb-4">add collections</div>
+                        <div class="add-product-box">
+                            <form id="collectionsForm">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <form>
+                                            <div class="product-left">
+                                                <div class="form-group mb-4">
+                                                    <label for="categoryName" class="form-label">name</label>
+                                                    <input type="text" class="form-control" id="categoryName"
+                                                        name="name">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="categoryDescription" class="form-label">full
+                                                        description</label>
+                                                    <textarea class="form-control" id="categoryDescription" rows="5"
+                                                        placeholder="Write a description here..."
+                                                        name="description"></textarea>
+                                                </div>
+
+                                                <!-- <div class="mb-3">
+                                                    <label for="productDescription" class="form-label">full
+                                                        description</label>
+                                                    <textarea class="form-control" id="productDescription"
+                                                        rows="5"></textarea>
+                                                </div> -->
+
+                                                <!-- <div class="form-group mb-4">
+                                                    <label for="product-tags" class="form-label">product tags
+                                                        <span>(Type
+                                                            and
+                                                            make comma to separate tags)</span></label>
+                                                    <input type="text" class="form-control" id="product-tags"
+                                                        name="product">
+                                                </div> -->
+
+                                                <div class="btns">
+                                                    <button type="submit" class="btn btn-save">Save</button>
+                                                    <button type="submit" class="btn btn-delete">Delete</button>
+
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                    </div>
+
+                                    <div class="col-md-8 order-box">
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">name</th>
+                                                        <th scope="col">tags</th>
+                                                        <th scope="col">product</th>
+                                                        <th scope="col">total sale</th>
+                                                        <th scope="col">status</th>
+                                                        <th scope="col">action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <th scope="row">
+                                                            <a href="#">clothes</a>
+                                                        </th>
+                                                        <td>
+                                                            <span class="cat-tag">T-shirt</span>
+                                                            <span class="cat-tag">Shirt</span>
+                                                            <span class="cat-tag">Dress</span>
+                                                            <span class="cat-tag">Jeans</span>
+                                                            <span class="cat-tag">Top</span>
+                                                        </td>
+                                                        <td>100</td>
+                                                        <td>10</td>
+                                                        <td>
+                                                            <span class="paid">active</span>
+                                                        </td>
+                                                        <td>
+                                                            <div class="btn-group">
+                                                                <button class="btn btn-primary">
+                                                                    edit
+                                                                </button>
+                                                                <button class="btn btn-danger">
+                                                                    delete
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">
+                                                            <a href="#">clothes</a>
+                                                        </th>
+                                                        <td>
+                                                            <span class="cat-tag">T-shirt</span>
+                                                            <span class="cat-tag">Shirt</span>
+                                                            <span class="cat-tag">Dress</span>
+                                                            <span class="cat-tag">Jeans</span>
+                                                            <span class="cat-tag">Top</span>
+                                                        </td>
+                                                        <td>100</td>
+                                                        <td>10</td>
+                                                        <td>
+                                                            <span class="paid">active</span>
+                                                        </td>
+                                                        <td>
+                                                            <div class="btn-group">
+                                                                <button class="btn btn-primary">
+                                                                    edit
+                                                                </button>
+                                                                <button class="btn btn-danger">
+                                                                    delete
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">
+                                                            <a href="#">clothes</a>
+                                                        </th>
+                                                        <td>
+                                                            <span class="cat-tag">T-shirt</span>
+                                                            <span class="cat-tag">Shirt</span>
+                                                            <span class="cat-tag">Dress</span>
+                                                            <span class="cat-tag">Jeans</span>
+                                                            <span class="cat-tag">Top</span>
+                                                        </td>
+                                                        <td>100</td>
+                                                        <td>10</td>
+                                                        <td>
+                                                            <span class="paid">active</span>
+                                                        </td>
+                                                        <td>
+                                                            <div class="btn-group">
+                                                                <button class="btn btn-primary">
+                                                                    edit
+                                                                </button>
+                                                                <button class="btn btn-danger">
+                                                                    delete
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">
+                                                            <a href="#">clothes</a>
+                                                        </th>
+                                                        <td>
+                                                            <span class="cat-tag">T-shirt</span>
+                                                            <span class="cat-tag">Shirt</span>
+                                                            <span class="cat-tag">Dress</span>
+                                                            <span class="cat-tag">Jeans</span>
+                                                            <span class="cat-tag">Top</span>
+                                                        </td>
+                                                        <td>100</td>
+                                                        <td>10</td>
+                                                        <td>
+                                                            <span class="paid">active</span>
+                                                        </td>
+                                                        <td>
+                                                            <div class="btn-group">
+                                                                <button class="btn btn-primary">
+                                                                    edit
+                                                                </button>
+                                                                <button class="btn btn-danger">
+                                                                    delete
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
                 </section>
 
 
@@ -1396,6 +1786,9 @@
     <script src="/client/postCategories.js"></script>
 
     <script src="/client/fetchOrdersTable.js"></script>
+
+    <script src="/client/fetchProductsTable.js"></script>
+
 
     <!-- <script>
      const inputElement = document.querySelector('input[type="file"]');
