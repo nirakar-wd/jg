@@ -25,6 +25,7 @@ function buildDto(tag, includeUrls = false) {
   const summary = {
     id: tag.id,
     name: tag.name,
+    description: tag.description,
   };
 
   if (includeUrls && tag.images) {

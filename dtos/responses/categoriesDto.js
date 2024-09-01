@@ -25,6 +25,7 @@ function buildDto(category, includeUrls = false) {
   const summary = {
     id: category.id,
     name: category.name,
+    description: category.description,
   };
 
   if (includeUrls && category.images) {

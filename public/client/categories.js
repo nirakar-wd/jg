@@ -1,6 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-
-    
   const form = document.getElementById("categoryForm");
 
   form.addEventListener("submit", async (e) => {
@@ -42,4 +40,10 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("An error occurred while posting categories");
     }
   });
+
+  //get tag details
+
+  //put request
+
+
 });

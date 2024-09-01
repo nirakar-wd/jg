@@ -25,6 +25,7 @@ function buildOnlyForIdAndUsername(user) {
   return {
     id: user.id,
     username: user.username,
+    images: user.images,
   };
 }
 

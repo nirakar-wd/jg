@@ -45,7 +45,12 @@ document
       .then((data) => {
         // Handle success - you could update the comment list or display a success message
         console.log(data);
-        alert("Comment submitted successfully!");
+
+        if (data.error) {
+          alert("You cannot add another comment");
+        } else {
+          alert("Comment submitted successfully!");
+        }
         // Optionally, reset the form
         document.getElementById("postCommentForm").reset();
         // Reset the stars

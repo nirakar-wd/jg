@@ -25,8 +25,9 @@ function buildDto(collection, includeUrls = false) {
   const summary = {
     id: collection.id,
     name: collection.name,
+    description: collection.description,
   };
-  
+
   return summary;
 }
 

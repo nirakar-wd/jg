@@ -147,8 +147,16 @@ app.get("/digitalMarketing", (req, res) => {
   res.sendFile(path.join(__dirname, "public/views", "digitalmarketing.html"));
 });
 
-app.get("/editCategory", (req, res) => {
+app.get("/editCategory/:categoryId", (req, res) => {
   res.sendFile(path.join(__dirname, "public/views", "editcategory.html"));
+});
+
+app.get("/editTag/:tagId", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/views", "editTag.html"));
+});
+
+app.get("/editCollection/:collectionId", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/views", "editCollection.html"));
 });
 
 app.get("/edition", (req, res) => {

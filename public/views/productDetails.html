@@ -378,8 +378,8 @@
                                         </a>
                                     </span>
 
-                                    <textarea placeholder="Your review" cols="45" rows="8"
-                                        class="form-control my-5" id="commentContent"></textarea>
+                                    <textarea placeholder="Your review" cols="45" rows="8" class="form-control my-5"
+                                        id="commentContent"></textarea>
 
                                     <div>
                                         <button type="submit" class="btn-send btn mt-5">SUBMIT</button>
@@ -689,7 +689,7 @@
                     const features = product.features;
                     // document.getElementById("price").textContent = `$${product.price}`;
 
-                    const imagePath = (product.images && product.images.length > 0) ? product.images[0].filePath : '';
+                    const imagePath = (product.images && product.images.length > 0) ? product.images[0].filePath : '/images/products/polo2.jpg';
 
 
                     // Ensure the image path is valid and update the image
@@ -741,7 +741,7 @@
                                 <div class="row align-items-center">
                                     <div class="col-md-2">
                                     <div class="client-pd">
-                                        <img src="" alt="client photo" class="client-img">
+                                        <img src="${comment.user.images && comment.user.images.length > 0 ? comment.user.images[0].filePath : "/images/users/defaultUser.png"}" alt="client photo" class="client-img">
                                     </div>
                                     </div>
                                     <div class="col-md-10">

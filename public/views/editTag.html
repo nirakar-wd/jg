@@ -361,6 +361,56 @@
     <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
 
     <script>
+        const ctx = document.getElementById('myChart');
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                datasets: [{
+                    label: '# of Sales',
+                    data: [12, 19, 3, 5, 2, 3, 7, 6, 15, 4, 23, 0],
+                    borderWidth: 1
+
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+
+            }
+        });
+    </script>
+
+    <script>
+        const ctx1 = document.getElementById('myChart2');
+
+        new Chart(ctx1, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                datasets: [{
+                    label: '# of Sales',
+                    data: [12, 19, 3, 5, 2, 3, 7, 6, 15, 4, 23, 0],
+                    borderWidth: 1
+
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+
+            }
+        });
+    </script>
+
+    <script>
         document.querySelectorAll('aside a')
             .forEach(e => e.addEventListener('click', _ => change(e.dataset.id)))
 
@@ -391,12 +441,18 @@
                 }
             });
         });
-
     </script>
+    <!-- <script>
+     const inputElement = document.querySelector('input[type="file"]');
+const credits = false;
+// create a FilePond instance at the input element location
+const pond = FilePond.create(inputElement);
+// attributes have been set to pond options
+console.log(pond.name); // 'filepond'
+console.log(pond.maxFiles); // 10
+console.log(pond.required); // true
 
-    <script src="/client/categories.js">
-
-    </script>
+</script> -->
 
 </body>
 

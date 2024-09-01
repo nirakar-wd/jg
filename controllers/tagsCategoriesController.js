@@ -88,6 +88,9 @@ exports.getCategories = function (req, res, next) {
 exports.createTag = function (req, res, next) {
   const tagObj = {};
   const promises = [];
+
+  console.log(req.body);
+  
   if (req.body.name) {
     tagObj.name = req.body.name;
   }

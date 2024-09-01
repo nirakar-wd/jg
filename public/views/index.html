@@ -702,13 +702,13 @@
                     bestSellingContainer.innerHTML = "";
 
                     // Populate the products container with the fetched products
-                    products.products.forEach((product) => {
+                    products.rows.forEach((product) => {
                         const productCard = `
                         <div class="col-12 col-sm-3">
                                     <div class="categories-box">
                                         <h6 class="cat-head">
                                             <a href="http://localhost:4000/products/${product.id}" class="cat-link">
-                                                <img src="img/Green FH front.png" alt="arc-img">
+                                                <img src=${product.images && product.images.length > 0 ? product.images[0].filePath : "/images/products/polo.jpg"} alt="arc-img">
                                                 <span class="title">${product.name}</span>
                                                 <span class="price">${product.price}</span>
                                             </a>
@@ -722,7 +722,7 @@
                             <div class="categories-box">
                                 <h6 class="cat-head">
                                 <a href="http://localhost:4000/products/${product.id}" class="cat-link">
-                                    <img src="img/Flat Front Brown TFF.png" alt="arc-img" class="product-img">
+                                    <img src=${product.images && product.images.length ? product.images[0].filePath : "/images/products/polo2.jpg"} alt="arc-img" class="product-img">
                                     <span class="title">${product.name}</span>
                                     <span class="price">${product.price}</span>
                                 </a>
@@ -773,7 +773,7 @@
             try {
                 // Fetch comments
                 const response = await fetch(
-                    `http://localhost:4000/api/comments/?page=1&pageSize=3`,
+                    `http://localhost:4000/api/comments/?page=1&pageSize=5`,
                     {
                         method: "GET",
                         headers: {
@@ -796,13 +796,12 @@
                      <div class="testimonials-box" id="base">
                         <div class="testimonials-details">
                             <div class="client-pd">
-                                <img src="img/pexels-andrea-piacquadio-774909 1.png" alt="client photo"
+                                <img src=${comment.user.images && comment.user.images.length > 0 ? comment.user.images[0].filePath : "/images/users/defaultUser.png"} alt="client photo"
                                     class="client-img">
                             </div>
                             <p class="para test-para">${comment.content}</p>
                             <div class="client-name text-end">
-                                ${comment.rating}
-                                <span class="client-cpn">XYZ</span>
+                                ${comment.user.username}
                             </div>
                         </div>
                     </div>`;

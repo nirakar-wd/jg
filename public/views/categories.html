@@ -490,7 +490,7 @@
                 productElement.innerHTML = `
                 <div class="abox">
                     <div class="kecimgbox">
-                        <a href="http://localhost:4000/products/${product.id}"><img src="img/Flat Front black FH.png" class="img-fluid" alt="prod images"></a>
+                        <a href="http://localhost:4000/products/${product.id}"><img src=${product.images && product.images.length > 0 ? product.images[0].filePath : "/images/products/polo.jpg"} alt="prod images"></a>
                     </div>
                     <div class="prod-desc">
                         <h4><a href="product.html">${product.name}</a></h4>
@@ -572,7 +572,7 @@
                 productElement.innerHTML = `
                                     <div class="abox">
                                         <div class="kecimgbox"> <a href="http://localhost:4000/products/${product.id}"><img
-                                                    src="img/Flat Front black FH.png" class="img-fluid"
+                                                    src=${product.images && product.images.length > 0 ? product.images[0].filePath : "/images/products/polo.jpg"} class="img-fluid"
                                                     alt="prod images"></a>
                                         </div>
                                         <div class="prod-desc">
@@ -700,13 +700,13 @@
 
                     productContainer.innerHTML = "";
 
-                    products.products.forEach(product => {
+                    products.rows.forEach(product => {
                         const productElement = document.createElement("div");
                         productElement.classList.add("col-md-4"); // Adjust the column width
                         productElement.innerHTML = `
                             <div class="abox">
                                 <div class="kecimgbox">
-                                    <a href="http://localhost:4000/products/${product.id}"><img src="img/Flat Front black FH.png" class="img-fluid" alt="prod images"></a>
+                                    <a href="http://localhost:4000/products/${product.id}"><img src=${product.images && product.images.length > 0 ? product.images[0].filePath : "/images/products/polo.jpg"} class="img-fluid" alt="prod images"></a>
                                 </div>
                                 <div class="prod-desc">
                                     <h4><a href="product.html">${product.name}</a></h4>
@@ -717,7 +717,7 @@
                                         <span><i class="fa fa-star"></i></span>
                                         <span><i class="fa fa-star"></i></span>
                                     </div>
-                                    <del>${product.price}</del>
+
                                     <ins>${product.price}</ins>
                                 </div>
                             </div>

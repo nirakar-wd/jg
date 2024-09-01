@@ -630,165 +630,66 @@
                     <div class="add-product add-category busi">
                         <div class="heading-business mb-4">add category</div>
                         <div class="add-product-box">
-                            <form id="categoryForm">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <form>
-                                            <div class="product-left">
-                                                <div class="form-group mb-4">
-                                                    <label for="categoryName" class="form-label">name</label>
-                                                    <input type="text" class="form-control" id="categoryName"
-                                                        name="name">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="categoryDescription" class="form-label">full
-                                                        description</label>
-                                                    <textarea class="form-control" id="categoryDescription" rows="5"
-                                                        placeholder="Write a description here..."
-                                                        name="description"></textarea>
-                                                </div>
 
-                                                <div class="btns">
-                                                    <button type="submit" class="btn btn-save">Save</button>
-                                                    <button type="submit" class="btn btn-delete">Delete</button>
-
-                                                </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <form id="categoryForm">
+                                        <div class="product-left">
+                                            <div class="form-group mb-4">
+                                                <label for="categoryName" class="form-label">name</label>
+                                                <input type="text" class="form-control" id="categoryName" name="name">
                                             </div>
-                                        </form>
+                                            <div class="mb-3">
+                                                <label for="categoryDescription" class="form-label">full
+                                                    description</label>
+                                                <textarea class="form-control" id="categoryDescription" rows="5"
+                                                    placeholder="Write a description here..."
+                                                    name="description"></textarea>
+                                            </div>
 
-                                    </div>
+                                            <div class="btns">
+                                                <button type="submit" class="btn btn-save">Save</button>
+                                                <!-- <button type="submit" class="btn btn-delete">Delete</button> -->
 
-                                    <div class="col-md-8 order-box">
-                                        <div class="table-responsive">
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col">name</th>
-                                                        <th scope="col">tags</th>
-                                                        <th scope="col">product</th>
-                                                        <th scope="col">total sale</th>
-                                                        <th scope="col">status</th>
-                                                        <th scope="col">action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <th scope="row">
-                                                            <a href="#">clothes</a>
-                                                        </th>
-                                                        <td>
-                                                            <span class="cat-tag">T-shirt</span>
-                                                            <span class="cat-tag">Shirt</span>
-                                                            <span class="cat-tag">Dress</span>
-                                                            <span class="cat-tag">Jeans</span>
-                                                            <span class="cat-tag">Top</span>
-                                                        </td>
-                                                        <td>100</td>
-                                                        <td>10</td>
-                                                        <td>
-                                                            <span class="paid">active</span>
-                                                        </td>
-                                                        <td>
-                                                            <div class="btn-group">
-                                                                <button class="btn btn-primary">
-                                                                    edit
-                                                                </button>
-                                                                <button class="btn btn-danger">
-                                                                    delete
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">
-                                                            <a href="#">clothes</a>
-                                                        </th>
-                                                        <td>
-                                                            <span class="cat-tag">T-shirt</span>
-                                                            <span class="cat-tag">Shirt</span>
-                                                            <span class="cat-tag">Dress</span>
-                                                            <span class="cat-tag">Jeans</span>
-                                                            <span class="cat-tag">Top</span>
-                                                        </td>
-                                                        <td>100</td>
-                                                        <td>10</td>
-                                                        <td>
-                                                            <span class="paid">active</span>
-                                                        </td>
-                                                        <td>
-                                                            <div class="btn-group">
-                                                                <button class="btn btn-primary">
-                                                                    edit
-                                                                </button>
-                                                                <button class="btn btn-danger">
-                                                                    delete
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">
-                                                            <a href="#">clothes</a>
-                                                        </th>
-                                                        <td>
-                                                            <span class="cat-tag">T-shirt</span>
-                                                            <span class="cat-tag">Shirt</span>
-                                                            <span class="cat-tag">Dress</span>
-                                                            <span class="cat-tag">Jeans</span>
-                                                            <span class="cat-tag">Top</span>
-                                                        </td>
-                                                        <td>100</td>
-                                                        <td>10</td>
-                                                        <td>
-                                                            <span class="paid">active</span>
-                                                        </td>
-                                                        <td>
-                                                            <div class="btn-group">
-                                                                <button class="btn btn-primary">
-                                                                    edit
-                                                                </button>
-                                                                <button class="btn btn-danger">
-                                                                    delete
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">
-                                                            <a href="#">clothes</a>
-                                                        </th>
-                                                        <td>
-                                                            <span class="cat-tag">T-shirt</span>
-                                                            <span class="cat-tag">Shirt</span>
-                                                            <span class="cat-tag">Dress</span>
-                                                            <span class="cat-tag">Jeans</span>
-                                                            <span class="cat-tag">Top</span>
-                                                        </td>
-                                                        <td>100</td>
-                                                        <td>10</td>
-                                                        <td>
-                                                            <span class="paid">active</span>
-                                                        </td>
-                                                        <td>
-                                                            <div class="btn-group">
-                                                                <button class="btn btn-primary">
-                                                                    edit
-                                                                </button>
-                                                                <button class="btn btn-danger">
-                                                                    delete
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-
-
-                                                </tbody>
-                                            </table>
+                                            </div>
                                         </div>
-                                    </div>
+                                    </form>
 
                                 </div>
-                            </form>
+
+                                <div class="col-md-8 order-box">
+                                    <div class="table-responsive">
+                                        <table class="table" id="categoriesTable">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">name</th>
+                                                    <th scope="col">description</th>
+                                                    <th scope="col">action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        fghfdgh
+                                                    </td>
+                                                    <td>100</td>
+                                                    <td>
+                                                        <div class="btn-group">
+                                                            <button class="btn btn-primary">
+                                                                edit
+                                                            </button>
+                                                            <button class="btn btn-danger">
+                                                                delete
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
 
                     </div>
@@ -1207,373 +1108,141 @@
                         </div>
                     </div>
 
-                    <div class="add-product add-category busi">
+                    <div class="add-product add-tags busi">
                         <div class="heading-business mb-4">add tags</div>
                         <div class="add-product-box">
                             <form id="tagsForm">
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <form>
-                                            <div class="product-left">
-                                                <div class="form-group mb-4">
-                                                    <label for="categoryName" class="form-label">name</label>
-                                                    <input type="text" class="form-control" id="categoryName"
-                                                        name="name">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="categoryDescription" class="form-label">full
-                                                        description</label>
-                                                    <textarea class="form-control" id="categoryDescription" rows="5"
-                                                        placeholder="Write a description here..."
-                                                        name="description"></textarea>
-                                                </div>
 
-                                                <!-- <div class="mb-3">
-                                                    <label for="productDescription" class="form-label">full
-                                                        description</label>
-                                                    <textarea class="form-control" id="productDescription"
-                                                        rows="5"></textarea>
-                                                </div> -->
-
-                                                <!-- <div class="form-group mb-4">
-                                                    <label for="product-tags" class="form-label">product tags
-                                                        <span>(Type
-                                                            and
-                                                            make comma to separate tags)</span></label>
-                                                    <input type="text" class="form-control" id="product-tags"
-                                                        name="product">
-                                                </div> -->
-
-                                                <div class="btns">
-                                                    <button type="submit" class="btn btn-save">Save</button>
-                                                    <button type="submit" class="btn btn-delete">Delete</button>
-
-                                                </div>
+                                        <div class="product-left">
+                                            <div class="form-group mb-4">
+                                                <label for="tagName" class="form-label">name</label>
+                                                <input type="text" class="form-control" id="tagName" name="name">
                                             </div>
-                                        </form>
+                                            <div class="mb-3">
+                                                <label for="tagDescription" class="form-label">full
+                                                    description</label>
+                                                <textarea class="form-control" id="tagDescription" rows="5"
+                                                    placeholder="Write a description here..."
+                                                    name="description"></textarea>
+                                            </div>
 
-                                    </div>
+                                            <div class="btns">
+                                                <button type="submit" class="btn btn-save">Save</button>
+                                                <!-- <button type="submit" class="btn btn-delete">Delete</button> -->
 
-                                    <div class="col-md-8 order-box">
-                                        <div class="table-responsive">
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col">name</th>
-                                                        <th scope="col">tags</th>
-                                                        <th scope="col">product</th>
-                                                        <th scope="col">total sale</th>
-                                                        <th scope="col">status</th>
-                                                        <th scope="col">action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <th scope="row">
-                                                            <a href="#">clothes</a>
-                                                        </th>
-                                                        <td>
-                                                            <span class="cat-tag">T-shirt</span>
-                                                            <span class="cat-tag">Shirt</span>
-                                                            <span class="cat-tag">Dress</span>
-                                                            <span class="cat-tag">Jeans</span>
-                                                            <span class="cat-tag">Top</span>
-                                                        </td>
-                                                        <td>100</td>
-                                                        <td>10</td>
-                                                        <td>
-                                                            <span class="paid">active</span>
-                                                        </td>
-                                                        <td>
-                                                            <div class="btn-group">
-                                                                <button class="btn btn-primary">
-                                                                    edit
-                                                                </button>
-                                                                <button class="btn btn-danger">
-                                                                    delete
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">
-                                                            <a href="#">clothes</a>
-                                                        </th>
-                                                        <td>
-                                                            <span class="cat-tag">T-shirt</span>
-                                                            <span class="cat-tag">Shirt</span>
-                                                            <span class="cat-tag">Dress</span>
-                                                            <span class="cat-tag">Jeans</span>
-                                                            <span class="cat-tag">Top</span>
-                                                        </td>
-                                                        <td>100</td>
-                                                        <td>10</td>
-                                                        <td>
-                                                            <span class="paid">active</span>
-                                                        </td>
-                                                        <td>
-                                                            <div class="btn-group">
-                                                                <button class="btn btn-primary">
-                                                                    edit
-                                                                </button>
-                                                                <button class="btn btn-danger">
-                                                                    delete
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">
-                                                            <a href="#">clothes</a>
-                                                        </th>
-                                                        <td>
-                                                            <span class="cat-tag">T-shirt</span>
-                                                            <span class="cat-tag">Shirt</span>
-                                                            <span class="cat-tag">Dress</span>
-                                                            <span class="cat-tag">Jeans</span>
-                                                            <span class="cat-tag">Top</span>
-                                                        </td>
-                                                        <td>100</td>
-                                                        <td>10</td>
-                                                        <td>
-                                                            <span class="paid">active</span>
-                                                        </td>
-                                                        <td>
-                                                            <div class="btn-group">
-                                                                <button class="btn btn-primary">
-                                                                    edit
-                                                                </button>
-                                                                <button class="btn btn-danger">
-                                                                    delete
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">
-                                                            <a href="#">clothes</a>
-                                                        </th>
-                                                        <td>
-                                                            <span class="cat-tag">T-shirt</span>
-                                                            <span class="cat-tag">Shirt</span>
-                                                            <span class="cat-tag">Dress</span>
-                                                            <span class="cat-tag">Jeans</span>
-                                                            <span class="cat-tag">Top</span>
-                                                        </td>
-                                                        <td>100</td>
-                                                        <td>10</td>
-                                                        <td>
-                                                            <span class="paid">active</span>
-                                                        </td>
-                                                        <td>
-                                                            <div class="btn-group">
-                                                                <button class="btn btn-primary">
-                                                                    edit
-                                                                </button>
-                                                                <button class="btn btn-danger">
-                                                                    delete
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-
-
-                                                </tbody>
-                                            </table>
+                                            </div>
                                         </div>
-                                    </div>
-
-                                </div>
                             </form>
+
+                        </div>
+
+                        <div class="col-md-8 order-box">
+                            <div class="table-responsive">
+                                <table class="table" id="tagsTable">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">name</th>
+                                            <th scope="col">description</th>
+                                            <th scope="col">action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                fghfdgh
+                                            </td>
+                                            <td>100</td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <button class="btn btn-primary">
+                                                        edit
+                                                    </button>
+                                                    <button class="btn btn-danger">
+                                                        delete
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
 
                     </div>
+            </div>
 
-                    <div class="add-product add-category busi">
-                        <div class="heading-business mb-4">add collections</div>
-                        <div class="add-product-box">
-                            <form id="collectionsForm">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <form>
-                                            <div class="product-left">
-                                                <div class="form-group mb-4">
-                                                    <label for="categoryName" class="form-label">name</label>
-                                                    <input type="text" class="form-control" id="categoryName"
-                                                        name="name">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="categoryDescription" class="form-label">full
-                                                        description</label>
-                                                    <textarea class="form-control" id="categoryDescription" rows="5"
-                                                        placeholder="Write a description here..."
-                                                        name="description"></textarea>
-                                                </div>
+        </div>
 
-                                                <!-- <div class="mb-3">
-                                                    <label for="productDescription" class="form-label">full
-                                                        description</label>
-                                                    <textarea class="form-control" id="productDescription"
-                                                        rows="5"></textarea>
-                                                </div> -->
+        <div class="add-product add-category busi">
+            <div class="heading-business mb-4">add collections</div>
+            <div class="add-product-box">
+                <form id="collectionsForm">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="product-left">
+                                <div class="form-group mb-4">
+                                    <label for="collectionName" class="form-label">name</label>
+                                    <input type="text" class="form-control" id="collectionName" name="name">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="collectionDescription" class="form-label">full
+                                        description</label>
+                                    <textarea class="form-control" id="collectionDescription" rows="5"
+                                        placeholder="Write a description here..." name="description"></textarea>
+                                </div>
 
-                                                <!-- <div class="form-group mb-4">
-                                                    <label for="product-tags" class="form-label">product tags
-                                                        <span>(Type
-                                                            and
-                                                            make comma to separate tags)</span></label>
-                                                    <input type="text" class="form-control" id="product-tags"
-                                                        name="product">
-                                                </div> -->
-
-                                                <div class="btns">
-                                                    <button type="submit" class="btn btn-save">Save</button>
-                                                    <button type="submit" class="btn btn-delete">Delete</button>
-
-                                                </div>
-                                            </div>
-                                        </form>
-
-                                    </div>
-
-                                    <div class="col-md-8 order-box">
-                                        <div class="table-responsive">
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col">name</th>
-                                                        <th scope="col">tags</th>
-                                                        <th scope="col">product</th>
-                                                        <th scope="col">total sale</th>
-                                                        <th scope="col">status</th>
-                                                        <th scope="col">action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <th scope="row">
-                                                            <a href="#">clothes</a>
-                                                        </th>
-                                                        <td>
-                                                            <span class="cat-tag">T-shirt</span>
-                                                            <span class="cat-tag">Shirt</span>
-                                                            <span class="cat-tag">Dress</span>
-                                                            <span class="cat-tag">Jeans</span>
-                                                            <span class="cat-tag">Top</span>
-                                                        </td>
-                                                        <td>100</td>
-                                                        <td>10</td>
-                                                        <td>
-                                                            <span class="paid">active</span>
-                                                        </td>
-                                                        <td>
-                                                            <div class="btn-group">
-                                                                <button class="btn btn-primary">
-                                                                    edit
-                                                                </button>
-                                                                <button class="btn btn-danger">
-                                                                    delete
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">
-                                                            <a href="#">clothes</a>
-                                                        </th>
-                                                        <td>
-                                                            <span class="cat-tag">T-shirt</span>
-                                                            <span class="cat-tag">Shirt</span>
-                                                            <span class="cat-tag">Dress</span>
-                                                            <span class="cat-tag">Jeans</span>
-                                                            <span class="cat-tag">Top</span>
-                                                        </td>
-                                                        <td>100</td>
-                                                        <td>10</td>
-                                                        <td>
-                                                            <span class="paid">active</span>
-                                                        </td>
-                                                        <td>
-                                                            <div class="btn-group">
-                                                                <button class="btn btn-primary">
-                                                                    edit
-                                                                </button>
-                                                                <button class="btn btn-danger">
-                                                                    delete
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">
-                                                            <a href="#">clothes</a>
-                                                        </th>
-                                                        <td>
-                                                            <span class="cat-tag">T-shirt</span>
-                                                            <span class="cat-tag">Shirt</span>
-                                                            <span class="cat-tag">Dress</span>
-                                                            <span class="cat-tag">Jeans</span>
-                                                            <span class="cat-tag">Top</span>
-                                                        </td>
-                                                        <td>100</td>
-                                                        <td>10</td>
-                                                        <td>
-                                                            <span class="paid">active</span>
-                                                        </td>
-                                                        <td>
-                                                            <div class="btn-group">
-                                                                <button class="btn btn-primary">
-                                                                    edit
-                                                                </button>
-                                                                <button class="btn btn-danger">
-                                                                    delete
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">
-                                                            <a href="#">clothes</a>
-                                                        </th>
-                                                        <td>
-                                                            <span class="cat-tag">T-shirt</span>
-                                                            <span class="cat-tag">Shirt</span>
-                                                            <span class="cat-tag">Dress</span>
-                                                            <span class="cat-tag">Jeans</span>
-                                                            <span class="cat-tag">Top</span>
-                                                        </td>
-                                                        <td>100</td>
-                                                        <td>10</td>
-                                                        <td>
-                                                            <span class="paid">active</span>
-                                                        </td>
-                                                        <td>
-                                                            <div class="btn-group">
-                                                                <button class="btn btn-primary">
-                                                                    edit
-                                                                </button>
-                                                                <button class="btn btn-danger">
-                                                                    delete
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-
-
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
+                                <div class="btns">
+                                    <button type="submit" class="btn btn-save">Save</button>
+                                    <!-- <button type="submit" class="btn btn-delete">Delete</button> -->
 
                                 </div>
-                            </form>
-                        </div>
-
-                    </div>
-                </section>
-
+                            </div>
+                </form>
 
             </div>
+
+            <div class="col-md-8 order-box">
+                <div class="table-responsive">
+                    <table class="table" id="collectionsTable">
+                        <thead>
+                            <tr>
+                                <th scope="col">name</th>
+                                <th scope="col">description</th>
+                                <th scope="col">action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    fghfdgh
+                                </td>
+                                <td>100</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button class="btn btn-primary">
+                                            edit
+                                        </button>
+                                        <button class="btn btn-danger">
+                                            delete
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        </div>
+
+        </div>
+        </section>
+
+
+        </div>
 
         </div>
     </main>
@@ -1783,24 +1452,18 @@
 
     <script src="/client/getAdminProfile.js"></script>
 
-    <script src="/client/postCategories.js"></script>
+    <script src="/client/categories.js"></script>
+
+    <script src="/client/tags.js"></script>
+
+    <script src="/client/collections.js"></script>
 
     <script src="/client/fetchOrdersTable.js"></script>
 
     <script src="/client/fetchProductsTable.js"></script>
 
+    <script src="/client/getCategoriesTagsCollection.js"></script>
 
-    <!-- <script>
-     const inputElement = document.querySelector('input[type="file"]');
-const credits = false;
-// create a FilePond instance at the input element location
-const pond = FilePond.create(inputElement);
-// attributes have been set to pond options
-console.log(pond.name); // 'filepond'
-console.log(pond.maxFiles); // 10
-console.log(pond.required); // true
-
-</script> -->
 
 </body>
 

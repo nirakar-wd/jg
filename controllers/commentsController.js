@@ -13,9 +13,10 @@ exports.getAllComments = async (req, res) => {
     const offset = (page - 1) * pageSize;
 
     const comments = await Comment.findAndCountAll({
-      // Exclude the password field
-      attributes: ["id", "content", "userId", "rating"],
-      include: [{ model: User, attributes: ["username"] }],
+      attributes: ["id", "content", "rating"],
+      offset,
+      limit: pageSize,
+      include: [{ model: User }],
     });
 
     const response = CommentResponseDto.buildPagedList(
@@ -23,7 +24,8 @@ exports.getAllComments = async (req, res) => {
       page,
       pageSize,
       comments.count,
-      req.baseUrl
+      req.baseUrl,
+      true
     );
 
     res.json(response);

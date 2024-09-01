@@ -18,7 +18,6 @@ const ProductResponseDto = require("./../dtos/responses/productsDto");
 // Get All Products
 exports.getAll = async function (req, res, next) {
   try {
- 
     const product = await Product.findAndCountAll({
       attributes: [
         "id",
@@ -452,89 +451,77 @@ exports.createProduct = async (req, res) => {
 };
 
 // Update Product
-exports.updateProduct = (req, res) => {
-  const bindingResult = ProductRequestDto.updateProductResponseDto(req);
-  if (!_.isEmpty(bindingResult.errors)) {
-    return res.json(
-      AppResponseDto.buildWithErrorMessages(bindingResult.errors)
-    );
-  }
+exports.updateProduct = async (req, res, next) => {
+  console.log(req.files);
+  console.log(req.body);
+  try {
+    const productId = req.params.productId;
+    const { name, description, features, price, vendor, stock, discountedPrice } = req.body;
 
-  let transac;
-  sequelize
-    .transaction({ autocommit: false })
-    .then(async (transaction) => {
-      transac = transaction;
-      const product = await Product.findByPk(req.params.productId);
-
-      if (!product) {
-        throw new Error("Product not found");
-      }
-
-      await product.update(bindingResult.validatedData, { transaction });
-
-      const tags = req.body.tags || [];
-      const categories = req.body.categories || [];
-      const promises = [];
-
-      tags.forEach(({ name, description }) => {
-        promises.push(
-          Tag.findOrCreate({ where: { name }, defaults: { description } })
-        );
-      });
-
-      Object.entries(categories).forEach(([name, description]) => {
-        promises.push(
-          Category.findOrCreate({ where: { name }, defaults: { description } })
-        );
-      });
-
-      const results = await Promise.all(promises);
-      promises.length = 0;
-
-      const tagsToSet = results
-        .filter((result) => result[0].constructor.getTableName() === "tags")
-        .map((result) => result[0]);
-      const categoriesToSet = results
-        .filter(
-          (result) => result[0]._modelOptions.name.plural === "categories"
-        )
-        .map((result) => result[0]);
-
-      promises.push(product.setTags(tagsToSet, { transaction }));
-      promises.push(product.setCategories(categoriesToSet, { transaction }));
-
-      if (req.files) {
-        req.files.forEach((file) => {
-          let filePath = file.path.replace(/\\/g, "/").replace("public", "");
-          promises.push(
-            ProductImage.create(
-              {
-                fileName: file.filename,
-                filePath,
-                originalName: file.originalname,
-                fileSize: file.size,
-                productId: product.id,
-              },
-              { transaction }
-            )
-          );
-        });
-      }
-
-      await Promise.all(promises);
-      transaction.commit();
-      res.json(
-        AppResponseDto.buildWithDtoAndMessages(
-          ProductResponseDto.buildDto(product),
-          "Product updated successfully"
-        )
-      );
-    })
-    .catch((err) => {
-      if (transac) transac.rollback();
-      res.json(AppResponseDto.buildWithErrorMessages(err.message));
+    // Find the user by ID
+    const product = await Product.findOne({
+      where: { id: productId },
+      include: [
+        { model: ProductImage, as: "images" },
+      ],
     });
+
+    if (!product) {
+      return res.status(404).json({ message: "No product found" });
+    }
+
+    if (req.files && req.files.length > 0) {
+      // Delete the existing images from the database
+      await ProductImage.destroy({ where: { productId: productId } });
+
+      const filePromises = req.files.map((file) => {
+        const filePath = file.path
+          .replace(new RegExp("\\\\", "g"), "/")
+          .replace("public", "");
+        return ProductImage.create({
+          fileName: file.filename,
+          filePath: filePath,
+          originalName: file.originalname,
+          fileSize: file.size,
+          productId: productId,
+        });
+      });
+
+      const uploadedImages = await Promise.all(filePromises);
+      product.images = uploadedImages;
+    }
+
+    // Update product fields
+    if (name) product.name = name;
+    if (description) product.description = description;
+    if (features) product.features = features;
+    if (price) product.price = price;
+    if (vendor) product.vendor = vendor;
+    if (stock) product.stock = stock;
+    if (discountedPrice) product.discountedPrice = discountedPrice;
+
+    // Save the updated product
+    await product.save();
+
+    // Respond with the updated user (excluding the password)
+    res.json({
+      success: true,
+      product: {
+        id: product.id,
+        name: product.name,
+        description: product.description,
+        features: product.features,
+        price: product.price,
+        vendor: product.vendor,
+        stock: product.stock,
+        discountedPrice: product.discountedPrice,
+        images: product.images, // Include the images in the response
+      },
+    });
+  } catch (error) {
+    console.error("Failed to update product:", error);
+    res.status(500).json({ message: "Failed to update product", error });
+  }
 };
 
 // Delete Product

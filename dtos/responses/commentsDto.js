@@ -38,6 +38,7 @@ function buildDto(comment, includeUser = false, includeProduct = false) {
     id: comment.id,
     content: comment.content,
     rating: comment.rating,
+    userId: comment.userId,
   };
 
   if (includeProduct && comment.product) {
