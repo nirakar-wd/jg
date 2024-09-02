@@ -453,7 +453,6 @@ exports.createProduct = async (req, res) => {
 // Update Product
 exports.updateProduct = async (req, res, next) => {
   console.log(req.files);
-  console.log(req.body);
   try {
     const productId = req.params.productId;
     const { name, description, features, price, vendor, stock, discountedPrice } = req.body;
@@ -493,6 +492,7 @@ exports.updateProduct = async (req, res, next) => {
 
     // Update product fields
     if (name) product.name = name;
+    if (name) product.slug = name
     if (description) product.description = description;
     if (features) product.features = features;
     if (price) product.price = price;
@@ -509,6 +509,7 @@ exports.updateProduct = async (req, res, next) => {
       product: {
         id: product.id,
         name: product.name,
+        slug: product.slug,
         description: product.description,
         features: product.features,
         price: product.price,

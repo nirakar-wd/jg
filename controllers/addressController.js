@@ -75,3 +75,44 @@ exports.createAddress = function (req, res, next) {
       return res.json(AppResponseDto.buildWithErrorMessages(err.message));
     });
 };
+
+// Update address
+exports.updateAddress = async (req, res, next) => {
+
+  try {
+    const addressId = req.params.addressId;
+    const { address, city, state, zip_code, country } = req.body;
+
+    // Find the address by ID
+    const foundAddress = await Address.findOne({
+      where: { id: addressId },
+    });
+
+    if (!foundAddress) {
+      return res.status(404).json({ message: "No Address found" });
+    }
+
+    if (req.user.id !== foundAddress.userId) {
+      return res.status(403).json({ message: "Unauthorized" });
+    }
+
+    // Update product fields
+    if (address) foundAddress.address = address;
+    if (city) foundAddress.city = city;
+    if (state) foundAddress.state = state;
+    if (zip_code) foundAddress.zipCode = zip_code;
+    if (country) foundAddress.country = country;
+
+    // Save the updated product
+    await foundAddress.save();
+
+    // Respond with the updated address (excluding the password)
+    res.json({
+      success: true,
+      updatedAddress: foundAddress,
+    });
+  } catch (error) {
+    console.error("Failed to update address:", error);
+    res.status(500).json({ message: "Failed to update address", error });
+  }
+};

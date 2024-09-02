@@ -200,19 +200,19 @@
                     <div class="add-product busi active">
                         <div class="heading-business mb-4">edit product</div>
                         <div class="add-product-box">
-                            <form>
+                            <form id="editProductForm">
                                 <div class="row">
                                     <div class="col-md-8">
                                         <div class="product-left">
                                             <div class="form-group mb-4">
                                                 <label for="product-name" class="form-label">product name</label>
-                                                <input type="text" class="form-control" id="product-name"
-                                                    name="product">
+                                                <input type="text" class="form-control" id="productName"
+                                                    name="productName">
                                             </div>
                                             <div class="mb-3">
                                                 <label for="productDescription" class="form-label">product
                                                     description</label>
-                                                <textarea class="form-control" id="productDescription" rows="5"
+                                                <textarea class="form-control" id="productDescription" name="description" rows="5"
                                                     placeholder="Write a description here..."></textarea>
                                             </div>
                                             <div class="mb-3">
@@ -224,13 +224,8 @@
                                             </div>
 
                                             <div class="display-media">
-                                                <label for="productDescription" class="form-label">Upload Image</label>
+                                                <label for="productImg" class="form-label">Upload Image</label>
                                                 <div class="media-preview">
-                                                    <!-- <input type="file" name="images" id="displayImage"
-                                                        style="display: none;" name="images">
-                                                    <i class="fa-solid fa-image" id="iconImageUpload"
-                                                        style="cursor: pointer;"></i>
-                                                    <button id="uploadBtn" type="button">Upload Image</button> -->
                                                 </div>
                                             </div>
                                             <div class="col-8">
@@ -252,7 +247,7 @@
                                                 <div class="input-group mb-3">
 
                                                     <input type="text" class="form-control"
-                                                        aria-label="Text input with dropdown button" id="price">
+                                                        aria-label="Text input with dropdown button" id="price" name="price">
                                                 </div>
 
 
@@ -260,7 +255,7 @@
                                                     <div class="mb-3">
                                                         <label for="vendor" class="form-label">Vendor</label>
                                                         <input type="text" id="vendor" placeholder="eg. Nike"
-                                                            class="form-control">
+                                                            class="form-control" name="vendor">
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="stock" class="form-label">Stock</label>
@@ -270,8 +265,8 @@
                                                     <div class="mb-3">
                                                         <label for="discount" class="form-label">Discounted Price(if
                                                             any)</label>
-                                                        <input type="text" id="discount" placeholder="price after discount"
-                                                            class="form-control" name="discounted_price">
+                                                        <input type="text" id="discountedPrice" placeholder="price after discount"
+                                                            class="form-control" name="discountedPrice">
                                                     </div>
                                                 </div>
 

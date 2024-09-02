@@ -29,7 +29,7 @@ router.post(
   productsController.createProduct
 );
 router.put(
-  "/:product",
+  "/:productId",
   verifyToken,
   isAdmin,
   setUploadPath("./public/images/products"),
