@@ -78,9 +78,10 @@ exports.createAddress = function (req, res, next) {
 
 // Update address
 exports.updateAddress = async (req, res, next) => {
-
   try {
     const addressId = req.params.addressId;
+    console.log(addressId);
+    console.log(req.body);
     const { address, city, state, zip_code, country } = req.body;
 
     // Find the address by ID

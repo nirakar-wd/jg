@@ -200,7 +200,7 @@ exports.getCurrentUser = async (req, res) => {
         {
           model: Address,
           as: "addresses", // Adjust the alias if needed based on your associations
-          attributes: ["address", "city", "country", "state", "zipCode"], // Include the address fields you want
+          attributes: ["id", "address", "city", "country", "state", "zipCode"], // Include the address fields you want
         },
       ],
     });

@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
+  let addressId;
+
   try {
     // Extract the user ID from the query parameters
 
@@ -24,6 +26,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.getElementById("email").value = user.user.email;
         document.getElementById("phone").value = user.user.phone || "";
         const selectElement = document.getElementById("inputState");
+        addressId = user.user.addresses[0].id;
 
         document.getElementById("userAddress").value =
           user.user.addresses[0].address || "";
@@ -57,56 +60,59 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   //location put request
   document
-  .getElementById("editShippingDetailsForm")
-  .addEventListener("submit", async function (event) {
-    event.preventDefault(); // Prevent the default form submission behavior
+    .getElementById("editShippingDetailsForm")
+    .addEventListener("submit", async function (event) {
+      event.preventDefault(); // Prevent the default form submission behavior
 
-    // Get the form field values
-    // const productName = document.getElementById("productName").value;
-    // const description = document.getElementById("productDescription").value;
-    // const features = document.getElementById("productFeatures").value;
-    // const vendor = document.getElementById("vendor").value;
-    // const price = document.getElementById("price").value;
-    // const stock = document.getElementById("stock").value;
-    // const discountedPrice = document.getElementById("discountedPrice").value;
-    // const productImg = document.getElementById("productImg").files[0]; // File input 
+      // Get the form field values
+      const address = document.getElementById("userAddress").value;
+      const city = document.getElementById("userCity").value;
+      const state = document.getElementById("userState").value;
+      const zip = document.getElementById("userZip").value;
+      const selectElement = document.getElementById("inputState");
 
-    // Create a FormData object to handle the form data including the file
-    // const formData = new FormData();
-    // formData.append("name", productName);
-    // formData.append("description", description);
-    // formData.append("features", features);
-    // formData.append("vendor", vendor);
-    // formData.append("price", price);
-    // formData.append("stock", stock);
-    // formData.append("discountedPrice", discountedPrice);
-    // if (productImg) {
-    //   formData.append("images", productImg); // Append the image file
-    // }
+      const country = selectElement.value;
 
-    // if (productId) {
-    //   try {
-    //     // Await the fetch request to handle the response properly
-    //     const editResponse = await fetch(
-    //       `http://localhost:4000/api/products/${productId}`,
-    //       {
-    //         method: "PUT",
-    //         body: formData, // No need for headers with FormData
-    //         credentials: "include", // Ensure cookies are sent with the request
-    //       }
-    //     );
+      // const payload = {
+      //   address: address,
+      //   city: city,
+      //   state: state,
+      //   zip_code: zip,
+      //   country: country,
+      // };
 
-    //     // Check the response status
-    //     if (editResponse.ok) {
-    //       console.log("product edited successfully");
-    //     } else {
-    //       const errorData = await editResponse.json();
-    //       console.error("Error editing user:", errorData);
-    //     }
-    //   } catch (error) {
-    //     console.error("Failed to edit user:", error);
-    //   }
-    // }
-  });
+      // Create a FormData object to handle the form data including the file
+      const formData = new FormData();
+      formData.append("address", address);
+      formData.append("city", city);
+      formData.append("state", state);
+      formData.append("zip_code", zip);
+      formData.append("country", country);
 
+      console.log(addressId);
+
+      if (addressId) {
+        try {
+          // Await the fetch request to handle the response properly
+          const editResponse = await fetch(
+            `http://localhost:4000/api/addresses/${addressId}`,
+            {
+              method: "PUT",
+              body: formData, // No need for headers with FormData
+              credentials: "include", // Ensure cookies are sent with the request
+            }
+          );
+
+          // Check the response status
+          if (editResponse.ok) {
+            console.log("location edited successfully");
+          } else {
+            const errorData = await editResponse.json();
+            console.error("Error editing location:", errorData);
+          }
+        } catch (error) {
+          console.error("Failed to edit location:", error);
+        }
+      }
+    });
 });

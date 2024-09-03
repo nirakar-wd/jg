@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", async () => {
               <th scope="row">
                 ${product.id}
               </th>
-              <td>$${product.name}</td>
+              <td>${product.name}</td>
               <td>${product.vendor}</td>
               <td><span>
                 ${product.stock}
