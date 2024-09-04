@@ -2,12 +2,18 @@
 const slugify = require("slugify");
 
 module.exports = (sequelize, DataTypes) => {
+  const { INTEGER, STRING, TEXT } = DataTypes;
   const Tag = sequelize.define(
     "tags",
     {
-      name: DataTypes.STRING,
-      slug: { type: DataTypes.STRING, allowNull: false },
-      description: DataTypes.STRING,
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      name: { type: DataTypes.STRING(50), allowNull: false },
+      slug: { type: DataTypes.STRING(50), allowNull: false },
+      description: { type: DataTypes.STRING(50) },
       createdAt: {
         type: DataTypes.DATE,
         allowNull: false,
@@ -23,6 +29,10 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
+
+      timestamps: false,
+      tableName: "tags",
+      
       hooks: {
         beforeValidate: function (tag, options) {
           tag.slug = slugify(tag.name, { lower: true });
