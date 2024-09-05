@@ -160,85 +160,68 @@ exports.searchProduct = async (req, res, next) => {
   }
 };
 
-exports.getByTag = function (req, res, next) {
-  const page = parseInt(req.query.page) || 1;
-  const pageSize = parseInt(req.query.pageSize) || 5;
-  const offset = (page - 1) * pageSize;
-  const limit = pageSize;
+exports.getByTag = async function (req, res, next) {
+  try {
+    const page = parseInt(req.query.page) || 1; // Get the current page from query params or default to 1
+    const pageSize = parseInt(req.query.pageSize) || 5; // Get the page size from query params or default to 5
+    const offset = (page - 1) * pageSize; // Calculate offset for pagination
 
-  ProductTag.findAll({
-    where: { tagId: req.tagId },
-    attributes: ["productId"],
-    order: [["createdAt", "DESC"]],
-  })
-    .then((pts) => {
-      let productIds = pts.map((pt) => pt.productId);
-      const productsCount = pts.length;
-      productIds = _.slice(productIds, offset, offset + limit);
-      Promise.all([
-        Product.findAll({
-          attributes: [
-            "id",
-            "name",
-            "slug",
-            "price",
-            "discountedPrice",
-            "description",
-            "created_at",
-            "updated_at",
-          ],
-          where: {
-            id: {
-              [Op.in]: productIds,
-            },
-          },
-          include: [Tag, Category],
-        }),
-        Comment.findAll({
-          where: {
-            productId: {
-              [Op.in]: productIds,
-            },
-          },
-          attributes: [
-            "id",
-            "productId",
-            [sequelize.fn("count", sequelize.col("id")), "commentsCount"],
-          ],
-          // instance.get('productsCount')
-          group: "productId",
-        }),
-      ])
-        .then((results) => {
-          const products = results[0];
-          const comments = results[1];
+    const tagQuery = {};
 
-          products.forEach((product) => {
-            let comment = comments.find(
-              (comment) => product.id === comment.productId
-            );
-            if (comment != null)
-              product.comments_count = comment.get("commentsCount");
-            else product.comments_count = 0;
-          });
+    // Use slug if provided, otherwise use categoryId
+    if (req.params.tag_slug) {
+      tagQuery.slug = req.params.tag_slug;
+    } else if (req.params.tagId) {
+      tagQuery.id = req.params.tagId;
+    }
 
-          return res.json(
-            ProductResponseDto.buildPagedList(
-              products,
-              page,
-              pageSize,
-              productsCount,
-              req.baseUrl
-            )
-          );
-        })
-        .catch((err) => {
-          return res.json(AppResponseDto.buildWithErrorMessages(err.message));
-        });
-    })
-    .catch((err) => {
-      return res.json(AppResponseDto.buildWithErrorMessages(err.message));
+    // Fetch products with related categories, tags, and comments
+    const products = await Product.findAndCountAll({
+      attributes: [
+        "id",
+        "name",
+        "description",
+        "vendor",
+        "slug",
+        "price",
+        "discountedPrice",
+        "stock",
+        "created_at",
+        "updated_at",
+      ],
+      include: [
+        {
+          model: Tag,
+          where: tagQuery, // Filter by category based on the query
+        },
+        {
+          model: Category,
+          attributes: { exclude: ["description", "created_at", "updated_at"] }, // Exclude unnecessary fields
+        },
+        {
+          model: Comment,
+          attributes: ["id", "rating", "productId"],
+        },
+      ],
+      order: [["createdAt", "DESC"]], // Order by creation date descending
+      offset, // Pagination offset
+      limit: pageSize, // Number of items per page
     });
+
+    // Build paginated response
+    const response = ProductResponseDto.buildPagedList(
+      products.rows, // The actual product data
+      page, // Current page
+      pageSize, // Page size
+      products.count, // Total number of products
+      req.baseUrl // Base URL for pagination links
+    );
+
+    return res.json(response);
+  } catch (err) {
+    // Handle errors and return an appropriate error message
+    return res.json(AppResponseDto.buildWithErrorMessages(err.message));
+  }
 };
 
 exports.getByCategory = async function (req, res, next) {
@@ -455,14 +438,20 @@ exports.updateProduct = async (req, res, next) => {
   console.log(req.files);
   try {
     const productId = req.params.productId;
-    const { name, description, features, price, vendor, stock, discountedPrice } = req.body;
+    const {
+      name,
+      description,
+      features,
+      price,
+      vendor,
+      stock,
+      discountedPrice,
+    } = req.body;
 
     // Find the user by ID
     const product = await Product.findOne({
       where: { id: productId },
-      include: [
-        { model: ProductImage, as: "images" },
-      ],
+      include: [{ model: ProductImage, as: "images" }],
     });
 
     if (!product) {
@@ -492,7 +481,7 @@ exports.updateProduct = async (req, res, next) => {
 
     // Update product fields
     if (name) product.name = name;
-    if (name) product.slug = name
+    if (name) product.slug = name;
     if (description) product.description = description;
     if (features) product.features = features;
     if (price) product.price = price;

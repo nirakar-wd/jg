@@ -5,7 +5,7 @@ const setUploadPath = require("../middlewares/uploadMiddleware").setUploadPath;
 const { verifyToken, isAdmin } = require("../middlewares/authMiddleware");
 
 require("./param_loaders/productsLoader").init(router);
-require("./param_loaders/tagsLoader").init(router);
+// require("./param_loaders/tagsLoader").init(router);
 
 router.get("/by_slug/:slug", productsController.getProductBySlug);
 router.get("/by_id/:productId", productsController.getProductById);
