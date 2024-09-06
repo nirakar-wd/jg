@@ -51,10 +51,11 @@ function buildDto(product) {
     updated_at: product.updatedAt,
     ...TagDto.buildDtos(product.tags),
     ...CategoryDto.buildDtos(product.categories),
-    ...CollectionDto.buildDtos(product.collections),
+    // ...CollectionDto.buildDtos(product.collections),
     comments_count: product.comments
       ? product.comments.length
       : product.comments_count || 0,
+      averageRating: product.average_rating,
   };
 }
 
