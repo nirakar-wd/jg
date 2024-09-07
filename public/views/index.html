@@ -27,7 +27,6 @@
 
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
-
     <link rel="stylesheet" href="/css/style.css">
 
 </head>
@@ -134,7 +133,8 @@
                                 </a>
                             </div>
                         </div>
-
+                        <!-- Search Results Container -->
+                        <div id="searchResults" class="search-results-container"></div>
                     </div>
                 </div>
 
@@ -249,96 +249,6 @@
                 </div>
             </div>
         </section>
-
-        <!-- <section class="categories">
-            <h2 class="heading-secondary mt-5">categories</h2>
-
-            <div class="container">
-
-                <div class="row">
-                    <div class="col-12 col-sm-4">
-                        <div class="categories-box">
-                            <h6 class="cat-head">
-                                <a href="ourprojects.html" class="cat-link">
-                                    <img src="https://images.unsplash.com/photo-1543334270-24bb46642afe?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                                        alt="arc-img">
-                                    <span class="title cat-title">orange and blue yarn</span>
-
-                                </a>
-
-                            </h6>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-4">
-                        <div class="categories-box">
-                            <h6 class="cat-head">
-                                <a href="ourprojects.html" class="cat-link">
-                                    <img src="https://images.unsplash.com/photo-1565058528605-670489ab6f6c?q=80&w=1420&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                                        alt="arc-img">
-                                    <span class="title cat-title">orange and blue yarn</span>
-
-                                </a>
-
-                            </h6>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-4">
-                        <div class="categories-box">
-                            <h6 class="cat-head">
-                                <a href="ourprojects.html" class="cat-link">
-                                    <img src="https://images.unsplash.com/photo-1543334270-24bb46642afe?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                                        alt="arc-img">
-                                    <span class="title cat-title">orange and blue yarn</span>
-
-                                </a>
-
-                            </h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12 col-sm-4">
-                        <div class="categories-box">
-                            <h6 class="cat-head">
-                                <a href="ourprojects.html" class="cat-link">
-                                    <img src="https://images.unsplash.com/photo-1543334270-24bb46642afe?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                                        alt="arc-img">
-                                    <span class="title cat-title">orange and blue yarn</span>
-
-                                </a>
-
-                            </h6>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-4">
-                        <div class="categories-box">
-                            <h6 class="cat-head">
-                                <a href="ourprojects.html" class="cat-link">
-                                    <img src="https://images.unsplash.com/photo-1565058528605-670489ab6f6c?q=80&w=1420&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                                        alt="arc-img">
-                                    <span class="title cat-title">orange and blue yarn</span>
-
-                                </a>
-
-                            </h6>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-4">
-                        <div class="categories-box">
-                            <h6 class="cat-head">
-                                <a href="ourprojects.html" class="cat-link">
-                                    <img src="https://images.unsplash.com/photo-1543334270-24bb46642afe?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                                        alt="arc-img">
-                                    <span class="title cat-title">orange and blue yarn</span>
-
-                                </a>
-
-                            </h6>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section> -->
 
         <section class="aboutus">
             <div class="container">
@@ -676,6 +586,8 @@
         });
     </script>
 
+    <script src="/client/search.js"></script>
+
     <script>
         document.addEventListener("DOMContentLoaded", async () => {
             try {
@@ -702,7 +614,7 @@
                     bestSellingContainer.innerHTML = "";
 
                     // Populate the products container with the fetched products
-                    products.rows.forEach((product) => {
+                    products.products.forEach((product) => {
                         const productCard = `
                         <div class="col-12 col-sm-3">
                                     <div class="categories-box">
@@ -965,42 +877,6 @@
     <script src="/js/script.js"></script>
     <!-- <script src="/client/getProducts.js"></script> -->
     <!-- <script src="/client/getReviews.js"></script> -->
-
-    <script>
-        document.getElementById('searchForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const query = document.getElementById('searchInput').value;
-
-            console.log(query);
-
-            fetch(`/api/products/search?q=${query}`)
-                .then(response => response.json())
-                .then(data => {
-
-                    console.log(data)
-                    // const resultsList = document.getElementById('results');
-                    // resultsList.innerHTML = '';  // Clear previous results
-
-                    // console.log(data)
-                    // if (data.length === 0) {
-                    //     const li = document.createElement('li');
-                    //     li.textContent = 'No products found';
-                    //     li.className = 'list-group-item'; // Add styling
-                    //     resultsList.appendChild(li);
-                    // } else {
-
-                    //     data.forEach(item => {
-                    //         const li = document.createElement('li');
-                    //         li.textContent = item.name;
-                    //         li.className = 'list-group-item'; // Add styling
-                    //         resultsList.appendChild(li);
-                    //     });
-                    // }
-                })
-                .catch(error => console.error('Error fetching search results:', error));
-        });
-    </script>
-
 
 </body>
 

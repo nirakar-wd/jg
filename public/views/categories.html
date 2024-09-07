@@ -658,7 +658,7 @@
                 productElement.innerHTML = `
             <div class="abox">
                 <div class="kecimgbox"> <a href="http://localhost:4000/products/${product.id}"><img
-                            src="img/Flat Front black FH.png" class="img-fluid"
+                            src=${products.image_urls && product.image_urls[0].length > 0 ? product.image_urls : "img/Flat Front black FH.png"} class="img-fluid"
                             alt="prod images"></a>
                 </div>
                 <div class="prod-desc">
@@ -680,11 +680,42 @@
     </script>
 
     <script>
+
+        // Function to generate the stars based on the rating
+        function generateStars(rating) {
+            let starsHtml = "";
+            const maxStars = 5;
+
+            // If the rating is 0, return 5 empty stars
+            if (rating === 0) {
+                for (let i = 1; i <= maxStars; i++) {
+                    starsHtml += `<span><i class="fa-regular fa-star"></i></span>`;
+                }
+                return starsHtml;
+            }
+
+
+            // Loop through the maximum number of stars (e.g., 5 stars)
+            for (let i = 1; i <= maxStars; i++) {
+                if (i <= Math.floor(rating)) {
+                    // Full star
+                    starsHtml += `<span><i class="fa fa-star"></i></span>`;
+                } else if (i === Math.floor(rating) + 1 && rating % 1 !== 0) {
+                    // Half star if rating is a decimal
+                    starsHtml += `<span><i class="fa fa-star-half-o"></i></span>`;
+                } else {
+                    // Empty star
+                    starsHtml += `<span><i class="fa fa-star-o"></i></span>`;
+                }
+            }
+
+            return starsHtml;
+        }
         document.addEventListener("DOMContentLoaded", async () => {
             try {
                 // Fetch products
                 const response = await fetch(
-                    `http://localhost:4000/api/products/?page=1&pageSize=8`,
+                    `http://localhost:4000/api/products/?page=1&pageSize=50`,
                     {
                         method: "GET",
                         headers: {
@@ -700,22 +731,20 @@
 
                     productContainer.innerHTML = "";
 
-                    products.rows.forEach(product => {
+                    products.products.forEach(product => {
                         const productElement = document.createElement("div");
                         productElement.classList.add("col-md-4"); // Adjust the column width
+
+                        const averageRating = product.averageRating || 0;
                         productElement.innerHTML = `
                             <div class="abox">
                                 <div class="kecimgbox">
-                                    <a href="http://localhost:4000/products/${product.id}"><img src=${product.images && product.images.length > 0 ? product.images[0].filePath : "/images/products/polo.jpg"} class="img-fluid" alt="prod images"></a>
+                                    <a href="http://localhost:4000/products/${product.id}"><img src=${product.image_urls && product.image_urls.length > 0 ? product.image_urls[0] : "/images/products/polo.jpg"} class="img-fluid" alt="prod images"></a>
                                 </div>
                                 <div class="prod-desc">
                                     <h4><a href="product.html">${product.name}</a></h4>
                                     <div class="rating-mks">
-                                        <span><i class="fa fa-star"></i></span>
-                                        <span><i class="fa fa-star"></i></span>
-                                        <span><i class="fa fa-star"></i></span>
-                                        <span><i class="fa fa-star"></i></span>
-                                        <span><i class="fa fa-star"></i></span>
+                                        ${generateStars(averageRating)}
                                     </div>
 
                                     <ins>${product.price}</ins>

@@ -216,12 +216,12 @@
 
                         <!-- <span class="small-info" id="productDescription">Lorem ipsum dolor sit amet consectetur. </span> -->
 
-                        <div class="rating mt-3">
+                        <div class="rating mt-3" id="starsContainer">
                             <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
                                 class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
                                 class="fa-solid fa-star"></i>
                         </div>
-
+                        <!-- 
                         <p class="select">select package</p>
                         <div class="product-types">
                             <ul class="d-flex position-relative">
@@ -247,7 +247,7 @@
                                 </li>
                             </ul>
 
-                        </div>
+                        </div> -->
 
                         <div class="cart-price">
                             <button class="add-cart d-flex" id="addToCartBtn">add to cart
@@ -360,22 +360,12 @@
                                         Your rating
                                     </label>
 
-                                    <span class="stars">
-                                        <a href="#">
-                                            <i class="fa fa-star"></i>
-                                        </a>
-                                        <a href="#">
-                                            <i class="fa fa-star"></i>
-                                        </a>
-                                        <a href="#">
-                                            <i class="fa fa-star"></i>
-                                        </a>
-                                        <a href="#">
-                                            <i class="fa fa-star"></i>
-                                        </a>
-                                        <a href="#">
-                                            <i class="fa fa-star"></i>
-                                        </a>
+                                    <span class="" id="ratingStars">
+                                        <i class="fa fa-star" data-value="1"></i>
+                                        <i class="fa fa-star" data-value="2"></i>
+                                        <i class="fa fa-star" data-value="3"></i>
+                                        <i class="fa fa-star" data-value="4"></i>
+                                        <i class="fa fa-star" data-value="5"></i>
                                     </span>
 
                                     <textarea placeholder="Your review" cols="45" rows="8" class="form-control my-5"
@@ -687,6 +677,10 @@
                     const productImage = document.getElementById("productImage");
                     const productImage1 = document.getElementById("productImage1");
                     const features = product.features;
+                    // Dynamically generate the rating
+                    const averageRating = product.averageRating || 0;
+                    const ratingContainer = document.getElementById("starsContainer");
+                    ratingContainer.innerHTML = generateStars(averageRating); // Call the generateStars function
                     // document.getElementById("price").textContent = `$${product.price}`;
 
                     const imagePath = (product.images && product.images.length > 0) ? product.images[0].filePath : '/images/products/polo2.jpg';
@@ -704,7 +698,6 @@
                         productImage1.setAttribute("data-zoom-image", imagePath);
                         productImage1.setAttribute("data-image", imagePath);
                         productImage1.className = "img-fluid";
-                        console.log(productImage);
                     } else {
                         console.log('Error: productImage element not found.');
                     }
@@ -770,7 +763,7 @@
                     function generateStars(rating) {
                         let starsHTML = '';
                         for (let i = 0; i < 5; i++) {
-                            starsHTML += i < rating ? '<i class="fa fa-star"></i>' : '<i class="fa fa-star-o"></i>';
+                            starsHTML += i < rating ? '<i class="fa fa-star"></i>' : '<i class="fa-regular fa-star"></i>';
                         }
                         return starsHTML;
                     }
@@ -784,41 +777,43 @@
                 console.error("Error occurred while fetching product details:", error);
             }
 
-            const similarProductsContainer = document.querySelector('.peepbought .row');
+            if (tagName !== null) {
+                const similarProductsContainer = document.querySelector('.peepbought .row');
 
-            try {
-                // Fetch products by tags
-                const response = await fetch(`http://localhost:4000/api/products/by_tag/${tagName}?page=1&pageSize=4`, {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                });
+                try {
+                    // Fetch products by tags
+                    const response = await fetch(`http://localhost:4000/api/products/by_tag/${tagName}?page=1&pageSize=4`, {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    });
 
-                if (response.ok) {
-                    const result = await response.json();
-                    console.log(result);
-                    similarProductsContainer.innerHTML = ''; // Clear any existing content
-                    result.products.forEach((product) => {
-                        const productHTML = `
-                    <div class="col-12 col-sm-3">
-                        <div class="categories-box">
-                            <h6 class="cat-head">
-                                <a href="http://localhost:4000/products/${product.id}" class="cat-link">
-                                    <img src="/images/products/polo.jpg" alt="${product.name}">
-                                    <span class="title">${product.name}</span>
-                                    <span class="price">Rs. ${product.price}</span>
-                                </a>
-                            </h6>
-                        </div>
-                    </div>
-                `;
-                        similarProductsContainer.insertAdjacentHTML('beforeend', productHTML);
-                    })
+                    if (response.ok) {
+                        const result = await response.json();
+                        console.log(result);
+                        similarProductsContainer.innerHTML = ''; // Clear any existing content
+                        result.products.forEach((product) => {
+                            const productHTML = `
+                            <div class="col-12 col-sm-3">
+                                <div class="categories-box">
+                                    <h6 class="cat-head">
+                                        <a href="http://localhost:4000/products/${product.id}" class="cat-link">
+                                            <img src="/images/products/polo.jpg" alt="${product.name}">
+                                            <span class="title">${product.name}</span>
+                                            <span class="price">Rs. ${product.price}</span>
+                                        </a>
+                                    </h6>
+                                </div>
+                            </div>
+    `;
+                            similarProductsContainer.insertAdjacentHTML('beforeend', productHTML);
+                        })
+                    }
+
+                } catch (err) {
+                    console.error("Failed to fetch similar product:");
                 }
-
-            } catch (err) {
-                console.error("Failed to fetch similar product:");
             }
 
             addToCartBtn.addEventListener("click", async (event) => {

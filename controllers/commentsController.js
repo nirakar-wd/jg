@@ -73,44 +73,40 @@ exports.getCommentsFromProduct = function (req, res, next) {
     });
 };
 
-exports.createComment = function (req, res, next) {
-  // Check if the user has already posted a comment on the same product
-  Comment.findOne({
-    where: {
-      productId: req.body.productId, // Use req.body.productId for consistency
-      userId: req.user.id,
-    },
-  })
-    .then((existingComment) => {
-      if (existingComment) {
-        return res.status(400).json({
-          error: "You have already posted a comment on this product.",
-        });
-      }
-
-      // If no existing comment, proceed to create the new comment
-      Comment.create({
-        productId: req.body.productId, // Use req.body.productId
+exports.createComment = async function (req, res, next) {
+  console.log(req.body);
+  try {
+    // Check if the user has already posted a comment on the same product
+    const existingComment = await Comment.findOne({
+      where: {
+        productId: req.body.productId,
         userId: req.user.id,
-        content: req.body.content,
-        rating: req.body.rating,
-      })
-        .then((comment) => {
-          return res.json(
-            CommentResponseDto.buildDetails(comment, false, false)
-          );
-        })
-        .catch((err) => {
-          return res
-            .status(500)
-            .json(AppResponseDto.buildWithErrorMessages(err.message));
-        });
-    })
-    .catch((err) => {
-      return res
-        .status(500)
-        .json(AppResponseDto.buildWithErrorMessages(err.message));
+      },
     });
+
+    if (existingComment) {
+      return res.status(400).json({
+        error: "You have already posted a comment on this product.",
+      });
+    }
+
+    // If no existing comment, proceed to create the new comment
+    const newComment = await Comment.create({
+      productId: req.body.productId,
+      userId: req.user.id,
+      content: req.body.content,
+      rating: req.body.rating,
+    });
+
+    return res
+      .status(201)
+      .json({ message: "Comment created successfully", comment: newComment });
+  } catch (error) {
+    // Catch any errors and respond accordingly
+    return res
+      .status(500)
+      .json({ message: "Failed to create comment", error: error.message });
+  }
 };
 
 exports.deleteComment = function (req, res, next) {

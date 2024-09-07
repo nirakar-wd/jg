@@ -1,79 +1,79 @@
-// Extract the productId from the URL path
-const path = window.location.pathname;
-const productId = path.split("/").pop();
+document.addEventListener("DOMContentLoaded", () => {
+  let selectedRating = 0;
 
-document
-  .getElementById("postCommentForm")
-  .addEventListener("submit", function (event) {
-    event.preventDefault(); // Prevent the form from submitting the traditional way
+  const path = window.location.pathname;
+  const productId = path.split("/").pop();
 
-    // Get the user's rating
-    const ratingElements = document.querySelectorAll(".stars i");
-    let rating = 0;
-    ratingElements.forEach((star, index) => {
-      if (star.classList.contains("active")) {
-        rating = index + 1;
+  // Handle star selection
+  const stars = document.querySelectorAll("#ratingStars .fa-star");
+  stars.forEach((star) => {
+    star.addEventListener("click", () => {
+      selectedRating = star.getAttribute("data-value"); // Get the star rating
+      updateStarDisplay(selectedRating); // Update the star display based on selection
+    });
+  });
+
+  // Function to update star appearance based on selection
+  function updateStarDisplay(rating) {
+    stars.forEach((star) => {
+      if (star.getAttribute("data-value") <= rating) {
+        star.classList.add("selected"); // Highlight the selected stars
+      } else {
+        star.classList.remove("selected");
       }
     });
+  }
 
-    // Get the comment content
+  // Handle form submission
+  const form = document.getElementById("postCommentForm");
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault(); // Prevent default form submission behavior
+
     const commentContent = document.getElementById("commentContent").value;
 
-    // Validate the input (optional)
-    // if (rating === 0 || commentContent.trim() === "") {
-    //   alert("Please provide a rating and comment.");
-    //   return;
-    // }
+    // Ensure a rating is selected
+    if (selectedRating === 0) {
+      alert("Please select a rating before submitting.");
+      return;
+    }
 
-    // Prepare the comment data
-    const commentData = {
+    // Prepare data to send to the backend
+    const formData = {
       productId: productId,
-      rating: rating,
+      rating: selectedRating,
       content: commentContent,
     };
 
-    // Send the POST request to the backend
-    fetch(`http://localhost:4000/api/products/${productId}/comments`, {
-      // Replace '/api/comments' with your actual API endpoint
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(commentData),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        // Handle success - you could update the comment list or display a success message
-        console.log(data);
+    console.log(formData);
 
-        if (data.error) {
-          alert("You cannot add another comment");
+    try {
+      // Send POST request to the backend
+      const response = await fetch(
+        `http://localhost:4000/api/products/${productId}/comments`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+
+      if (response) {
+        const result = await response.json();
+        if (result.error) {
+          alert(result.error);
         } else {
           alert("Comment submitted successfully!");
         }
-        // Optionally, reset the form
-        document.getElementById("postCommentForm").reset();
-        // Reset the stars
-        ratingElements.forEach((star) => star.classList.remove("active"));
-      })
-      .catch((error) => {
-        // Handle error
-        console.error("Error posting comment:", error);
-        alert("There was an error submitting your comment. Please try again.");
-      });
-  });
-
-// Handle star rating click events
-document.querySelectorAll(".stars a").forEach((star, index) => {
-  star.addEventListener("click", function (event) {
-    event.preventDefault();
-    const ratingElements = document.querySelectorAll(".stars i");
-    ratingElements.forEach((starElement, starIndex) => {
-      if (starIndex <= index) {
-        starElement.classList.add("active");
+        // Optionally, reset the form after submission
+        form.reset();
+        updateStarDisplay(0); // Reset star selection
       } else {
-        starElement.classList.remove("active");
+        alert("Internal error");
       }
-    });
+    } catch (error) {
+      console.error("Error submitting comment:", error);
+    }
   });
 });

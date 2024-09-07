@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", async () => {
   try {
     // Fetch orders from the backend
-    const response = await fetch("http://localhost:4000/api/products", {
+    const response = await fetch("http://localhost:4000/api/products?page=1&pageSize=100", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       productsTableBody.innerHTML = "";
 
       // Populate the table with fetched orders
-      products.rows.forEach((product) => {
+      products.products.forEach((product) => {
         const row = document.createElement("tr");
 
         row.innerHTML = `

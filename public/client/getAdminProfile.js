@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       productsTableBody.innerHTML = "";
 
       // Populate the table with fetched products
-      products.rows.forEach((product) => {
+      products.products.forEach((product) => {
         const row = document.createElement("tr");
 
         row.innerHTML = `
