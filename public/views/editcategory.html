@@ -190,9 +190,6 @@
 
     <main>
         <div>
-
-
-
             <div>
 
                 <section class="content-wrapper">
@@ -200,20 +197,20 @@
                     <div class="add-product add-category busi active">
                         <div class="heading-business mb-4">edit category</div>
                         <div class="add-product-box">
-                            <form>
+                            <form id="categoryForm">
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="product-left">
                                             <div class="form-group mb-4">
-                                                <label for="product-name" class="form-label">name</label>
-                                                <input type="text" class="form-control" id="product-name"
-                                                    name="product">
+                                                <label for="categoryName" class="form-label">name</label>
+                                                <input type="text" class="form-control" id="categoryName"
+                                                    name="name">
                                             </div>
 
                                             <div class="mb-3">
                                                 <label for="productDescription" class="form-label">full
                                                     description</label>
-                                                <textarea class="form-control" id="productDescription"
+                                                <textarea class="form-control" id="categoryDescription" name="description"
                                                     rows="5"></textarea>
                                             </div>
 
@@ -391,10 +388,6 @@
                 }
             });
         });
-
-    </script>
-
-    <script src="/client/categories.js">
 
     </script>
 

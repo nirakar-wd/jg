@@ -6,6 +6,8 @@ const ProductTag = require("../models/index").ProductTag;
 const Tag = require("../models/index").Tag;
 const ProductImage = require("../models/index").ProductImage;
 const Category = require("../models/index").Category;
+const Order = require("../models/index").Order;
+const OrderItem = require("../models/index").OrderItem;
 const Collection = require("../models/index").Collection;
 const Comment = require("../models/index").Comment;
 const User = require("../models/index").User;
@@ -14,53 +16,6 @@ const AppResponseDto = require("./../dtos/responses/appResponseDto");
 const ProductRequestDto = require("./../dtos/requests/productsDto");
 const ProductResponseDto = require("./../dtos/responses/productsDto");
 // const CommentModel = require("../models/CommentModel");
-
-// Get All Products
-// exports.getAll = async function (req, res, next) {
-//   const page = parseInt(req.query.page) || 1;
-//   const pageSize = parseInt(req.query.pageSize) || 5;
-
-//   try {
-//     const product = await Product.findAndCountAll({
-//       offset: 0,
-//       limit: 5,
-//       order: [
-//         ["createdAt", "DESC"],
-//         // ['price', 'DESC']
-//       ],
-//       attributes: [
-//         "id",
-//         "name",
-//         "slug",
-//         "description",
-//         "vendor",
-//         "price",
-//         "discountedPrice",
-//         "stock",
-//         "features",
-//         "created_at",
-//         "updated_at",
-//       ],
-//       include: [
-//         { model: Tag, attributes: ["id", "name"] },
-//         { model: Category, attributes: ["id", "name"] },
-//         { model: Collection, attributes: ["id", "name"] },
-//       ],
-//       offset: (page - 1) * pageSize,
-//       limit: pageSize,
-//     });
-
-//     if (!product) {
-//       return res.status(404).json({ message: "Product not found" });
-//     }
-
-//     return res.status(200).json(product);
-//   } catch (err) {
-//     return res
-//       .status(500)
-//       .json({ message: err.message || "Internal server error" });
-//   }
-// };
 
 exports.getAll = (req, res, next) => {
   const page = parseInt(req.query.page) || 1;
@@ -154,6 +109,55 @@ exports.getAll = (req, res, next) => {
       return res.status(400).send(err.message);
     });
 };
+
+// Get bestseller products based on order count
+exports.getBestSellerProducts = async function (req, res, next) {
+  const limit = parseInt(req.query.limit) || 10; // Default limit to 10 products if not provided
+
+  try {
+    // Step 1: Fetch the products with the highest order counts from the order_items table
+    const bestSellers = await Product.findAll({
+      include: [
+        {
+          model: OrderItem,
+          attributes: [],
+          required: true, // Only include products that have been ordered
+        },
+      ],
+      attributes: [
+        "id",
+        "name",
+        "price",
+        "description",
+        [
+          sequelize.literal(`(
+            SELECT COUNT(order_items.productId)
+            FROM order_items
+            WHERE order_items.productId = products.id
+          )`),
+          "orderCount", // Alias for the order count
+        ],
+      ], // Include product fields and the calculated order count
+      group: ["products.id"], // Group by product ID to aggregate order items
+      order: [[sequelize.literal("orderCount"), "DESC"]], // Order by the highest order count
+      limit: limit, // Limit the number of products returned
+    });
+
+    if (bestSellers.length === 0) {
+      return res.status(404).json({ message: "No best-seller products found" });
+    }
+
+    // Step 2: Return the best-seller products
+    return res.status(200).json({ bestSellers });
+  } catch (err) {
+    return res.status(500).json({
+      message: "Error retrieving best-seller products",
+      error: err.message,
+    });
+  }
+};
+
+
 
 // get product by id
 exports.getProductById = async function (req, res, next) {

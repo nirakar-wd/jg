@@ -40,10 +40,4 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("An error occurred while posting categories");
     }
   });
-
-  //get tag details
-
-  //put request
-
-
 });

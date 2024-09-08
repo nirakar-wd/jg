@@ -85,12 +85,63 @@ exports.getCategories = function (req, res, next) {
     });
 };
 
+exports.getCategoryById = function (req, res, next) {
+  const categoryId = req.params.categoryId;
+
+  Category.findByPk(categoryId)
+    .then((category) => {
+      if (!category) {
+        return res.status(404).json({ message: "Category not found" });
+      }
+      return res.status(200).json({
+        category,
+      });
+    })
+    .catch((err) => {
+      return res.status(500).json({ message: "error retrieving category" });
+    });
+};
+
+exports.getTagById = function (req, res, next) {
+  const tagId = req.params.tagId;
+
+  Tag.findByPk(tagId)
+    .then((tag) => {
+      if (!tag) {
+        return res.status(404).json({ message: "tag not found" });
+      }
+      return res.status(200).json({
+        tag,
+      });
+    })
+    .catch((err) => {
+      return res.status(500).json({ message: "error retrieving tag" });
+    });
+};
+
+exports.getCollectionById = function (req, res, next) {
+  const collectionId = req.params.collectionId;
+
+  Collection.findByPk(collectionId)
+    .then((collection) => {
+      if (!collection) {
+        return res.status(404).json({ message: "Collection not found" });
+      }
+      return res.status(200).json({
+        collection,
+      });
+    })
+    .catch((err) => {
+      return res.status(500).json({ message: "error retrieving collection" });
+    });
+};
+
 exports.createTag = function (req, res, next) {
   const tagObj = {};
   const promises = [];
 
   console.log(req.body);
-  
+
   if (req.body.name) {
     tagObj.name = req.body.name;
   }
@@ -279,3 +330,142 @@ exports.createCollections = async (req, res, next) => {
       return res.json(AppResponseDto.buildWithErrorMessages(err.message));
     });
 };
+
+exports.updateCategoryById = function (req, res, next) {
+  const categoryId = req.params.categoryId;
+  const { name, description } = req.body;
+
+  Category.findByPk(categoryId)
+    .then((category) => {
+      if (!category) {
+        return res.status(404).json({ message: "Category not found" });
+      }
+
+      category
+        .update({ name, description })
+        .then((updatedCategory) => {
+          return res.status(200).json({ updatedCategory });
+        })
+        .catch((err) => {
+          return res.status(500).json({ message: "error updating category" });
+        });
+    })
+    .catch((err) => {
+      return res.status(500).json({ message: "error retrieving category" });
+    });
+};
+
+exports.updateTagById = function (req, res, next) {
+  const tagId = req.params.tagId;
+  const { name, description } = req.body;
+
+  Tag.findByPk(tagId)
+    .then((tag) => {
+      if (!tag) {
+        return res.status(404).json({ message: "Tag not found" });
+      }
+
+      tag
+        .update({ name, description })
+        .then((updatedTag) => {
+          return res.status(200).json({ updatedTag });
+        })
+        .catch((err) => {
+          return res.status(500).json({ message: "error updating tag" });
+        });
+    })
+    .catch((err) => {
+      return res.status(500).json({ message: "error retrieving tag" });
+    });
+};
+
+exports.updateCollectionById = function (req, res, next) {
+  const collectionId = req.params.collectionId;
+  const { name, description } = req.body;
+
+  Collection.findByPk(collectionId)
+    .then((collection) => {
+      if (!collection) {
+        return res.status(404).json({ message: "collection not found" });
+      }
+
+      collection
+        .update({ name, description })
+        .then((updatedCollection) => {
+          return res.status(200).json({ updatedCollection });
+        })
+        .catch((err) => {
+          return res.status(500).json({ message: "error updating collection" });
+        });
+    })
+    .catch((err) => {
+      return res.status(500).json({ message: "error retrieving collection" });
+    });
+};
+
+exports.deleteCategoryById = function (req, res, next) {
+  const categoryId = req.params.id;
+
+  Category.findByPk(categoryId)
+    .then((category) => {
+      if (!category) {
+        return res.status(404).json({message: "category not found"});
+      }
+
+      category.destroy()
+        .then(() => {
+          return res.status(200).json({message: "category deleted successfully"});
+        })
+        .catch((err) => {
+          return res.status(500).json({message: "Error deleting category"});
+        });
+    })
+    .catch((err) => {
+      return res.status(500).json({message: "Error retrieving category"});
+    });
+};
+
+exports.deleteTagById = function (req, res, next) {
+  const tagId = req.params.id;
+
+  Tag.findByPk(tagId)
+    .then((tag) => {
+      if (!tag) {
+        return res.status(404).json({message: "tag not found"});
+      }
+
+      tag.destroy()
+        .then(() => {
+          return res.status(200).json({message: "tag deleted successfully"});
+        })
+        .catch((err) => {
+          return res.status(500).json({message: "Error deleting tag"});
+        });
+    })
+    .catch((err) => {
+      return res.status(500).json({message: "Error retrieving tag"});
+    });
+};
+
+exports.deleteCollectionById = function (req, res, next) {
+  const collectionId = req.params.id;
+
+  Collection.findByPk(collectionId)
+    .then((collection) => {
+      if (!collection) {
+        return res.status(404).json({message: "Collection not found"});
+      }
+
+      collection.destroy()
+        .then(() => {
+          return res.status(200).json({message: "Collection deleted successfully"});
+        })
+        .catch((err) => {
+          return res.status(500).json({message: "Error deleting collection"});
+        });
+    })
+    .catch((err) => {
+      return res.status(500).json({message: "Error retrieving collection"});
+    });
+};
+

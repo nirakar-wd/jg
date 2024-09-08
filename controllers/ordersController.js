@@ -6,7 +6,7 @@ const Product = require("../models/index").Product;
 const Address = require("../models/index").Address;
 const Payment = require("../models/index").Payment;
 const sequelize = require("../models/index").sequelize;
-const { Op } = require("sequelize");
+const { Op, fn, col, literal } = require("sequelize");
 const OrderItem = require("../models/index").OrderItem;
 const ORDER_STATUS = require("../constants").ORDER_STATUS;
 
@@ -332,5 +332,36 @@ exports.payment = async (req, res, next) => {
   } catch (error) {
     console.error("Error creating payment record:", error);
     res.status(500).json({ error: "Failed to create payment record" });
+  }
+};
+
+exports.getOrdersByMonth = async (req, res) => {
+  try {
+    // Fetch the number of orders per month for the current year
+    const ordersByMonth = await Order.findAll({
+      attributes: [
+        [fn('MONTH', col('createdAt')), 'month'], // Extract month from the createdAt field
+        [fn('COUNT', col('id')), 'orderCount'],   // Count the number of orders per month
+      ],
+      where: {
+        createdAt: {
+          [Op.gte]: literal('NOW() - INTERVAL 1 YEAR'), // Limit to the last 12 months
+        },
+      },
+      group: ['month'],
+      order: [[literal('month'), 'ASC']], // Order results by month
+    });
+
+    const result = Array(12).fill(0); // Initialize array for 12 months (Jan to Dec)
+
+    // Map the result to the corresponding months (1-12)
+    ordersByMonth.forEach(order => {
+      const monthIndex = parseInt(order.dataValues.month) - 1;
+      result[monthIndex] = order.dataValues.orderCount;
+    });
+
+    return res.status(200).json({ salesData: result });
+  } catch (error) {
+    return res.status(500).json({ message: "Error fetching sales data", error: error.message });
   }
 };
