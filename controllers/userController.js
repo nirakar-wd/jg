@@ -10,7 +10,9 @@ const {
   UserImage,
   Sequelize,
 } = require("../models/index");
-const { Op } = Sequelize;
+
+const { Op, fn, col, literal } = require("sequelize");
+
 const {
   generateAccessToken,
   generateRefreshToken,
@@ -274,7 +276,7 @@ exports.editUser = async (req, res) => {
     if (lastName) user.lastName = lastName;
     if (bio) user.bio = bio;
     if (email) user.email = email;
-    if(phone) user.phone = phone;
+    if (phone) user.phone = phone;
 
     // Handle password update with hashing
     if (password) {
@@ -336,3 +338,64 @@ exports.createFeedback = async (req, res) => {
     res.status(500).json({ message: "Failed to create feedback." });
   }
 };
+
+exports.getUserGrowthPercentage = async (req, res) => {
+  try {
+    // Fetch user counts per month for the past year
+    const usersByMonth = await User.sequelize.query(
+      `
+      SELECT
+        MONTH(created_at) AS month,
+        YEAR(created_at) AS year,
+        COUNT(id) AS userCount
+      FROM
+        users
+      WHERE
+        created_at >= NOW() - INTERVAL 1 YEAR
+      GROUP BY
+        YEAR(created_at), MONTH(created_at)
+      ORDER BY
+        YEAR(created_at), MONTH(created_at)
+      `,
+      {
+        type: User.sequelize.QueryTypes.SELECT
+      }
+    );
+
+    // Initialize an array to hold the monthly growth percentages
+    const growthData = [];
+    let previousMonthUserCount = null; // Initialize to null for the first comparison
+
+    // Loop through each month's data and calculate growth
+    usersByMonth.forEach((entry) => {
+      const { month, year, userCount } = entry;
+      const growth = previousMonthUserCount !== null
+        ? Math.min(((userCount - previousMonthUserCount) / previousMonthUserCount) * 100, 100) // Cap growth at 100%
+        : 0; // No growth for the first month
+
+      growthData.push({
+        month,
+        year,
+        userCount,
+        growth: growth.toFixed(2), // Growth percentage with two decimal places
+      });
+
+      // Update previousMonthUserCount for the next iteration
+      previousMonthUserCount = userCount;
+    });
+
+    // Return the result
+    return res.status(200).json({
+      success: true,
+      growthData,
+    });
+  } catch (error) {
+    console.error("Error calculating user growth:", error);
+    return res.status(500).json({
+      message: "Failed to calculate user growth",
+      error: error.message,
+    });
+  }
+};
+
+

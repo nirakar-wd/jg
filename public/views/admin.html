@@ -259,7 +259,7 @@
 
                                         </div>
                                         <h6 class="db-card-title">customers</h6>
-                                        <div class="num">3000</div>
+                                        <div class="num" id="noOfUsers">3000</div>
                                         <div class="percent"><i class="fa-solid fa-up-long"></i>5.27%</div>
 
                                     </div>
@@ -271,7 +271,7 @@
 
                                         </div>
                                         <h6 class="db-card-title">orders</h6>
-                                        <div class="num">6000</div>
+                                        <div class="num" id="noOfOrders">6000</div>
                                         <div class="d-percent"><i class="fa-solid fa-down-long"></i>3%</div>
 
                                     </div>
@@ -283,7 +283,7 @@
 
                                         </div>
                                         <h6 class="db-card-title">revenue</h6>
-                                        <div class="num">$7002</div>
+                                        <div class="num" id="revCount">$7002</div>
                                         <div class="percent"><i class="fa-solid fa-up-long"></i>5.27%</div>
 
                                     </div>
@@ -295,7 +295,7 @@
 
                                         </div>
                                         <h6 class="db-card-title">growth</h6>
-                                        <div class="num">+23%</div>
+                                        <div class="num" id="revGrowth">+23%</div>
                                         <div class="percent"><i class="fa-solid fa-up-long"></i>5.27%</div>
 
                                     </div>
@@ -322,39 +322,16 @@
                                 <div class="col-md-4">
                                     <div class="top-products">
                                         <div class="heading-business">top products</div>
-                                        <table class="table">
+                                        <table class="table" id="bestSellerProducts">
 
                                             <tbody>
-                                                <tr>
-
-                                                    <td>Item</td>
-                                                    <td>Sold</td>
-                                                    <td>Price</td>
-                                                </tr>
-                                                <tr>
-
-                                                    <td>Felt</td>
-                                                    <td>39</td>
-                                                    <td>$10</td>
-                                                </tr>
-                                                <tr>
-
-                                                    <td>Felt</td>
-                                                    <td>39</td>
-                                                    <td>$10</td>
-                                                </tr>
-                                                <tr>
-
-                                                    <td>Felt</td>
-                                                    <td>39</td>
-                                                    <td>$10</td>
-                                                </tr>
-                                                <tr>
-
-                                                    <td>Felt</td>
-                                                    <td>39</td>
-                                                    <td>$10</td>
-                                                </tr>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Item</th>
+                                                        <th>Sold</th>
+                                                        <th>Price</th>
+                                                    </tr>
+                                                </thead>
                                             </tbody>
                                         </table>
                                     </div>
@@ -1366,54 +1343,9 @@
 
     <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
 
-    <script>
-        const ctx = document.getElementById('myChart');
+    <script src="/client/dashboard.js"></script>
+    <script src="/client/chart.js">
 
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                datasets: [{
-                    label: '# of Sales',
-                    data: [12, 19, 3, 5, 2, 3, 7, 6, 15, 4, 23, 0],
-                    borderWidth: 1
-
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-
-            }
-        });
-    </script>
-
-    <script>
-        const ctx1 = document.getElementById('myChart2');
-
-        new Chart(ctx1, {
-            type: 'line',
-            data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                datasets: [{
-                    label: '# of Sales',
-                    data: [12, 19, 3, 5, 2, 3, 7, 6, 15, 4, 23, 0],
-                    borderWidth: 1
-
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-
-            }
-        });
     </script>
 
     <script>

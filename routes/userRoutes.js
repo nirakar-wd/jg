@@ -8,6 +8,7 @@ router.post("/register", controller.register);
 router.post("/login", controller.login);
 router.post("/feedback", verifyToken, controller.createFeedback);
 
+router.get("/usersGrowth", verifyToken, isAdmin, controller.getUserGrowthPercentage);
 router.get("/", verifyToken, isAdmin, controller.getAllUsers);
 router.get("/:id", verifyToken, controller.getCurrentUser);
 

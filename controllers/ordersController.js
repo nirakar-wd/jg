@@ -340,7 +340,7 @@ exports.getOrdersByMonth = async (req, res) => {
     // Fetch the number of orders per month for the current year
     const ordersByMonth = await Order.findAll({
       attributes: [
-        [fn('MONTH', col('createdAt')), 'month'], // Extract month from the createdAt field
+        [fn('MONTH', col('created_at')), 'month'], // Extract month from the createdAt field
         [fn('COUNT', col('id')), 'orderCount'],   // Count the number of orders per month
       ],
       where: {
@@ -360,8 +360,103 @@ exports.getOrdersByMonth = async (req, res) => {
       result[monthIndex] = order.dataValues.orderCount;
     });
 
-    return res.status(200).json({ salesData: result });
+    // Month labels for the frontend chart
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+    return res.status(200).json({ salesData: result, months: months });
   } catch (error) {
     return res.status(500).json({ message: "Error fetching sales data", error: error.message });
+  }
+};
+
+exports.updatePaymentStatus = async (req, res) => {
+  const { paymentId } = req.params;
+  const { newStatus } = req.body;
+
+  // Check if the newStatus is valid
+  const validStatuses = [
+    PAYMENT_STATUS.pending.ordinal,
+    PAYMENT_STATUS.paid.ordinal,
+    PAYMENT_STATUS.failed.ordinal,
+    PAYMENT_STATUS.refunded.ordinal,
+  ];
+
+  if (!validStatuses.includes(newStatus)) {
+    return res.status(400).json({
+      message: "Invalid payment status provided.",
+    });
+  }
+
+  try {
+    // Find the payment record by paymentId
+    const payment = await Payment.findOne({ where: { id: paymentId } });
+
+    if (!payment) {
+      return res.status(404).json({
+        message: "Payment not found.",
+      });
+    }
+
+    // Update the payment status
+    payment.paymentStatus = newStatus;
+    await payment.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Payment status updated successfully.",
+      payment,
+    });
+  } catch (error) {
+    console.error("Error updating payment status:", error);
+    return res.status(500).json({
+      message: "Failed to update payment status.",
+      error: error.message,
+    });
+  }
+};
+
+
+exports.updateOrderStatus = async (req, res) => {
+  const { orderId } = req.params;
+  const { newStatus } = req.body;
+
+  // Validate the newStatus
+  const validStatuses = [
+    ORDER_STATUS.processed.ordinal,
+    ORDER_STATUS.delivered.ordinal,
+    ORDER_STATUS.shipped.ordinal,
+  ];
+
+  if (!validStatuses.includes(newStatus)) {
+    return res.status(400).json({
+      message: "Invalid order status provided.",
+    });
+  }
+
+  try {
+    // Find the order by orderId
+    const order = await Order.findOne({ where: { id: orderId } });
+
+    if (!order) {
+      return res.status(404).json({
+        message: "Order not found.",
+      });
+    }
+
+    // Update the order status
+    order.orderStatus = newStatus;
+    await order.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Order status updated successfully.",
+      order,
+    });
+  } catch (error) {
+    console.error("Error updating order status:", error);
+    return res.status(500).json({
+      message: "Failed to update order status.",
+      error: error.message,
+    });
   }
 };
