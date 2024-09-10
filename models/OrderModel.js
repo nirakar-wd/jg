@@ -41,6 +41,7 @@ module.exports = function (sequelize, DataTypes) {
           ORDER_STATUS.processed.ordinal,
           ORDER_STATUS.delivered.ordinal,
           ORDER_STATUS.shipped.ordinal,
+          ORDER_STATUS.canceled.ordinal,
         ],
       },
       orderStatusStr: {

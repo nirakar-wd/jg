@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const userId = localStorage.getItem("userId");
-  let addressId;
 
   if (!userId) {
     console.error("User ID not found in localStorage.");
@@ -21,7 +20,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (response.ok) {
       const cartItems = await response.json();
-      const cartItemsContainer = document.getElementById("cartItems");
+      const cartItemsContainer = document.getElementById("cartItems"); 
       const orderSummaryContainer =
         document.getElementById("cartItemsContainer");
       const totalPriceContainer = document.getElementById("totalOrderPrice");
@@ -41,7 +40,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         row.innerHTML = `
                         <th scope="row">
-                            <img src="/img/Flat Back Brown TFF.png" alt="">
+                            <img src=${item.product.images && item.product.images.length > 0 ? item.product.images[0].filePath : "/images/products/polo.jpg"} alt="">
                         </th>
                         <td>${item.product.name}</td>
                         <td>${item.quantity}</td>
@@ -56,7 +55,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                     `;
 
         cartItemsContainer.appendChild(row);
-        addressId = item.user.addresses[0].id;
         const itemTotalPrice = item.product.discounted_price * item.quantity;
 
         cartItemsOrder.push({ id: item.productId, quantity: item.quantity });
@@ -115,69 +113,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             console.error("Error occurred while deleting cart item:", error);
           }
         });
-      });
-
-      console.log(cartItemsOrder);
-
-      const orderBtn = document.querySelector(".btn-checkout");
-      console.log(addressId);
-      orderBtn.addEventListener("click", async () => {
-        try {
-          // Prepare the payload for the POST request
-          const payload = {
-            address_id: addressId,
-            cart_items: cartItemsOrder,
-          };
-
-          // Send a POST request to place the order
-          const response = await fetch("http://localhost:4000/api/orders", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: "include", // Ensure cookies are sent with the request
-            body: JSON.stringify(payload),
-          });
-
-          if (response.ok) {
-            const result = await response.json();
-            console.log("Order placed successfully:", result);
-            alert("Order placed successfully!");
-            // Clear all cart items for the user
-
-            try {
-              const clearCartResponse = await fetch(`http://localhost:4000/api/cart/clear/${userId}`, {
-                method: "DELETE",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-              });
-
-              if (clearCartResponse.ok) {
-                console.log("Cart cleared successfully.");
-                // Optionally redirect the user to the homepage
-                window.location.href = "http://localhost:4000/"; // Redirect to homepage
-              } else {
-                console.error("Failed to clear the cart.");
-              }
-            } catch (error) {
-              console.error(
-                "An error occurred while clearing the cart:",
-                error
-              );
-            }
-          } else {
-            console.error(
-              "Failed to place order:",
-              response.status,
-              response.statusText
-            );
-            alert("Failed to place order. Please try again.");
-          }
-        } catch (error) {
-          console.error("Error occurred while placing the order:", error);
-          alert("An error occurred. Please try again.");
-        }
       });
     } else {
       console.error(

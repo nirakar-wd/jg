@@ -340,32 +340,47 @@ exports.getOrdersByMonth = async (req, res) => {
     // Fetch the number of orders per month for the current year
     const ordersByMonth = await Order.findAll({
       attributes: [
-        [fn('MONTH', col('created_at')), 'month'], // Extract month from the createdAt field
-        [fn('COUNT', col('id')), 'orderCount'],   // Count the number of orders per month
+        [fn("MONTH", col("created_at")), "month"], // Extract month from the createdAt field
+        [fn("COUNT", col("id")), "orderCount"], // Count the number of orders per month
       ],
       where: {
         createdAt: {
-          [Op.gte]: literal('NOW() - INTERVAL 1 YEAR'), // Limit to the last 12 months
+          [Op.gte]: literal("NOW() - INTERVAL 1 YEAR"), // Limit to the last 12 months
         },
       },
-      group: ['month'],
-      order: [[literal('month'), 'ASC']], // Order results by month
+      group: ["month"],
+      order: [[literal("month"), "ASC"]], // Order results by month
     });
 
     const result = Array(12).fill(0); // Initialize array for 12 months (Jan to Dec)
 
     // Map the result to the corresponding months (1-12)
-    ordersByMonth.forEach(order => {
+    ordersByMonth.forEach((order) => {
       const monthIndex = parseInt(order.dataValues.month) - 1;
       result[monthIndex] = order.dataValues.orderCount;
     });
 
     // Month labels for the frontend chart
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
 
     return res.status(200).json({ salesData: result, months: months });
   } catch (error) {
-    return res.status(500).json({ message: "Error fetching sales data", error: error.message });
+    return res
+      .status(500)
+      .json({ message: "Error fetching sales data", error: error.message });
   }
 };
 
@@ -415,7 +430,6 @@ exports.updatePaymentStatus = async (req, res) => {
   }
 };
 
-
 exports.updateOrderStatus = async (req, res) => {
   const { orderId } = req.params;
   const { newStatus } = req.body;
@@ -425,6 +439,7 @@ exports.updateOrderStatus = async (req, res) => {
     ORDER_STATUS.processed.ordinal,
     ORDER_STATUS.delivered.ordinal,
     ORDER_STATUS.shipped.ordinal,
+    ORDER_STATUS.canceled.ordinal,
   ];
 
   if (!validStatuses.includes(newStatus)) {
@@ -460,3 +475,41 @@ exports.updateOrderStatus = async (req, res) => {
     });
   }
 };
+
+exports.cancelOrder = async (req, res) => {
+  const { orderId } = req.params;
+
+  try {
+    // Find the order by its ID
+    const order = await Order.findOne({ where: { id: orderId } });
+
+    // Check if the order exists
+    if (!order) {
+      return res.status(404).json({ message: "Order not found." });
+    }
+
+    // Check if the order can be canceled (e.g., only if it's not shipped or delivered)
+    if (order.orderStatus === 1 || order.orderStatus === 2) {
+      return res.status(400).json({ message: "Cannot cancel shipped or delivered orders." });
+    }
+
+    // Update the order status to "canceled"
+    order.orderStatus = 3;
+    await order.save();
+
+    // Respond with success
+    return res.status(200).json({
+      success: true,
+      message: "Order canceled successfully.",
+      order,
+    });
+
+  } catch (error) {
+    console.error("Error canceling order:", error);
+    return res.status(500).json({
+      message: "Failed to cancel order.",
+      error: error.message,
+    });
+  }
+};
+

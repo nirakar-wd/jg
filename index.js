@@ -103,12 +103,16 @@ app.get("/orders", (req, res) => {
   res.sendFile(path.join(__dirname, "public/views", "orders.html"));
 });
 
+// app.get("/checkout", (req, res) => {
+//   res.sendFile(path.join(__dirname, "public/views", "checkout.html"));
+// });
+
 app.get("/checkout", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/views", "checkout.html"));
+  res.sendFile(path.join(__dirname, "public/views", "checkoutOrder.html"));
 });
 
-app.get("/checkout/:orderId", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/views", "checkoutOrder.html"));
+app.get("/order/:orderId", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/views", "orderDetails.html"));
 });
 
 app.get("/termsAndConditions", (req, res) => {
@@ -165,6 +169,10 @@ app.get("/edition", (req, res) => {
 
 app.get("/editProduct/:productId", (req, res) => {
   res.sendFile(path.join(__dirname, "public/views", "editproduct.html"));
+});
+
+app.get("/editOrder/:orderId", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/views", "editOrder.html"));
 });
 
 app.get("/manageProduct", (req, res) => {

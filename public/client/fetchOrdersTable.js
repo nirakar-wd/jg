@@ -24,15 +24,20 @@ document.addEventListener("DOMContentLoaded", async () => {
             <th scope="row">
               <a href="#">#${order.id}</a>
             </th>
-            <td>$${order.trackingNumber}</td>
+            <td>${order.trackingNumber}</td>
             <td>${order.userId}</td>
             <td><span>
               ${order.total}
             </span></td>
             <td><span>
-              ${order.orderStatus}
+              ${order.orderStatusStr}
             </span></td>
-            <td>${order.createdAt}</td>
+            <td><div>
+                <button class="btn btn-primary">
+                <a href="http://localhost:4000/editOrder/${order.id}">edit</a>
+                </button>
+                </div>
+              </td>
           `;
 
         ordersTableBody.appendChild(row);

@@ -1,14 +1,17 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  const orderId = window.location.pathname.split("/").pop(); // Extract orderId from the URL
-  const totalPriceSpan = document.getElementById("totalPrice");
-  let orderTotal;
+  const userId = localStorage.getItem("userId");
+  let addressId;
+  let cartItemsOrder = [];
 
-  let paymentAmount;
-  let deliveryFee = 150; // Default delivery fee
+  if (!userId) {
+    console.error("User ID not found in localStorage.");
+    return;
+  }
 
   try {
+    // Fetch cart items from the backend
     const response = await fetch(
-      `http://localhost:4000/api/orders/${orderId}`,
+      `http://localhost:4000/api/cart?userId=${userId}`,
       {
         method: "GET",
         headers: {
@@ -16,98 +19,133 @@ document.addEventListener("DOMContentLoaded", async () => {
         },
       }
     );
+
     if (response.ok) {
-      const order = await response.json();
-      displayOrderSummary(order);
+      const result = await response.json();
+      console.log(result);
+
+      addressId = result[0].user.addresses[0].id || "";
+
+      displayOrderSummary(result);
     } else {
-      document.getElementById("orderDetails").innerHTML = "Order not found.";
+      console.log("failed to fetch cart items");
     }
-  } catch (error) {
-    console.error("Error fetching order details:", error);
-  }
 
-  document
-    .querySelectorAll('input[name="deliveryOptions"]')
-    .forEach((radio) => {
-      radio.addEventListener("change", handleOptionChange);
-    });
+    function displayOrderSummary(order) {
+      const productContainer = document.getElementById("productList");
+      const totalPriceElement = document.getElementById("totalPrice");
 
-  function handleOptionChange() {
-    const selectedOption = document.querySelector(
-      'input[name="deliveryOptions"]:checked'
-    );
-    if (selectedOption) {
-      deliveryFee = parseFloat(selectedOption.value); // Update delivery fee
-      updateTotalCost(); // Update total cost when delivery option changes
-    }
-  }
+      console.log(order);
 
-  function displayOrderSummary(order) {
-    const productContainer = document.getElementById("productList");
-    console.log(order);
-    orderTotal = order.total;
+      productContainer.innerHTML = ""; // Clear previous content
 
-    productContainer.innerHTML = "";
+      let totalPrice = 0; // Initialize a variable to keep track of the total price
 
-    order.order_items.forEach((product) => {
-      const productElement = document.createElement("div");
-      productElement.classList.add("pro-price", "d-flex");
-
-      const productName = document.createElement("span");
-      productName.textContent = `${product.name} x ${product.quantity}`;
-
-      const productPrice = document.createElement("span");
-      productPrice.textContent = `Rs.${product.price.toFixed(2)}`;
-
-      productElement.appendChild(productName);
-      productElement.appendChild(productPrice);
-
-      productContainer.appendChild(productElement);
-    });
-
-    // Initially update total cost
-    updateTotalCost();
-  }
-
-  function updateTotalCost() {
-    const totalCost = orderTotal + deliveryFee;
-    totalPriceSpan.textContent = `Rs.${totalCost.toFixed(2)}`;
-    paymentAmount = totalCost; // Update payment amount
-  }
-
-  document
-    .querySelector(".btn-checkout")
-    .addEventListener("click", async () => {
-      const paymentMethod = "Cash on delivery"; // Set payment method, adjust as necessary
-
-      try {
-        const response = await fetch(
-          "http://localhost:4000/api/orders/payment",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              orderId,
-              paymentAmount,
-              paymentMethod,
-              paymentStatus: 0,
-            }),
-          }
+      // Iterate through the array of products (order_items)
+      order.forEach((orderItem) => {
+        // Extract product details from the nested product object
+        const product = orderItem.product;
+        const productElement = document.createElement("div");
+        productElement.classList.add(
+          "pro-price",
+          "d-flex",
+          "justify-content-between",
+          "align-items-center",
+          "mb-2"
         );
 
-        if (response.ok) {
-          const result = await response.json();
-          console.log("Payment recorded successfully:", result);
-          alert("Payment recorded successfully!");
-        } else {
-          console.error("Failed to record payment");
-          alert("Failed to record payment");
+        cartItemsOrder.push({
+          id: orderItem.productId,
+          quantity: orderItem.quantity,
+        });
+
+        // Create product name and quantity element
+        const productName = document.createElement("span");
+        productName.textContent = `${product.name} x ${orderItem.quantity}`;
+
+        // Create product price element
+        const productPrice = document.createElement("span");
+        const itemTotalPrice = product.discounted_price * orderItem.quantity;
+        productPrice.textContent = `Rs.${itemTotalPrice}`;
+
+        // Add the current item's price to the total
+        totalPrice += itemTotalPrice;
+
+        // Append the elements to the product container
+        productElement.appendChild(productName);
+        productElement.appendChild(productPrice);
+
+        // Append the productElement to the productContainer
+        productContainer.appendChild(productElement);
+      });
+
+      // Update the total price element with the calculated total price
+      totalPriceElement.textContent = `Rs.${totalPrice}`;
+    }
+  } catch (err) {
+    console.log("err fetching cart items");
+  }
+
+  // checkout order POST
+  // console.log(addressId);
+  const orderBtn = document.querySelector(".btn-checkout");
+  orderBtn.addEventListener("click", async () => {
+    console.log(cartItemsOrder);
+    try {
+      // Prepare the payload for the POST request
+      const payload = {
+        address_id: addressId,
+        cart_items: cartItemsOrder,
+      };
+
+      // Send a POST request to place the order
+      const response = await fetch("http://localhost:4000/api/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include", // Ensure cookies are sent with the request
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log("Order placed successfully:", result);
+        alert("Order placed successfully!");
+        // Clear all cart items for the user
+
+        try {
+          const clearCartResponse = await fetch(
+            `http://localhost:4000/api/cart/clear/${userId}`,
+            {
+              method: "DELETE",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          if (clearCartResponse.ok) {
+            console.log("Cart cleared successfully.");
+            // Optionally redirect the user to the homepage
+            window.location.href = "http://localhost:4000"; // Redirect to homepage
+          } else {
+            console.error("Failed to clear the cart.");
+          }
+        } catch (error) {
+          console.error("An error occurred while clearing the cart:", error);
         }
-      } catch (error) {
-        console.error("Error during payment process:", error);
-        alert("An error occurred during the payment process");
+      } else {
+        console.error(
+          "Failed to place order:",
+          response.status,
+          response.statusText
+        );
+        alert("Failed to place order. Please try again.");
       }
-    });
+    } catch (error) {
+      console.error("Error occurred while placing the order:", error);
+      alert("An error occurred. Please try again.");
+    }
+  });
 });

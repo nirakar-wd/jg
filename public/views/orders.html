@@ -191,7 +191,7 @@
                                     <th scope="col">order status</th>
                                     <th scope="col">order items</th>
                                     <th scope="col">total</th>
-                                    <th scope="col">pay online</th>
+                                    <th scope="col">view details</th>
                                 </tr>
                             </thead>
                             <tbody id="orderItems">
@@ -265,10 +265,10 @@
                             <ul>
                                 <li class="d-flex">
                                     <a href="#" class="social-icon">
-                                        <img src="img/facebook.png" alt="fbicon">
+                                        <img src="/img/facebook.png" alt="fbicon">
                                     </a>
                                     <a href="#" class="social-icon">
-                                        <img src="img/instagram(1).png" alt="">
+                                        <img src="/img/instagram(1).png" alt="">
                                     </a>
                                 </li>
                             </ul>
@@ -285,16 +285,16 @@
 
                     <div class="payopt d-flex">
                         <figure>
-                            <img src="img/american-express.png" alt="">
+                            <img src="/img/american-express.png" alt="">
                         </figure>
                         <figure>
-                            <img src="img/card.png" alt="">
+                            <img src="/img/card.png" alt="">
                         </figure>
                         <figure>
-                            <img src="img/discover.png" alt="">
+                            <img src="/img/discover.png" alt="">
                         </figure>
                         <figure>
-                            <img src="img/visa.png" alt="">
+                            <img src="/img/visa.png" alt="">
                         </figure>
                     </div>
                 </div>
@@ -354,10 +354,10 @@
                         const tr = document.createElement('tr');
                         tr.innerHTML = `
                         <td>${order.id}</td>
-                        <td>${order.orderStatusStr === "processed" ? "pending" : "processing"}</td>
+                        <td>${order.orderStatusStr}</td>
                         <td>${order.order_items.length}</td>
                         <td>${order.total}</td>
-                         <td><a href="http://localhost:4000/checkout/${order.id}">Checkout</a></td>
+                         <td><a href="http://localhost:4000/order/${order.id}">view details</a></td>
                     `;
                         orderItemsContainer.appendChild(tr);
                     });

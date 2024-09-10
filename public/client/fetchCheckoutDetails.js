@@ -15,7 +15,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         credentials: "include", // Ensure cookies are sent with the request
       });
       const user = await response.json();
-      console.log("user", user);
 
       if (response.ok) {
         // Populate the data into the HTML

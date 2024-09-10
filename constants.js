@@ -8,6 +8,9 @@ const ORDER_STATUS = {
   shipped: {
     ordinal: 2,
   },
+  canceled: {
+    ordinal: 3,
+  },
 };
 
 const PAYMENT_STATUS = {
