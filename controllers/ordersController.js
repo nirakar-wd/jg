@@ -490,7 +490,9 @@ exports.cancelOrder = async (req, res) => {
 
     // Check if the order can be canceled (e.g., only if it's not shipped or delivered)
     if (order.orderStatus === 1 || order.orderStatus === 2) {
-      return res.status(400).json({ message: "Cannot cancel shipped or delivered orders." });
+      return res
+        .status(400)
+        .json({ message: "Cannot cancel shipped or delivered orders." });
     }
 
     // Update the order status to "canceled"
@@ -503,7 +505,6 @@ exports.cancelOrder = async (req, res) => {
       message: "Order canceled successfully.",
       order,
     });
-
   } catch (error) {
     console.error("Error canceling order:", error);
     return res.status(500).json({
@@ -513,3 +514,34 @@ exports.cancelOrder = async (req, res) => {
   }
 };
 
+exports.calculateRevenue = async (req, res) => {
+  try {
+    // Retrieve orders with status "shipped" (status = 2)
+    const orders = await Order.findAll({
+      where: {
+        orderStatus: 1,
+      },
+    });
+
+    if (orders.length === 0) {
+      return res.status(404).json({
+        message: "No orders found.",
+      });
+    }
+
+    // Calculate total revenue
+    const totalRevenue = orders.reduce((acc, order) => acc + order.total, 0);
+
+    return res.status(200).json({
+      success: true,
+      totalRevenue,
+      count: orders.length,
+    });
+  } catch (error) {
+    console.error("Error calculating revenue:", error);
+    return res.status(500).json({
+      message: "Failed to calculate revenue.",
+      error: error.message,
+    });
+  }
+};

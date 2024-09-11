@@ -4,7 +4,7 @@ const upload = require("../helpers/upload").upload;
 const { verifyToken } = require("../middlewares/authMiddleware");
 
 router.get("/addresses", verifyToken, AddressesController.getAddresses);
-router.post("/addresses", verifyToken, AddressesController.createAddress);
+router.post("/addresses", verifyToken, upload.none(),  AddressesController.createAddress);
 router.put("/addresses/:addressId", verifyToken, upload.none(), AddressesController.updateAddress);
 
 module.exports = router;

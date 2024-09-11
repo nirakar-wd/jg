@@ -1,5 +1,7 @@
 require("dotenv").config();
-const createError = require("http-errors");
+const rateLimit = require('express-rate-limit');
+// const RedisStore = require('rate-limit-redis');
+// const redis = require('redis');
 const express = require("express");
 const cors = require("cors");
 // const logger = require("morgan");
@@ -22,6 +24,9 @@ const ordersRouter = require("./routes/ordersRoutes");
 const cartsRouter = require("./routes/cartRoutes");
 
 const app = express();
+// const redisClient = redis.createClient();
+
+// redisClient.connect().catch(console.error); // Ensure the client connects properly
 
 const PORT = process.env.PORT || 3000;
 
@@ -33,8 +38,7 @@ const corsOptions = {
   origin: "http://localhost:4000", // Allow this origin
   credentials: true, // Allow credentials (cookies, etc.)
 };
-// app.use(BenchmarkMiddleware.benchmark);
-// app.use(AuthMiddleware.loadUser);
+
 app.use(cors(corsOptions));
 app.use(cookieParser());
 // app.use(logger("dev"));
@@ -51,9 +55,15 @@ app.use((req, res, next) => {
   next();
 });
 
-// app.use("/api/protected-route", verifyToken, (req, res) => {
-//   res.send("This is a protected route");
+// Define a rate limiter
+// const limiter = rateLimit({
+//   windowMs: 15 * 60 * 1000, // 15 minutes
+//   max: 5, // Limit each IP to 100 requests per window
+//   message: "Too many requests, please try again later",
 // });
+
+// // Apply rate limiter to all requests
+// app.use("/api", limiter);
 
 // Serve static files from the "public" directory
 app.use(express.static(path.join(__dirname, "public")));

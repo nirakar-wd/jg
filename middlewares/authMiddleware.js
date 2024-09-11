@@ -1,5 +1,6 @@
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
+const rateLimit = require("express-rate-limit");
 const AppResponseDto = require("../dtos/responses/appResponseDto");
 const User = require("../models/index").User;
 const Order = require("../models/index").Order;
@@ -30,7 +31,6 @@ const verifyToken = async (req, res, next) => {
     next();
   });
 };
-
 
 const generateAccessToken = ({ id, username, email }) => {
   const accessToken = jwt.sign(
@@ -83,28 +83,30 @@ const isAdmin = (req, res, next) => {
 };
 
 const userOwnsItOrIsAdmin = async (req, res, next) => {
-    const userId = req.user.id;
-    const orderId = req.params.orderId;
-  
-    try {
-      // Find the order by ID
-      const order = await Order.findOne({ where: { id: orderId } });
-  
-      if (!order) {
-        return res.status(404).json({ message: "Order not found." });
-      }
-  
-      // Check if the user is the owner of the order or an admin
-      if (order.userId === userId || req.user.roles.some((role) => role.name === "ROLE_ADMIN")) {
-        return next(); // User is authorized to access the order
-      }
-  
-      // If not, deny access
-      return res.status(403).json({ message: "Access denied." });
-    } catch (error) {
-      console.error("Error checking ownership or admin status:", error);
-      return res.status(500).json({ message: "Internal server error." });
-    
+  const userId = req.user.id;
+  const orderId = req.params.orderId;
+
+  try {
+    // Find the order by ID
+    const order = await Order.findOne({ where: { id: orderId } });
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found." });
+    }
+
+    // Check if the user is the owner of the order or an admin
+    if (
+      order.userId === userId ||
+      req.user.roles.some((role) => role.name === "ROLE_ADMIN")
+    ) {
+      return next(); // User is authorized to access the order
+    }
+
+    // If not, deny access
+    return res.status(403).json({ message: "Access denied." });
+  } catch (error) {
+    console.error("Error checking ownership or admin status:", error);
+    return res.status(500).json({ message: "Internal server error." });
   }
 };
 
@@ -124,6 +126,12 @@ const ownsCommentOrIsAdmin = (req, res, next) => {
   }
 };
 
+const specificRateLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5, // Limit each IP to 5 requests per window
+  message: "Too many requests, please try again later",
+});
+
 module.exports = {
   verifyToken,
   generateAccessToken,
@@ -131,4 +139,5 @@ module.exports = {
   userOwnsItOrIsAdmin,
   ownsCommentOrIsAdmin,
   isAdmin,
+  specificRateLimiter,
 };

@@ -5,6 +5,7 @@ const ordersController = require("../controllers/ordersController");
 const { verifyToken, isAdmin, userOwnsItOrIsAdmin } = require("../middlewares/authMiddleware");
 
 router.get("/sales", verifyToken, isAdmin, ordersController.getOrdersByMonth);
+router.get("/revenue", verifyToken, isAdmin, ordersController.calculateRevenue);
 
 router.get("", verifyToken, ordersController.getOrders);
 

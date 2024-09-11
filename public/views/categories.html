@@ -240,7 +240,6 @@
                                                         <option value="name_desc">Name (Z - A)</option>
                                                         <option value="price_asc">Price (Low > High)</option>
                                                         <option value="price_desc">Price (High > Low)</option>
-                                                        <option value="name_asc">Discounts</option>
                                                     </select>
                                                 </div>
                                             </li>
@@ -249,7 +248,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="show-result">
-                                        <p>Showing 1–12 of 15 results</p>
+                                        <p id="resultsCount">Showing 9 of 15 results</p>
                                     </div>
                                 </div>
                             </div>
@@ -264,8 +263,8 @@
                         <!-- Pagination Section -->
                         <div class="pagination-sec">
                             <nav class="pagination pagination_type1">
-                                <ol class="pagination__list">
-                                    <li class="pagination__group"><a href="#0"
+                                <ol class="pagination__list" id="paginationList">
+                                    <!-- <li class="pagination__group"><a href="#0"
                                             class="pagination__item pagination__control pagination__control_prev">prev</a>
                                     </li>
                                     <li class="pagination__group"><span
@@ -274,7 +273,7 @@
                                     <li class="pagination__group"><a href="#0" class="pagination__item">3</a></li>
                                     <li class="pagination__group"><a href="#0"
                                             class="pagination__item pagination__control pagination__control_next">next</a>
-                                    </li>
+                                    </li> -->
                                 </ol>
                             </nav>
                         </div>
@@ -407,10 +406,39 @@
         });
     </script>
 
+
     <script>
+        let currentPage1 = 1;
+        let totalPages1 = 1;
+        let currentCategoryId = null;
+
+        // Function to generate stars based on the rating
+        function generateStars(rating) {
+            let starsHtml = "";
+            const maxStars = 5;
+
+            if (rating === 0) {
+                for (let i = 1; i <= maxStars; i++) {
+                    starsHtml += `<span><i class="fa-regular fa-star"></i></span>`;
+                }
+                return starsHtml;
+            }
+
+            for (let i = 1; i <= maxStars; i++) {
+                if (i <= Math.floor(rating)) {
+                    starsHtml += `<span><i class="fa fa-star"></i></span>`;
+                } else if (i === Math.floor(rating) + 1 && rating % 1 !== 0) {
+                    starsHtml += `<span><i class="fa fa-star-half-o"></i></span>`;
+                } else {
+                    starsHtml += `<span><i class="fa fa-star-o"></i></span>`;
+                }
+            }
+
+            return starsHtml;
+        }
+
         document.addEventListener("DOMContentLoaded", async () => {
             try {
-                // Fetch the categories from the backend
                 const response = await fetch("http://localhost:4000/api/categories", {
                     method: "GET",
                     headers: {
@@ -420,33 +448,27 @@
 
                 if (response.ok) {
                     const categories = await response.json();
-                    console.log(categories);
-                    const categoryList = document.querySelector(".category-list"); // Add a class to your <ul> element for easier targeting
+                    const categoryList = document.querySelector(".category-list");
 
-                    // Clear existing categories (if any)
                     categoryList.innerHTML = "";
 
-                    // Populate the category list with data from the backend
                     categories.categories.forEach((category) => {
                         const li = document.createElement("li");
                         const a = document.createElement("a");
-                        a.href = "#"; // Prevent default link behavior
-                        a.dataset.categoryId = category.id; // Store category ID for later use
-                        a.textContent = category.name; // Access the 'name' field of the category
+                        a.href = "#";
+                        a.dataset.categoryId = category.id;
+                        a.textContent = category.name;
                         li.appendChild(a);
                         categoryList.appendChild(li);
                     });
 
-                    // Add click event listeners to category links
                     categoryList.addEventListener("click", async (event) => {
                         if (event.target.tagName === "A") {
-                            event.preventDefault(); // Prevent default link behavior
+                            event.preventDefault();
 
-                            const categoryId = event.target.dataset.categoryId;
-                            // console.log("Selected category ID:", categoryId);
-
-                            // Fetch and display products for the selected category
-                            await fetchProductsByCategory(categoryId);
+                            currentCategoryId = event.target.dataset.categoryId;
+                            currentPage1 = 1; // Reset page number to 1
+                            await fetchProductsByCategory(currentCategoryId, currentPage1);
                         }
                     });
                 } else {
@@ -457,10 +479,10 @@
             }
         });
 
-        // Function to fetch products by category
-        async function fetchProductsByCategory(categoryId) {
+        // Function to fetch products by category and page
+        async function fetchProductsByCategory(categoryId, page) {
             try {
-                const response = await fetch(`http://localhost:4000/api/products/by_category_id/${categoryId}}`, {
+                const response = await fetch(`http://localhost:4000/api/products/by_category_id/${categoryId}?page=${page}&pageSize=9`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",
@@ -468,8 +490,9 @@
                 });
 
                 if (response.ok) {
-                    const products = await response.json();
-                    displayCategoryProducts(products);
+                    const data = await response.json();
+                    displayCategoryProducts(data.products);
+                    updatePaginationControls(data.page_meta);
                 } else {
                     console.error("Failed to fetch products");
                 }
@@ -481,26 +504,21 @@
         // Function to display products
         function displayCategoryProducts(products) {
             const productContainer = document.getElementById("productContainer");
-
             productContainer.innerHTML = "";
 
-            products.products.forEach(product => {
+            products.forEach((product) => {
                 const productElement = document.createElement("div");
-                productElement.classList.add("col-md-4"); // Adjust the column width
+                productElement.classList.add("col-md-4");
+
+                const averageRating = product.averageRating || 0;
                 productElement.innerHTML = `
                 <div class="abox">
                     <div class="kecimgbox">
-                        <a href="http://localhost:4000/products/${product.id}"><img src=${product.images && product.images.length > 0 ? product.images[0].filePath : "/images/products/polo.jpg"} alt="prod images"></a>
+                        <a href="http://localhost:4000/products/${product.id}"><img src="${product.images && product.images.length > 0 ? product.images[0] : "/images/products/polo.jpg"}" alt="prod images"></a>
                     </div>
                     <div class="prod-desc">
                         <h4><a href="product.html">${product.name}</a></h4>
-                        <div class="rating-mks">
-                            <span><i class="fa fa-star"></i></span>
-                            <span><i class="fa fa-star"></i></span>
-                            <span><i class="fa fa-star"></i></span>
-                            <span><i class="fa fa-star"></i></span>
-                            <span><i class="fa fa-star"></i></span>
-                        </div>
+                        <div class="rating-mks">${generateStars(averageRating)}</div>
                         <ins>${product.price}</ins>
                     </div>
                 </div>
@@ -508,34 +526,89 @@
                 productContainer.appendChild(productElement);
             });
         }
+
+        // Function to update pagination controls
+        function updatePaginationControls(pageMeta) {
+            const paginationList = document.getElementById("paginationList");
+            paginationList.innerHTML = "";
+
+            totalPages1 = pageMeta.number_of_pages;
+
+            // Create "Prev" button
+            const prevButton = document.createElement("li");
+            prevButton.classList.add("pagination__group");
+            prevButton.innerHTML = `<a href="#0" class="pagination__item pagination__control pagination__control_prev">prev</a>`;
+            prevButton.onclick = () => {
+                if (currentPage1 > 1) {
+                    currentPage1--;
+                    fetchProductsByCategory(currentCategoryId, currentPage1);
+                }
+            };
+            paginationList.appendChild(prevButton);
+
+            // Add page numbers
+            for (let i = 1; i <= totalPages1; i++) {
+                const pageItem = document.createElement("li");
+                pageItem.classList.add("pagination__group");
+
+                if (i === pageMeta.current_page_number) {
+                    pageItem.innerHTML = `<span class="pagination__item pagination__item_active">${i}</span>`;
+                } else {
+                    pageItem.innerHTML = `<a href="#0" class="pagination__item">${i}</a>`;
+                    pageItem.onclick = () => {
+                        currentPage = i;
+                        fetchProductsByCategory(currentCategoryId, currentPage1);
+                    };
+                }
+
+                paginationList.appendChild(pageItem);
+            }
+
+            // Create "Next" button
+            const nextButton = document.createElement("li");
+            nextButton.classList.add("pagination__group");
+            nextButton.innerHTML = `<a href="#0" class="pagination__item pagination__control pagination__control_next">next</a>`;
+            nextButton.onclick = () => {
+                if (currentPage1 < totalPages1) {
+                    currentPage1++;
+                    fetchProductsByCategory(currentCategoryId, currentPage1);
+                }
+            };
+            paginationList.appendChild(nextButton);
+        }
+
+        // Initial fetch for products
+        fetchProductsByCategory(currentCategoryId, currentPage1);
     </script>
 
 
+
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
+        document.addEventListener("DOMContentLoaded", async () => {
             const sortSelect = document.getElementById("sortOptions");
+            const resultContainer = document.getElementById("resultsCount");
 
             sortSelect.addEventListener("change", async () => {
                 const selectedOption = sortSelect.value;
 
                 // Define the base API URL
-                const baseUrl = "http://localhost:4000/api/products/filter";
+                const baseUrl = "http://localhost:4000/api/products/filter?page=1&pageSize=50";
 
                 // Build the query parameters based on the selected option
                 let queryParams = "";
 
                 switch (selectedOption) {
                     case "name_asc":
-                        queryParams = "?sort=name_asc";
+                        queryParams = "&sort=name_asc";
                         break;
                     case "name_desc":
-                        queryParams = "?sort=name_desc";
+                        queryParams = "&sort=name_desc";
                         break;
                     case "price_asc":
-                        queryParams = "?sort=price_asc";
+                        queryParams = "&sort=price_asc";
                         break;
                     case "price_desc":
-                        queryParams = "?sort=price_desc";
+                        queryParams = "&sort=price_desc";
                         break;
                     default:
                         queryParams = ""; // For "Relevance" or any other case
@@ -549,9 +622,9 @@
                     }
 
                     const products = await response.json();
-                    console.log(products)
                     // Display the products (you need to implement this part)
-                    displayProducts(products);
+                    resultContainer.innerHTML = "Showing " + products.page_meta.total_items_count + " of " + products.page_meta.total_items_count + " products";
+                    displayProducts(products.products);
 
                 } catch (error) {
                     console.error("Error:", error);
@@ -559,40 +632,10 @@
                 }
             });
         });
-
-        // Function to display products (you can customize this based on your needs)
-        function displayProducts(products) {
-            const productContainer = document.getElementById("productContainer");
-
-            productContainer.innerHTML = "";
-
-            products.forEach(product => {
-                const productElement = document.createElement("div");
-                productElement.classList.add("col-md-4"); // Adjust the column width
-                productElement.innerHTML = `
-                                    <div class="abox">
-                                        <div class="kecimgbox"> <a href="http://localhost:4000/products/${product.id}"><img
-                                                    src=${product.images && product.images.length > 0 ? product.images[0].filePath : "/images/products/polo.jpg"} class="img-fluid"
-                                                    alt="prod images"></a>
-                                        </div>
-                                        <div class="prod-desc">
-                                            <h4><a href="product.html">${product.name}</a></h4>
-                                            <div class="rating-mks"> <span><i class="fa fa-star"></i></span> <span><i
-                                                        class="fa fa-star"></i></span> <span><i
-                                                        class="fa fa-star"></i></span> <span><i
-                                                        class="fa fa-star"></i></span> <span><i
-                                                        class="fa fa-star"></i></span> </div>
-                                            <ins>${product.price}</ins>
-                                        </div>
-                                    </div>
-        `;
-                productContainer.appendChild(productElement);
-            });
-        }
     </script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
+        document.addEventListener("DOMContentLoaded", async () => {
             const minInput = document.querySelector(".input-min");  // Min price input field
             const maxInput = document.querySelector(".input-max");  // Max price input field
             const rangeMinInput = document.querySelector(".range-min"); // Min price slider
@@ -616,7 +659,8 @@
                     const products = await response.json();
                     console.log(products)
                     // Display the products
-                    displayProducts(products);  // Call the display function to update the UI
+                    displayProducts(products.products);  // Call the display function to update the UI
+
                 } catch (error) {
                     console.error("Error fetching products:", error);  // Handle any errors
                 }
@@ -655,19 +699,16 @@
             products.forEach(product => {
                 const productElement = document.createElement("div");
                 productElement.classList.add("col-md-4"); // Adjust the column width
+                const averageRating = product.averageRating || 0;
                 productElement.innerHTML = `
             <div class="abox">
                 <div class="kecimgbox"> <a href="http://localhost:4000/products/${product.id}"><img
-                            src=${products.image_urls && product.image_urls[0].length > 0 ? product.image_urls : "img/Flat Front black FH.png"} class="img-fluid"
+                            src=${product.images && product.images.length > 0 ? product.images[0] : "/images/products/polo.jpg"} class="img-fluid"
                             alt="prod images"></a>
                 </div>
                 <div class="prod-desc">
                     <h4><a href="product.html">${product.name}</a></h4>
-                    <div class="rating-mks"> <span><i class="fa fa-star"></i></span> <span><i
-                                class="fa fa-star"></i></span> <span><i
-                                class="fa fa-star"></i></span> <span><i
-                                class="fa fa-star"></i></span> <span><i
-                                class="fa fa-star"></i></span> </div>
+                    <div class="rating-mks">${generateStars(averageRating)} </div>
                     <ins>${product.price}</ins>
                 </div>
             </div>
@@ -680,13 +721,14 @@
     </script>
 
     <script>
+        let currentPage = 1;
+        let totalPages = 1;
 
         // Function to generate the stars based on the rating
         function generateStars(rating) {
             let starsHtml = "";
             const maxStars = 5;
 
-            // If the rating is 0, return 5 empty stars
             if (rating === 0) {
                 for (let i = 1; i <= maxStars; i++) {
                     starsHtml += `<span><i class="fa-regular fa-star"></i></span>`;
@@ -694,73 +736,129 @@
                 return starsHtml;
             }
 
-
-            // Loop through the maximum number of stars (e.g., 5 stars)
             for (let i = 1; i <= maxStars; i++) {
                 if (i <= Math.floor(rating)) {
-                    // Full star
                     starsHtml += `<span><i class="fa fa-star"></i></span>`;
                 } else if (i === Math.floor(rating) + 1 && rating % 1 !== 0) {
-                    // Half star if rating is a decimal
                     starsHtml += `<span><i class="fa fa-star-half-o"></i></span>`;
                 } else {
-                    // Empty star
                     starsHtml += `<span><i class="fa fa-star-o"></i></span>`;
                 }
             }
 
             return starsHtml;
         }
-        document.addEventListener("DOMContentLoaded", async () => {
+
+        // Function to fetch products based on the current page
+        async function fetchProducts(page) {
+            const resultContainer = document.getElementById("resultsCount");
             try {
-                // Fetch products
-                const response = await fetch(
-                    `http://localhost:4000/api/products/?page=1&pageSize=50`,
-                    {
-                        method: "GET",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                    }
-                );
+                const response = await fetch(`http://localhost:4000/api/products?page=${page}&pageSize=9`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
 
                 if (response.ok) {
-                    const products = await response.json();
-                    console.log(products);
+                    const data = await response.json();
                     const productContainer = document.getElementById("productContainer");
+                    const products = data.products;
+                    const pageMeta = data.page_meta;
+                    resultContainer.innerHTML = "Showing 9 of " + data.page_meta.total_items_count + " products";
 
+                    // Update total pages
+                    totalPages = pageMeta.number_of_pages;
+
+                    // Clear the product container
                     productContainer.innerHTML = "";
 
-                    products.products.forEach(product => {
+                    // Render each product
+                    products.forEach((product) => {
                         const productElement = document.createElement("div");
-                        productElement.classList.add("col-md-4"); // Adjust the column width
+                        productElement.classList.add("col-md-4");
 
                         const averageRating = product.averageRating || 0;
                         productElement.innerHTML = `
-                            <div class="abox">
-                                <div class="kecimgbox">
-                                    <a href="http://localhost:4000/products/${product.id}"><img src=${product.image_urls && product.image_urls.length > 0 ? product.image_urls[0] : "/images/products/polo.jpg"} class="img-fluid" alt="prod images"></a>
-                                </div>
-                                <div class="prod-desc">
-                                    <h4><a href="product.html">${product.name}</a></h4>
-                                    <div class="rating-mks">
-                                        ${generateStars(averageRating)}
-                                    </div>
-
-                                    <ins>${product.price}</ins>
-                                </div>
+                        <div class="abox">
+                            <div class="kecimgbox">
+                                <a href="http://localhost:4000/products/${product.id}">
+                                    <img src="${product.images && product.images.length > 0 ? product.images[0] : "/images/products/polo.jpg"}" class="img-fluid" alt="prod images">
+                                </a>
                             </div>
-            `;
+                            <div class="prod-desc">
+                                <h4><a href="product.html">${product.name}</a></h4>
+                                <div class="rating-mks">
+                                    ${generateStars(averageRating)}
+                                </div>
+                                <ins>${product.price}</ins>
+                            </div>
+                        </div>
+                    `;
                         productContainer.appendChild(productElement);
                     });
+
+                    // Update the pagination controls
+                    updatePaginationControls(pageMeta);
                 } else {
                     console.error("Failed to fetch products");
                 }
             } catch (error) {
                 console.error("Error:", error);
             }
+        }
 
-        });
+        // Function to update the pagination dynamically
+        function updatePaginationControls(pageMeta) {
+            const paginationList = document.getElementById("paginationList");
+            paginationList.innerHTML = "";
+
+            // Create "Prev" button
+            const prevButton = document.createElement("li");
+            prevButton.classList.add("pagination__group");
+            prevButton.innerHTML = `<a href="#0" class="pagination__item pagination__control pagination__control_prev">prev</a>`;
+            prevButton.onclick = () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    fetchProducts(currentPage);
+                }
+            };
+            paginationList.appendChild(prevButton);
+
+            // Add page numbers
+            for (let i = 1; i <= pageMeta.number_of_pages; i++) {
+                const pageItem = document.createElement("li");
+                pageItem.classList.add("pagination__group");
+
+                if (i === pageMeta.current_page_number) {
+                    pageItem.innerHTML = `<span class="pagination__item pagination__item_active">${i}</span>`;
+                } else {
+                    pageItem.innerHTML = `<a href="#0" class="pagination__item">${i}</a>`;
+                    pageItem.onclick = () => {
+                        currentPage = i;
+                        fetchProducts(currentPage);
+                    };
+                }
+
+                paginationList.appendChild(pageItem);
+            }
+
+            // Create "Next" button
+            const nextButton = document.createElement("li");
+            nextButton.classList.add("pagination__group");
+            nextButton.innerHTML = `<a href="#0" class="pagination__item pagination__control pagination__control_next">next</a>`;
+            nextButton.onclick = () => {
+                if (currentPage < pageMeta.number_of_pages) {
+                    currentPage++;
+                    fetchProducts(currentPage);
+                }
+            };
+            paginationList.appendChild(nextButton);
+        }
+
+        // Initial fetch for the first page
+        fetchProducts(currentPage);
+
     </script>
 
 </body>

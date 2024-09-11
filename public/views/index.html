@@ -593,6 +593,80 @@
             try {
                 // Fetch products
                 const response = await fetch(
+                    `http://localhost:4000/api/products/bestSeller`,
+                    {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
+
+                if (response.ok) {
+                    const products = await response.json();
+                    console.log(products);
+                    const bestSellingContainer = document.querySelector("#bestSellingContainer"
+                    );
+
+                    // Clear existing products (if any)
+                    bestSellingContainer.innerHTML = "";
+
+                    // Populate the products container with the fetched products
+                    products.bestSellers.forEach((product) => {
+                        const bestSellingCard = `
+                            <div class="categories-box">
+                                <h6 class="cat-head">
+                                <a href="http://localhost:4000/products/${product.id}" class="cat-link">
+                                    <img src=${product.images && product.images.length ? product.images[0] : "/images/products/polo2.jpg"} alt="arc-img" class="product-img">
+                                    <span class="title">${product.name}</span>
+                                    <span class="price">${product.price}</span>
+                                </a>
+                                </h6>
+                            </div>`;
+
+
+                        bestSellingContainer.innerHTML += bestSellingCard;
+                    });
+
+                    // Initialize Tiny Slider
+                    tns({
+                        container: '.new-slider',
+                        items: 3,
+                        loop: true,
+                        speed: 500,
+                        autoplay: true,
+                        controls: true,
+                        slideBy: 1,
+                        mouseDrag: true,
+                        nav: false,
+                        autoplayButtonOutput: false,
+                        autoHeight: true,
+                        controlsContainer: "#customize-controls",
+                        responsive: {
+                            200: { items: 1, autoHeight: false },
+                            400: { items: 1, gutter: 10 },
+                            640: { gutter: 20 },
+                            700: { items: 2 },
+                            900: { items: 3, gutter: 20 },
+                            1000: { items: 4, gutter: 20 }
+                        }
+                    });
+
+                } else {
+                    console.error("Failed to fetch best seller products");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        });
+
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            try {
+                // Fetch products
+                const response = await fetch(
                     `http://localhost:4000/api/products/?page=1&pageSize=8`,
                     {
                         method: "GET",
@@ -606,12 +680,9 @@
                     const products = await response.json();
                     console.log(products);
                     const productsContainer = document.querySelector("#productsContainer");
-                    const bestSellingContainer = document.querySelector("#bestSellingContainer"
-                    );
 
                     // Clear existing products (if any)
                     productsContainer.innerHTML = "";
-                    bestSellingContainer.innerHTML = "";
 
                     // Populate the products container with the fetched products
                     products.products.forEach((product) => {
@@ -620,7 +691,7 @@
                                     <div class="categories-box">
                                         <h6 class="cat-head">
                                             <a href="http://localhost:4000/products/${product.id}" class="cat-link">
-                                                <img src=${product.images && product.images.length > 0 ? product.images[0].filePath : "/images/products/polo.jpg"} alt="arc-img">
+                                                <img src=${product.images && product.images.length > 0 ? product.images[0] : "/images/products/polo.jpg"} alt="arc-img">
                                                 <span class="title">${product.name}</span>
                                                 <span class="price">${product.price}</span>
                                             </a>
@@ -630,20 +701,7 @@
                                 </div>
                         `;
 
-                        const bestSellingCard = `
-                            <div class="categories-box">
-                                <h6 class="cat-head">
-                                <a href="http://localhost:4000/products/${product.id}" class="cat-link">
-                                    <img src=${product.images && product.images.length ? product.images[0].filePath : "/images/products/polo2.jpg"} alt="arc-img" class="product-img">
-                                    <span class="title">${product.name}</span>
-                                    <span class="price">${product.price}</span>
-                                </a>
-                                </h6>
-                            </div>`;
-
-
                         productsContainer.innerHTML += productCard;
-                        bestSellingContainer.innerHTML += bestSellingCard;
                     });
 
                     // Initialize Tiny Slider

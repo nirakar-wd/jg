@@ -1,10 +1,8 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  let addressId;
+  let addressId = null;
 
   try {
-    // Extract the user ID from the query parameters
-
-    //get userId from local storage
+    // Get userId from local storage
     const id = localStorage.getItem("userId");
 
     if (id) {
@@ -16,8 +14,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         },
         credentials: "include", // Ensure cookies are sent with the request
       });
+
       const user = await response.json();
-      console.log("user", user);
+      console.log(user);
 
       if (response.ok) {
         // Populate the data into the HTML
@@ -25,40 +24,36 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.getElementById("lastName").value = user.user.lastName;
         document.getElementById("email").value = user.user.email;
         document.getElementById("phone").value = user.user.phone || "";
-        const selectElement = document.getElementById("inputState");
-        addressId = user.user.addresses[0].id;
 
-        document.getElementById("userAddress").value =
-          user.user.addresses[0].address || "";
-        document.getElementById("userCity").value =
-          user.user.addresses[0].city || "";
-        document.getElementById("userState").value =
-          user.user.addresses[0].state || "";
-        document.getElementById("userZip").value =
-          user.user.addresses[0].zipCode || "";
-        const selectElement1 = document.getElementById("inputState1");
+        // Check if the user has any addresses
+        if (user.user.addresses && user.user.addresses.length > 0) {
+          // Address exists, set addressId
+          addressId = user.user.addresses[0].id;
 
-        document.getElementById("userAddress1").value =
-          user.user.addresses[0].address || "";
-        document.getElementById("userCity1").value =
-          user.user.addresses[0].city || "";
-        document.getElementById("userState1").value =
-          user.user.addresses[0].state || "";
-        document.getElementById("userZip1").value =
-          user.user.addresses[0].zipCode || "";
+          document.getElementById("userAddress").value =
+            user.user.addresses[0].address || "";
+          document.getElementById("userCity").value =
+            user.user.addresses[0].city || "";
+          document.getElementById("userState").value =
+            user.user.addresses[0].state || "";
+          document.getElementById("userZip").value =
+            user.user.addresses[0].zipCode || "";
 
-        selectElement.value = "Nepal";
-        selectElement1.value = "Nepal";
+          const selectElement = document.getElementById("inputState");
+          selectElement.value = "Nepal";
+        } else {
+          // No address found, user can add a new one
+          addressId = null;
+        }
       } else {
-        console.error("Failed to fetch user information");
+        console.error("Failed to fetch user details");
       }
-    } else {
     }
   } catch (err) {
-    console.log("failed to fetch user info");
+    console.log("Failed to fetch user info:", err);
   }
 
-  //location put request
+  // Handle form submission for adding or editing address
   document
     .getElementById("editShippingDetailsForm")
     .addEventListener("submit", async function (event) {
@@ -70,18 +65,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       const state = document.getElementById("userState").value;
       const zip = document.getElementById("userZip").value;
       const selectElement = document.getElementById("inputState");
-
       const country = selectElement.value;
 
-      // const payload = {
-      //   address: address,
-      //   city: city,
-      //   state: state,
-      //   zip_code: zip,
-      //   country: country,
-      // };
-
-      // Create a FormData object to handle the form data including the file
+      // Create a FormData object to handle the form data
       const formData = new FormData();
       formData.append("address", address);
       formData.append("city", city);
@@ -89,30 +75,44 @@ document.addEventListener("DOMContentLoaded", async () => {
       formData.append("zip_code", zip);
       formData.append("country", country);
 
-      console.log(addressId);
-
-      if (addressId) {
-        try {
-          // Await the fetch request to handle the response properly
+      try {
+        if (addressId) {
+          // Edit existing address
           const editResponse = await fetch(
             `http://localhost:4000/api/addresses/${addressId}`,
             {
               method: "PUT",
               body: formData, // No need for headers with FormData
-              credentials: "include", // Ensure cookies are sent with the request
+              credentials: "include",
             }
           );
 
-          // Check the response status
           if (editResponse.ok) {
-            console.log("location edited successfully");
+            console.log("Address updated successfully");
           } else {
             const errorData = await editResponse.json();
-            console.error("Error editing location:", errorData);
+            console.error("Error updating address:", errorData);
           }
-        } catch (error) {
-          console.error("Failed to edit location:", error);
+        } else {
+          // Add new address
+          const addResponse = await fetch(
+            `http://localhost:4000/api/addresses`,
+            {
+              method: "POST",
+              body: formData,
+              credentials: "include",
+            }
+          );
+
+          if (addResponse.ok) {
+            console.log("Address added successfully");
+          } else {
+            const errorData = await addResponse.json();
+            console.error("Error adding new address:", errorData);
+          }
         }
+      } catch (error) {
+        console.error("Failed to save address:", error);
       }
     });
 });

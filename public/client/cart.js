@@ -64,7 +64,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // Create elements for product name and price
         const productName = document.createElement("span");
-        productName.textContent = item.product.name;
+        productName.textContent = item.product.name + " X " + item.quantity;
+
+        // const productQuantity = document.createElement("span");
+        // productQuantity.textContent = item.product.quantity;
 
         const productPrice = document.createElement("span");
         productPrice.textContent = `Rs.${(
@@ -73,6 +76,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // Append name and price to the product element
         productElement.appendChild(productName);
+        // productElement.appendChild(productQuantity);
         productElement.appendChild(productPrice);
 
         // Append the product element to the container

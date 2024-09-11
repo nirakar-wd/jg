@@ -29,51 +29,63 @@ exports.getAddresses = function (req, res, next) {
     });
 };
 
-exports.createAddress = function (req, res, next) {
+exports.createAddress = async function (req, res, next) {
+  const { first_name, last_name, zip_code, address, city, country, state } =
+    req.body;
+
+  const firstName = first_name || req.user.firstName;
+  const lastName = last_name || req.user.lastName;
+
   const errors = {};
 
-  const firstName = req.body.first_name || req.user.firstName;
-  const lastName = req.body.last_name || req.user.lastName;
-  const zipCode = req.body.zip_code;
-  const address = req.body.address;
-  const city = req.body.city;
-  const country = req.body.country;
+  // Custom error messages for validation
+  // if (!firstName) errors.firstName = "First name is required";
+  // if (!lastName) errors.lastName = "Last name is required";
+  if (!zip_code) errors.zipCode = "Please provide a valid zip code.";
+  if (!address) errors.address = "Address cannot be empty.";
+  if (!city) errors.city = "City is a required field.";
+  if (!country) errors.country = "Please select your country.";
+  if (!state) errors.state = "State or region is required.";
 
-  if (!city || city.trim() === "") errors.firstName = "city is required";
-
-  if (!country || country.trim() === "")
-    errors.lastName = "country is required";
-
-  if (!zipCode || zipCode.trim() === "") errors.email = "zipCode is required";
-
-  if (!address || address.trim() === "")
-    errors.password = "Password must not be empty";
-
-  if (!_.isEmpty(errors)) {
-    return res.status(422).json(AppResponseDto.buildWithErrorMessages(errors));
+  // Check if there are any validation errors
+  if (Object.keys(errors).length > 0) {
+    // Handle each validation error with a custom message
+    return res.status(400).json({
+      success: false,
+      message: "Address validation failed.",
+      errors: errors,
+    });
   }
 
-  new Address({
-    firstName: firstName,
-    lastName: lastName,
-    city,
-    country,
-    address,
-    zipCode,
-    user: req.user,
-  })
-    .save()
-    .then((address) => {
-      return res.json(
-        AppResponseDto.buildWithDtoAndMessages(
-          AddressDto.buildDto(address),
-          "Address added successfully"
-        )
-      );
-    })
-    .catch((err) => {
-      return res.json(AppResponseDto.buildWithErrorMessages(err.message));
+  try {
+    // Save the new address to the database
+    const newAddress = new Address({
+      firstName,
+      lastName,
+      zipCode: zip_code,
+      address,
+      city,
+      country,
+      state,
+      userId: req.user.id,
     });
+
+    const savedAddress = await newAddress.save();
+
+    // Return a success response with a custom message
+    return res.status(201).json({
+      success: true,
+      message: "Address added successfully.",
+      address: AddressDto.buildDto(savedAddress),
+    });
+  } catch (err) {
+    // Handle any server errors with a custom error message
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred while adding the address.",
+      error: err.message,
+    });
+  }
 };
 
 // Update address

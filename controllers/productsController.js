@@ -112,7 +112,7 @@ exports.getAll = (req, res, next) => {
 
 // Get bestseller products based on order count
 exports.getBestSellerProducts = async function (req, res, next) {
-  const limit = parseInt(req.query.limit) || 10; // Default limit to 10 products if not provided
+  const limit = parseInt(req.query.limit) || 5; // Default limit to 10 products if not provided
 
   try {
     // Step 1: Fetch the products with the highest order counts from the order_items table
@@ -156,8 +156,6 @@ exports.getBestSellerProducts = async function (req, res, next) {
     });
   }
 };
-
-
 
 // get product by id
 exports.getProductById = async function (req, res, next) {
@@ -355,49 +353,92 @@ exports.getByCategory = async function (req, res, next) {
       categoryQuery.id = req.params.categoryId;
     }
 
-    // Fetch products with related categories, tags, and comments
-    const products = await Product.findAndCountAll({
-      attributes: [
-        "id",
-        "name",
-        "description",
-        "vendor",
-        "slug",
-        "price",
-        "discountedPrice",
-        "stock",
-        "created_at",
-        "updated_at",
-      ],
-      include: [
-        {
-          model: Category,
-          where: categoryQuery, // Filter by category based on the query
-        },
-        {
-          model: Tag,
-          attributes: { exclude: ["description", "created_at", "updated_at"] }, // Exclude unnecessary fields
-        },
-        {
-          model: Comment,
-          attributes: ["id", "rating", "productId"],
-        },
-      ],
-      order: [["createdAt", "DESC"]], // Order by creation date descending
-      offset, // Pagination offset
-      limit: pageSize, // Number of items per page
-    });
+    Promise.all([
+      Product.findAll({
+        offset: (page - 1) * pageSize,
+        limit: pageSize,
+        order: [
+          ["createdAt", "DESC"],
+          // ['price', 'DESC']
+        ],
+        attributes: [
+          "id",
+          "name",
+          "slug",
+          "price",
+          "vendor",
+          "stock",
+          "discountedPrice",
+          "created_at",
+          "updated_at",
+        ],
+        include: [
+          {
+            model: Category,
+            where: categoryQuery,
+          },
+          {
+            model: Collection,
+            exclude: ["description", "created_at", "updated_at"],
+          },
+          {
+            model: Tag,
+            exclude: ["description", "created_at", "updated_at"],
+          },
+        ],
+      }),
+      Product.findAndCountAll({ attributes: ["id"] }),
+    ])
+      .then((results) => {
+        const products = results[0];
+        const productsCount = results[1].count;
 
-    // Build paginated response
-    const response = ProductResponseDto.buildPagedList(
-      products.rows, // The actual product data
-      page, // Current page
-      pageSize, // Page size
-      products.count, // Total number of products
-      req.baseUrl // Base URL for pagination links
-    );
+        Comment.findAll({
+          where: {
+            productId: {
+              [Op.in]: products.map((product) => product.id),
+            },
+          },
+          attributes: [
+            "productId",
+            [sequelize.fn("COUNT", sequelize.col("id")), "commentsCount"],
+            [sequelize.fn("AVG", sequelize.col("rating")), "averageRating"], // Calculate average rating
+          ],
+          group: "productId",
+        })
+          .then((results) => {
+            products.forEach((product) => {
+              let commentData = results.find(
+                (comment) => product.id === comment.productId
+              );
 
-    return res.json(response);
+              if (commentData != null) {
+                product.comments_count = commentData.get("commentsCount");
+                product.average_rating =
+                  parseFloat(commentData.get("averageRating")) || 0;
+              } else {
+                product.comments_count = 0;
+                product.average_rating = 0;
+              }
+            });
+
+            return res.json(
+              ProductResponseDto.buildPagedList(
+                products,
+                page,
+                pageSize,
+                productsCount,
+                req.baseUrl
+              )
+            );
+          })
+          .catch((err) => {
+            res.json(AppResponseDto.buildWithErrorMessages(err.message));
+          });
+      })
+      .catch((err) => {
+        return res.status(400).send(err.message);
+      });
   } catch (err) {
     // Handle errors and return an appropriate error message
     return res.json(AppResponseDto.buildWithErrorMessages(err.message));
@@ -644,62 +685,173 @@ exports.deleteProduct = (req, res, next) => {
     });
 };
 
+// exports.getFilteredProducts = async (req, res, next) => {
+//   try {
+//     const { sort, minPrice, maxPrice } = req.query;
+
+//     let order = [];
+//     let where = {};
+
+//     // Sorting logic
+//     if (sort) {
+//       switch (sort) {
+//         case "name_asc":
+//           order.push(["name", "ASC"]);
+//           break;
+//         case "name_desc":
+//           order.push(["name", "DESC"]);
+//           break;
+//         case "price_asc":
+//           order.push(["price", "ASC"]);
+//           break;
+//         case "price_desc":
+//           order.push(["price", "DESC"]);
+//           break;
+//         default:
+//           break;
+//       }
+//     }
+
+//     // Price filtering logic
+//     if (minPrice && maxPrice) {
+//       where.price = { [Op.between]: [minPrice, maxPrice] };
+//     } else if (minPrice) {
+//       where.price = { [Op.gte]: minPrice };
+//     } else if (maxPrice) {
+//       where.price = { [Op.lte]: maxPrice };
+//     }
+
+//     // Fetch filtered and sorted products from the database
+//     const products = await Product.findAll({
+//       where,
+//       order,
+//       // include: [
+//       // { model: Tag, attributes: ["id", "name"] },
+//       // { model: Category, attributes: ["id", "name"] },
+//       // { model: Collection, attributes: ["id", "name"] },
+//       //   {
+//       //     model: Comment,
+//       //     attributes: ["id", "rating"],
+//       //     include: [{ model: User, attributes: ["id", "username"] }],
+//       //   },
+//       // ],
+//     });
+
+//     return res.status(200).json(products);
+//   } catch (err) {
+//     return res
+//       .status(500)
+//       .json({ message: err.message || "Internal server error" });
+//   }
+// };
+
 exports.getFilteredProducts = async (req, res, next) => {
-  try {
-    const { sort, minPrice, maxPrice } = req.query;
+  const page = parseInt(req.query.page) || 1;
+  const pageSize = parseInt(req.query.pageSize) || 5;
 
-    let order = [];
-    let where = {};
+  const { sort, minPrice, maxPrice } = req.query;
 
-    // Sorting logic
-    if (sort) {
-      switch (sort) {
-        case "name_asc":
-          order.push(["name", "ASC"]);
-          break;
-        case "name_desc":
-          order.push(["name", "DESC"]);
-          break;
-        case "price_asc":
-          order.push(["price", "ASC"]);
-          break;
-        case "price_desc":
-          order.push(["price", "DESC"]);
-          break;
-        default:
-          break;
-      }
+  let order = [];
+  let where = {};
+
+  // Sorting logic
+  if (sort) {
+    switch (sort) {
+      case "name_asc":
+        order.push(["name", "ASC"]);
+        break;
+      case "name_desc":
+        order.push(["name", "DESC"]);
+        break;
+      case "price_asc":
+        order.push(["price", "ASC"]);
+        break;
+      case "price_desc":
+        order.push(["price", "DESC"]);
+        break;
+      default:
+        break;
     }
+  }
 
-    // Price filtering logic
-    if (minPrice && maxPrice) {
-      where.price = { [Op.between]: [minPrice, maxPrice] };
-    } else if (minPrice) {
-      where.price = { [Op.gte]: minPrice };
-    } else if (maxPrice) {
-      where.price = { [Op.lte]: maxPrice };
-    }
+  // Price filtering logic
+  if (minPrice && maxPrice) {
+    where.price = { [Op.between]: [minPrice, maxPrice] };
+  } else if (minPrice) {
+    where.price = { [Op.gte]: minPrice };
+  } else if (maxPrice) {
+    where.price = { [Op.lte]: maxPrice };
+  }
 
-    // Fetch filtered and sorted products from the database
-    const products = await Product.findAll({
+  Promise.all([
+    Product.findAll({
       where,
       order,
-      // include: [
-      // { model: Tag, attributes: ["id", "name"] },
-      // { model: Category, attributes: ["id", "name"] },
-      // { model: Collection, attributes: ["id", "name"] },
-      //   {
-      //     model: Comment,
-      //     attributes: ["id", "rating"],
-      //     include: [{ model: User, attributes: ["id", "username"] }],
-      //   },
-      // ],
-    });
+      offset: (page - 1) * pageSize,
+      limit: pageSize,
+      attributes: [
+        "id",
+        "name",
+        "slug",
+        "price",
+        "vendor",
+        "stock",
+        "discountedPrice",
+        "created_at",
+        "updated_at",
+      ],
+    }),
+    Product.findAndCountAll({ attributes: ["id"] }),
+  ])
+    .then((results) => {
+      const products = results[0];
+      const productsCount = results[1].count;
 
-    return res.status(200).json(products);
-  } catch (err) {
-    return res
-      .status(500)
-      .json({ message: err.message || "Internal server error" });
-  }
+      // Fetch comments to calculate both comments count and average rating
+      Comment.findAll({
+        where: {
+          productId: {
+            [Op.in]: products.map((product) => product.id),
+          },
+        },
+        attributes: [
+          "productId",
+          [sequelize.fn("COUNT", sequelize.col("id")), "commentsCount"],
+          [sequelize.fn("AVG", sequelize.col("rating")), "averageRating"], // Calculate average rating
+        ],
+        group: "productId",
+      })
+        .then((results) => {
+          products.forEach((product) => {
+            let commentData = results.find(
+              (comment) => product.id === comment.productId
+            );
+
+            if (commentData != null) {
+              product.comments_count = commentData.get("commentsCount");
+              product.average_rating =
+                parseFloat(commentData.get("averageRating")) || 0; // Set average rating
+            } else {
+              product.comments_count = 0;
+              product.average_rating = 0; // Default if no ratings
+            }
+          });
+
+          return res.json(
+            ProductResponseDto.buildPagedList(
+              products,
+              page,
+              pageSize,
+              productsCount,
+              req.baseUrl
+            )
+          );
+        })
+        .catch((err) => {
+          res.json(AppResponseDto.buildWithErrorMessages(err.message));
+        });
+    })
+    .catch((err) => {
+      return res.status(400).send(err.message);
+    });
 };
