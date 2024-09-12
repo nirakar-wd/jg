@@ -72,8 +72,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (ordersResponse.ok) {
       const orders = await ordersResponse.json();
       document.getElementById("totalOrders").textContent = orders.count;
-      document.getElementById("totalRev").textContent = orders.count * 1000;
-      document.getElementById("totalRevenue").textContent = orders.count * 1000;
+
     }
 
     const productsResponse = await fetch(

@@ -64,17 +64,28 @@ document.addEventListener("DOMContentLoaded", async () => {
       console.error("Failed to fetch products");
     }
 
-    const revenueResponse = await fetch(`http://localhost:4000/api/orders/revenue`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include", // Ensure cookies are sent with the request
-    });
+    const revenueResponse = await fetch(
+      `http://localhost:4000/api/orders/revenue`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include", // Ensure cookies are sent with the request
+      }
+    );
 
     if (revenueResponse.ok) {
       const revenue = await revenueResponse.json();
-      document.getElementById("revCount").textContent = `Rs.${revenue.totalRevenue}`;
+      document.getElementById(
+        "revCount"
+      ).textContent = `Rs.${revenue.totalRevenue}`;
+      document.getElementById(
+        "totalRev"
+      ).textContent = `Rs.${revenue.totalRevenue}`;
+      document.getElementById(
+        "totalRevenue"
+      ).textContent = `Rs.${revenue.totalRevenue}`;
     }
   } catch (error) {
     console.error("Error:", error);

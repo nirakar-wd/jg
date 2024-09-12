@@ -204,7 +204,6 @@
         <div>
 
 
-
             <div class="admin-dashboard">
                 <aside>
 
@@ -234,9 +233,9 @@
                         <div>
                             <a href="#" data-id="8"><i class="fa-solid fa-user-tie"></i>tags</a>
                         </div>
-                        <div>
+                        <!-- <div>
                             <a href="#" data-id="9"><i class="fa-solid fa-user-tie"></i>collections</a>
-                        </div>
+                        </div> -->
 
                     </div>
                 </aside>
@@ -604,7 +603,7 @@
                                     <p class="fs-5 mb-4" id="userBio">authorised brand seller</p>
                                     <ul class="list-inline">
                                         <li class="list-inline-item me-5">
-                                            <h5 class="heading-fifth" id="totalRev">$2500</h5>
+                                            <h5 class="heading-fifth" id="totalRev">Rs.2500</h5>
                                             <p class="fs-5">total revenue</p>
 
                                         </li>
@@ -680,7 +679,8 @@
                                                             <h6 class="db-card-title">customers</h6>
                                                             <div class="num" id="totalCustomers">3000</div>
                                                             <div class="percent"><i
-                                                                    class="fa-solid fa-up-long"></i>5.27%</div>
+                                                                    class="fa-solid fa-up-long"></i>5.27%
+                                                            </div>
 
                                                         </div>
                                                     </div>
@@ -693,7 +693,8 @@
                                                             <h6 class="db-card-title">orders</h6>
                                                             <div class="num" id="totalOrders">6000</div>
                                                             <div class="d-percent"><i
-                                                                    class="fa-solid fa-down-long"></i>3%</div>
+                                                                    class="fa-solid fa-down-long"></i>3%
+                                                            </div>
 
                                                         </div>
                                                     </div>
@@ -706,7 +707,8 @@
                                                             <h6 class="db-card-title">revenue</h6>
                                                             <div class="num" id="totalRevenue">$7002</div>
                                                             <div class="percent"><i
-                                                                    class="fa-solid fa-up-long"></i>5.27%</div>
+                                                                    class="fa-solid fa-up-long"></i>5.27%
+                                                            </div>
 
                                                         </div>
                                                     </div>
@@ -1052,84 +1054,81 @@
                         </div>
 
                     </div>
-            </div>
 
-        </div>
 
-        <div class="add-product add-category busi">
-            <div class="heading-business mb-4">add collections</div>
-            <div class="add-product-box">
-                <form id="collectionsForm">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="product-left">
-                                <div class="form-group mb-4">
-                                    <label for="collectionName" class="form-label">name</label>
-                                    <input type="text" class="form-control" id="collectionName" name="name">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="collectionDescription" class="form-label">full
-                                        description</label>
-                                    <textarea class="form-control" id="collectionDescription" rows="5"
-                                        placeholder="Write a description here..." name="description"></textarea>
-                                </div>
+                    <div class="busi">
+                        <div class="heading-business mb-4">add collections</div>
+                        <div class="add-product-box">
+                            <form id="collectionsForm">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="product-left">
+                                            <div class="form-group mb-4">
+                                                <label for="collectionName" class="form-label">name</label>
+                                                <input type="text" class="form-control" id="collectionName" name="name">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="collectionDescription" class="form-label">full
+                                                    description</label>
+                                                <textarea class="form-control" id="collectionDescription" rows="5"
+                                                    placeholder="Write a description here..."
+                                                    name="description"></textarea>
+                                            </div>
 
-                                <div class="btns">
-                                    <button type="submit" class="btn btn-save">Save</button>
-                                    <!-- <button type="submit" class="btn btn-delete">Delete</button> -->
+                                            <div class="btns">
+                                                <button type="submit" class="btn btn-save">Save</button>
+                                                <!-- <button type="submit" class="btn btn-delete">Delete</button> -->
 
-                                </div>
+                                            </div>
+                                        </div>
+                            </form>
+
+                        </div>
+
+                        <div class="col-md-8 order-box">
+                            <div class="table-responsive">
+                                <table class="table" id="collectionsTable">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">name</th>
+                                            <th scope="col">description</th>
+                                            <th scope="col">action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                fghfdgh
+                                            </td>
+                                            <td>100</td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <button class="btn btn-primary">
+                                                        edit
+                                                    </button>
+                                                    <button class="btn btn-danger">
+                                                        delete
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
-                </form>
+                        </div>
 
-            </div>
+                    </div>
 
-            <div class="col-md-8 order-box">
-                <div class="table-responsive">
-                    <table class="table" id="collectionsTable">
-                        <thead>
-                            <tr>
-                                <th scope="col">name</th>
-                                <th scope="col">description</th>
-                                <th scope="col">action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    fghfdgh
-                                </td>
-                                <td>100</td>
-                                <td>
-                                    <div class="btn-group">
-                                        <button class="btn btn-primary">
-                                            edit
-                                        </button>
-                                        <button class="btn btn-danger">
-                                            delete
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                </section>
             </div>
 
         </div>
-        </div>
-
-        </div>
-        </section>
-
 
         </div>
 
-        </div>
+
+
     </main>
-
-
-
 
     <footer class="footer">
 
@@ -1247,10 +1246,6 @@
 
     <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
 
-    <script src="/client/dashboard.js"></script>
-    <script src="/client/chart.js">
-
-    </script>
 
     <script>
         document.querySelectorAll('aside a')
@@ -1284,22 +1279,26 @@
             });
         });
     </script>
-    <script src="/client/addProduct.js"></script>
 
-    <script src="/client/getAdminProfile.js"></script>
+    <script src="/client/admin/dashboard.js"></script>
 
-    <script src="/client/categories.js"></script>
+    <script src="/client/admin/chart.js"></script>
 
-    <script src="/client/tags.js"></script>
+    <script src="/client/admin/addProduct.js"></script>
 
-    <script src="/client/collections.js"></script>
+    <script src="/client/admin/getAdminProfile.js"></script>
 
-    <script src="/client/fetchOrdersTable.js"></script>
+    <script src="/client/admin/categories.js"></script>
 
-    <script src="/client/fetchProductsTable.js"></script>
+    <script src="/client/admin/tags.js"></script>
 
-    <script src="/client/getCategoriesTagsCollection.js"></script>
+    <script src="/client/admin/collections.js"></script>
 
+    <script src="/client/admin/fetchOrdersTable.js"></script>
+
+    <script src="/client/admin/fetchProductsTable.js"></script>
+
+    <script src="/client/admin/getCategoriesTagsCollection.js"></script>
 
 </body>
 
