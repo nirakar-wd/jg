@@ -3310,18 +3310,19 @@ aside {
     border-radius: 0.8rem;
     color: #fff;
 }
-
+/* 
 .avatar {
     width: 9rem;
     height: 9rem;
-}
+} */
 
 .img-thumbnail {
     padding: 0.4rem;
     background-color: var(--text-color-1);
     border: 1px solid #dee2e6;
     max-width: 100%;
-    height: auto;
+    width: 10rem;
+    height: 10rem;
 }
 
 .profile-settings .nav {
