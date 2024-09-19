@@ -11,20 +11,20 @@ const CollectionDto = require("../dtos/responses/collectionsDto");
 const AppResponseDto = require("../dtos/responses/appResponseDto");
 
 exports.getTags = function (req, res, next) {
-  const page = parseInt(req.query.page) || 1;
-  const pageSize = parseInt(req.query.page_size) || 5;
-  const offset = (page - 1) * pageSize;
+  // const page = parseInt(req.query.page) || 1;
+  // const pageSize = parseInt(req.query.page_size) || 5;
+  // const offset = (page - 1) * pageSize;
 
   Tag.findAndCountAll({
-    offset,
-    limit: pageSize,
+    // offset,
+    // limit: pageSize,
   })
     .then(function (tags) {
       return res.json(
         TagDto.buildPagedList(
           tags.rows,
-          page,
-          pageSize,
+          // page,
+          // pageSize,
           tags.count,
           req.baseUrl
         )
@@ -36,20 +36,20 @@ exports.getTags = function (req, res, next) {
 };
 
 exports.getCollections = async (req, res, next) => {
-  const page = parseInt(req.query.page) || 1;
-  const pageSize = parseInt(req.query.page_size) || 5;
-  const offset = (page - 1) * pageSize;
+  // const page = parseInt(req.query.page) || 1;
+  // const pageSize = parseInt(req.query.page_size) || 5;
+  // const offset = (page - 1) * pageSize;
 
   Collection.findAndCountAll({
-    offset,
-    limit: pageSize,
+    // offset,
+    // limit: pageSize,
   })
     .then(function (collections) {
       return res.json(
         CollectionDto.buildPagedList(
           collections.rows,
-          page,
-          pageSize,
+          // page,
+          // pageSize,
           collections.count,
           req.baseUrl
         )
@@ -61,20 +61,20 @@ exports.getCollections = async (req, res, next) => {
 };
 
 exports.getCategories = function (req, res, next) {
-  const page = parseInt(req.query.page) || 1;
-  const pageSize = parseInt(req.query.page_size) || 10;
-  const offset = (page - 1) * pageSize;
+  // const page = parseInt(req.query.page) || 1;
+  // const pageSize = parseInt(req.query.page_size) || 10;
+  // const offset = (page - 1) * pageSize;
 
   Category.findAndCountAll({
-    offset,
-    limit: pageSize,
+    // offset,
+    // limit: pageSize,
   })
     .then(function (categories) {
       return res.json(
         CategoryDto.buildPagedList(
           categories.rows,
-          page,
-          pageSize,
+          // page,
+          // pageSize,
           categories.count,
           req.baseUrl
         )

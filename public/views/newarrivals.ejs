@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JG</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/tiny-slider.min.css"
+        integrity="sha512-06CZo7raVnbbD3BlY8/hGUoUCuhk8sTdVGV3m3nuh9i2R+UmkLbLRTE/My8TuJ3ALbDulhBObJQWtOUt0mXzNQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body id="bd">
+
+    <div id="loader" class="loading-container">
+        <img src="img/FOR_HUMANS__2_.png" alt="Loading" class="loader-image">
+    </div>
+
+    <div class="content">
+        <i class="fas fa-sun"></i>
+        &nbsp;&nbsp;&nbsp;
+        <input type="checkbox" id="tooglenight" class="cbx hidden" />
+        <label for="tooglenight" class="switch"></label>
+        &nbsp;&nbsp;&nbsp;
+        <i class="fas fa-moon"></i>
+    </div>
+
+    <%- include('./partials/header') %>
+
+
+        <main>
+            <div class="product-detail">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="right-sidebar">
+                                <div class="row" id="productContainer">
+
+                                </div>
+                            </div>
+
+                            <!-- Pagination Section -->
+                            <div class="pagination-sec">
+                                <nav class="pagination pagination_type1">
+                                    <ol class="pagination__list" id="paginationList">
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <%- include('./partials/footer') %>
+
+
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/min/tiny-slider.js"></script>
+
+            <script src="js/bootstrap.bundle.min.js"></script>
+
+            <script src="js/script.js"></script>
+
+            <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+                integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+            <script>
+                $(document).ready(function () {
+                    $("#tooglenight").change(function () {
+                        if (this.checked) {
+                            $("#bd").addClass("night");
+                            $(".content i").css("color", "#333");
+                        } else {
+                            $("#bd").removeClass("night");
+                            $(".content i").css("color", "white");
+                        }
+                    });
+                });
+            </script>
+
+            <script>
+                let currentPage = 1;
+                let totalPages = 1;
+
+                // Function to generate the stars based on the rating
+                function generateStars(rating) {
+                    let starsHTML = '';
+                    for (let i = 0; i < 5; i++) {
+                        starsHTML += i < rating ? '<i class="fa fa-star"></i>' : '<i class="fa-regular fa-star"></i>';
+                    }
+                    return starsHTML;
+                }
+
+                // Function to fetch products based on the current page
+                async function fetchProducts(page) {
+                    try {
+                        const response = await fetch(`http://localhost:4000/api/products?page=${page}&pageSize=9`, {
+                            method: "GET",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                        });
+
+                        if (response.ok) {
+                            const data = await response.json();
+                            console.log(data);
+                            const productContainer = document.getElementById("productContainer");
+                            const products = data.products;
+                            const pageMeta = data.page_meta;
+
+                            // Update total pages
+                            totalPages = pageMeta.number_of_pages;
+
+                            // Clear the product container
+                            productContainer.innerHTML = "";
+
+                            // Render each product
+                            products.forEach((product) => {
+                                const productElement = document.createElement("div");
+                                productElement.classList.add("col-md-4");
+
+                                const averageRating = product.averageRating || 0;
+                                productElement.innerHTML = `
+                        <div class="abox">
+                            <div class="kecimgbox">
+                                <a href="http://localhost:4000/products/${product.id}">
+                                    <img src="${product.images && product.images.length > 0 ? product.images[0] : "/images/products/polo.jpg"}" class="img-fluid" alt="prod images">
+                                </a>
+                            </div>
+                            <div class="prod-desc">
+                                <h4><a href="product.html">${product.name}</a></h4>
+                                <div class="rating-mks">
+                                    ${generateStars(averageRating)}
+                                </div>
+                                <ins>${product.price}</ins>
+                            </div>
+                        </div>
+                    `;
+                                productContainer.appendChild(productElement);
+                            });
+
+                            // Update the pagination controls
+                            updatePaginationControls(pageMeta);
+                        } else {
+                            console.error("Failed to fetch products");
+                        }
+                    } catch (error) {
+                        console.error("Error:", error);
+                    }
+                }
+
+                // Function to update the pagination dynamically
+                function updatePaginationControls(pageMeta) {
+                    const paginationList = document.getElementById("paginationList");
+                    paginationList.innerHTML = "";
+
+                    // Create "Prev" button
+                    const prevButton = document.createElement("li");
+                    prevButton.classList.add("pagination__group");
+                    prevButton.innerHTML = `<a href="#0" class="pagination__item pagination__control pagination__control_prev">prev</a>`;
+                    prevButton.onclick = () => {
+                        if (currentPage > 1) {
+                            currentPage--;
+                            fetchProducts(currentPage);
+                        }
+                    };
+                    paginationList.appendChild(prevButton);
+
+                    // Add page numbers
+                    for (let i = 1; i <= pageMeta.number_of_pages; i++) {
+                        const pageItem = document.createElement("li");
+                        pageItem.classList.add("pagination__group");
+
+                        if (i === pageMeta.current_page_number) {
+                            pageItem.innerHTML = `<span class="pagination__item pagination__item_active">${i}</span>`;
+                        } else {
+                            pageItem.innerHTML = `<a href="#0" class="pagination__item">${i}</a>`;
+                            pageItem.onclick = () => {
+                                currentPage = i;
+                                fetchProducts(currentPage);
+                            };
+                        }
+
+                        paginationList.appendChild(pageItem);
+                    }
+
+                    // Create "Next" button
+                    const nextButton = document.createElement("li");
+                    nextButton.classList.add("pagination__group");
+                    nextButton.innerHTML = `<a href="#0" class="pagination__item pagination__control pagination__control_next">next</a>`;
+                    nextButton.onclick = () => {
+                        if (currentPage < pageMeta.number_of_pages) {
+                            currentPage++;
+                            fetchProducts(currentPage);
+                        }
+                    };
+                    paginationList.appendChild(nextButton);
+                }
+
+                // Initial fetch for the first page
+                fetchProducts(currentPage);
+
+            </script>
+
+</body>
+
+</html>

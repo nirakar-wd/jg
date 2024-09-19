@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JG</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-thin-rounded/css/uicons-thin-rounded.css'>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/tiny-slider.min.css"
+        integrity="sha512-06CZo7raVnbbD3BlY8/hGUoUCuhk8sTdVGV3m3nuh9i2R+UmkLbLRTE/My8TuJ3ALbDulhBObJQWtOUt0mXzNQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+
+    <link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+<body id="bd">
+
+    <!-- <div id="loader" class="loading-container">
+        <img src="img/FOR_HUMANS__2_.png" alt="Loading" class="loader-image">
+    </div> -->
+
+    <div class="content">
+        <i class="fas fa-sun"></i>
+        &nbsp;&nbsp;&nbsp;
+        <input type="checkbox" id="tooglenight" class="cbx hidden" />
+        <label for="tooglenight" class="switch"></label>
+        &nbsp;&nbsp;&nbsp;
+        <i class="fas fa-moon"></i>
+    </div>
+
+    <%- include('./partials/header') %>
+
+
+    <main>
+        <div>
+
+
+
+            <div>
+
+                <section class="content-wrapper">
+
+                    <div class="add-product busi active">
+                        <div class="heading-business mb-4">edit product</div>
+                        <div class="add-product-box">
+                            <form id="editProductForm">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="product-left">
+                                            <div class="form-group mb-4">
+                                                <label for="product-name" class="form-label">product name</label>
+                                                <input type="text" class="form-control" id="productName"
+                                                    name="productName">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="productDescription" class="form-label">product
+                                                    description</label>
+                                                <textarea class="form-control" id="productDescription" name="description" rows="5"
+                                                    placeholder="Write a description here..."></textarea>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="productFeatures" class="form-label">product
+                                                    features</label>
+                                                <textarea class="form-control" id="productFeatures" rows="5"
+                                                    placeholder="Write the product's features here..."
+                                                    name="features"></textarea>
+                                            </div>
+
+                                            <div class="display-media">
+                                                <label for="productImg" class="form-label">Upload Image</label>
+                                                <div class="media-preview">
+                                                </div>
+                                            </div>
+                                            <div class="col-8">
+                                                <div class="mb-3">
+                                                    <input type="file" name="images" id="productImg"
+                                                        class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="product-right">
+                                            <form>
+
+                                                <label for="price" class="form-label">
+                                                    price</label>
+                                                <div class="input-group mb-3">
+
+                                                    <input type="text" class="form-control"
+                                                        aria-label="Text input with dropdown button" id="price" name="price">
+                                                </div>
+
+
+                                                <div class="organisation">
+                                                    <div class="mb-3">
+                                                        <label for="vendor" class="form-label">Vendor</label>
+                                                        <input type="text" id="vendor" placeholder="eg. Nike"
+                                                            class="form-control" name="vendor">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="stock" class="form-label">Stock</label>
+                                                        <input type="text" id="stock" placeholder="Stock"
+                                                            class="form-control" name="stock">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="discount" class="form-label">Discounted Price(if
+                                                            any)</label>
+                                                        <input type="text" id="discountedPrice" placeholder="price after discount"
+                                                            class="form-control" name="discountedPrice">
+                                                    </div>
+                                                </div>
+
+                                                <div class="btns">
+                                                    <button type="submit" class="btn btn-save">Save</button>
+                                                    <button type="submit" class="btn btn-delete">Delete</button>
+
+                                                </div>
+
+                                            </form>
+
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+            </div>
+
+        </div>
+    </main>
+
+
+
+
+    <%- include('./partials/footer') %>
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/min/tiny-slider.js"></script>
+
+    <script src="/js/bootstrap.bundle.min.js"></script>
+
+    <script src="/js/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script> -->
+
+    <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            $("#tooglenight").change(function () {
+                if (this.checked) {
+                    $("#bd").addClass("night");
+                    $(".content i").css("color", "#333");
+                } else {
+                    $("#bd").removeClass("night");
+                    $(".content i").css("color", "white");
+                }
+            });
+        });
+    </script>
+
+    <script src="/client/admin/editProduct.js"></script>
+
+
+</body>
+
+</html>

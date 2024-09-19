@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JG</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/tiny-slider.min.css"
+        integrity="sha512-06CZo7raVnbbD3BlY8/hGUoUCuhk8sTdVGV3m3nuh9i2R+UmkLbLRTE/My8TuJ3ALbDulhBObJQWtOUt0mXzNQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+
+
+    <link rel="stylesheet" href="../css/style.css">
+
+</head>
+
+<body id="bd">
+
+    <div class="content">
+        <i class="fas fa-sun"></i>
+        &nbsp;&nbsp;&nbsp;
+        <input type="checkbox" id="tooglenight" class="cbx hidden" />
+        <label for="tooglenight" class="switch"></label>
+        &nbsp;&nbsp;&nbsp;
+        <i class="fas fa-moon"></i>
+    </div>
+
+    <%- include('./partials/header') %>
+
+
+    <main class="shopping-cart">
+
+        <div class="container">
+            <h2 class="heading-secondary mb-5">
+                My orders
+            </h2>
+
+            <div class="cart-box">
+                <div class="row justify-content-center">
+                    <div class="col-md-9">
+
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">order id</th>
+                                    <th scope="col">order status</th>
+                                    <th scope="col">order items</th>
+                                    <th scope="col">total</th>
+                                    <th scope="col">view details</th>
+                                </tr>
+                            </thead>
+                            <tbody id="orderItems">
+                                <tr>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <%- include('./partials/footer') %>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/min/tiny-slider.js"></script>
+
+    <script src="/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.1.2/redux.min.js"></script>
+
+    <script src="/js/script.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#tooglenight").change(function () {
+                if (this.checked) {
+                    $("#bd").addClass("night");
+                    $(".content i").css("color", "#333");
+                } else {
+                    $("#bd").removeClass("night");
+                    $(".content i").css("color", "white");
+                }
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            fetchOrders();
+        });
+
+        async function fetchOrders() {
+            try {
+                const response = await fetch(`http://localhost:4000/api/orders`,
+                    {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    });
+
+
+                if (response.ok) {
+                    const orders = await response.json();
+                    console.log(orders)
+                    const orderItemsContainer = document.getElementById('orderItems');
+
+                    orders.rows.forEach(order => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                        <td>${order.id}</td>
+                        <td>${order.orderStatusStr}</td>
+                        <td>${order.order_items.length}</td>
+                        <td>${order.total}</td>
+                         <td><a href="http://localhost:4000/order/${order.id}">view details</a></td>
+                    `;
+                        orderItemsContainer.appendChild(tr);
+                    });
+                } else {
+                    console.error('Failed to fetch orders');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        function viewDetails(orderId) {
+            alert('View details for order: ' + orderId);
+            // Implement the logic to show order details
+        }
+    </script>
+
+
+</body>
+
+</html>

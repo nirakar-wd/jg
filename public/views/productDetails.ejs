@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JG</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/tiny-slider.min.css"
+        integrity="sha512-06CZo7raVnbbD3BlY8/hGUoUCuhk8sTdVGV3m3nuh9i2R+UmkLbLRTE/My8TuJ3ALbDulhBObJQWtOUt0mXzNQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+
+
+    <link rel="stylesheet" href="../css/style.css">
+
+</head>
+
+<body id="bd">
+
+    <div class="content">
+        <i class="fas fa-sun"></i>
+        &nbsp;&nbsp;&nbsp;
+        <input type="checkbox" id="tooglenight" class="cbx hidden" />
+        <label for="tooglenight" class="switch"></label>
+        &nbsp;&nbsp;&nbsp;
+        <i class="fas fa-moon"></i>
+    </div>
+
+    <%- include('./partials/header') %>
+
+
+    <main>
+
+        <section class="product-details" id="productContainer">
+
+            <div class="row g-0">
+                <div class="col-md-6">
+                    <div class="product-img position-relative">
+                        <img id="productImage" src="/img/Flat Front black FH.png" />
+
+                        <div id="gallery_demo">
+                            <a>
+                                <img src="/img/Flat Front black FH.png" class="img-fluid" id="productImage1" />
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="product-info">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="index.html">Home</a>
+                                </li>
+                                <li class="breadcrumb-item active" aria-current="page">
+                                    <a href="product.html"></a>Product
+                                </li>
+                                <li class="breadcrumb-item active" aria-current="page" id="productName1">Felt One</li>
+                            </ol>
+                        </nav>
+
+                        <h2 class="heading-secondary text-start mt-5" id="productName">
+                            felt one
+                        </h2>
+
+                        <!-- <span class="small-info" id="productDescription">Lorem ipsum dolor sit amet consectetur. </span> -->
+
+                        <div class="rating mt-3" id="starsContainer">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                                class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                                class="fa-solid fa-star"></i>
+                        </div>
+                       
+
+                        <div class="cart-price">
+                            <button class="add-cart d-flex" id="addToCartBtn">add to cart
+                                <div class="price" id="price">$399</div>
+                            </button>
+                        </div>
+
+                        <input id="demo1" type="text" value="1" name="demo1" class="input-touchspin">
+
+
+                        <p class="pro-detail mt-5" id="productDescription1">Lorem ipsum dolor, sit amet consectetur
+                            adipisicing elit. Omnis
+                            accusantium tempora eum eaque quasi, consequatur harum, odio temporibus voluptate totam
+                            neque repellat placeat illo a.</p>
+                    </div>
+
+                    <div class="prod-info">
+                        <h3 class="description-head">
+                            description
+                        </h3>
+
+                        <p class="desc-para" id="productDescription">Lorem, ipsum dolor sit amet consectetur adipisicing
+                            elit. Suscipit
+                            reprehenderit eos consequuntur odit, voluptate id dicta ducimus labore itaque natus officiis
+                            possimus nisi asperiores, amet distinctio obcaecati facere est eligendi.</p>
+
+                        <h3 class="description-head mt-4">
+                            Size and Features
+                        </h3>
+
+                        <div class="section-content">
+                            <ul style="list-style-type: none;" id="sizeAndFeatures">
+                                <li>☆ Weight: 7 grams</li>
+                                <li>☆ 100% Pure Wool/Felt from New Zealand</li>
+                                <li>☆ Handmade and customizable</li>
+                                <li>☆ Eco-Friendly</li>
+                                <li>☆ Made using felt stitching technique</li>
+                                <li>☆ Azo-free dyes</li>
+                            </ul>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div class="cusreviews mt-5">
+                <div class="container">
+                    <div>
+                        <h2 class="heading-secondary text-center mb-5">customer reviews
+                            <div class="separator mx-auto"></div>
+                        </h2>
+
+                        <div class="testimonials-box" id="base">
+                            <div class="testimonials-details">
+                                <div class="row align-items-center">
+                                    <div class="col-md-2">
+                                        <div class="client-pd">
+                                            <img src="/img/pexels-andrea-piacquadio-774909 1.png" alt="client photo"
+                                                class="client-img">
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-10">
+                                        <div>
+                                            <span class="reviewstar">
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                            </span>
+                                            <div class="client-name">
+                                                Jane Doe
+
+                                            </div>
+                                            <p class="para test-para">Lorem ipsum dolor sit amet, consectetur adipiscing
+                                                elit. Nunc
+                                                vulputate libero et velit interdum, ac aliquet odio mattis.Lorem ipsum
+                                                dolor sit amet,
+                                                consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac
+                                                aliquet odio
+                                                mattis.
+
+                                            </p>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+                            </div>
+
+
+
+                        </div>
+
+                        <div class="review text-center w-75 mx-auto">
+                            <h3 class="heading-tertiary">
+                                add a review
+                            </h3>
+
+                            <form id="postCommentForm">
+                                <div class="comment-form-rating mt-5">
+                                    <label for="rating" class="me-5">
+                                        Your rating
+                                    </label>
+
+                                    <span class="" id="ratingStars">
+                                        <i class="fa fa-star" data-value="1"></i>
+                                        <i class="fa fa-star" data-value="2"></i>
+                                        <i class="fa fa-star" data-value="3"></i>
+                                        <i class="fa fa-star" data-value="4"></i>
+                                        <i class="fa fa-star" data-value="5"></i>
+                                    </span>
+
+                                    <textarea placeholder="Your review" cols="45" rows="8" class="form-control my-5"
+                                        id="commentContent"></textarea>
+
+                                    <div>
+                                        <button type="submit" class="btn-send btn mt-5">SUBMIT</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+        <div class="peepbought">
+            <h3 class="description-head">
+                people also bought
+            </h3>
+            <div class="row">
+                <div class="col-12 col-sm-3">
+                    <div class="categories-box">
+                        <h6 class="cat-head">
+                            <a href="ourprojects.html" class="cat-link">
+                                <img src="https://images.unsplash.com/photo-1543334270-24bb46642afe?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                    alt="arc-img">
+                                <span class="title">orange and blue yarn</span>
+                                <span class="price">Rs. 100</span>
+                            </a>
+
+                        </h6>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-3">
+                    <div class="categories-box">
+                        <h6 class="cat-head">
+                            <a href="ourprojects.html" class="cat-link">
+                                <img src="https://images.unsplash.com/photo-1565058528605-670489ab6f6c?q=80&w=1420&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                    alt="arc-img">
+                                <span class="title">orange and blue yarn</span>
+                                <span class="price">Rs. 100</span>
+                            </a>
+
+                        </h6>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-3">
+                    <div class="categories-box">
+                        <h6 class="cat-head">
+                            <a href="ourprojects.html" class="cat-link">
+                                <img src="https://images.unsplash.com/photo-1543334270-24bb46642afe?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                    alt="arc-img">
+                                <span class="title">orange and blue yarn</span>
+                                <span class="price">Rs. 100</span>
+                            </a>
+
+                        </h6>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-3">
+                    <div class="categories-box">
+                        <h6 class="cat-head">
+                            <a href="ourprojects.html" class="cat-link">
+                                <img src="https://images.unsplash.com/photo-1543334270-24bb46642afe?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                    alt="arc-img">
+                                <span class="title">orange and blue yarn</span>
+                                <span class="price">Rs. 100</span>
+                            </a>
+
+                        </h6>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- <section class="reviews">
+            <div class="row">
+                <div class="col-md-4">
+                    156 reviews
+                </div>
+
+                <div class="col-md-4">
+                    sort
+                </div>
+                
+                <div class="col-md-4">
+                    most recent
+                </div>
+            </div>
+        </section> -->
+
+    </main>
+
+    <%- include('./partials/footer') %>
+
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/min/tiny-slider.js"></script>
+
+    <script src="/js/jquery.ez-plus.js"></script>
+
+    <script src="/js/jquery.bootstrap-touchspin.min.js"></script>
+
+    <!-- DARK MODE -->
+    <script>
+        $(document).ready(function () {
+            $("#tooglenight").change(function () {
+                if (this.checked) {
+                    $("#bd").addClass("night");
+                    $("i").css("color", "white");
+                } else {
+                    $("#bd").removeClass("night");
+                    $("i").css("color", "black");
+                }
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+
+            // Initialize the TouchSpin input
+            const quantityInput = $("input[name='demo1']").TouchSpin({
+                min: 0,
+                max: 100,
+                step: 1,
+                decimals: 0,
+                boostat: 5,
+                maxboostedstep: 10,
+                postfix: '%'
+            });
+
+            // Initialize elements for price calculation
+            const addToCartBtn = document.getElementById("addToCartBtn");
+            const priceElement = document.getElementById("price");
+            const quantity = document.getElementById("demo1");
+            const packageRadios = document.querySelectorAll('input[name="package"]');
+            const featuresListContainer = document.getElementById('sizeAndFeatures');
+            let tagName;
+            let basePrice = 0;
+
+            function updatePrice() {
+                const selectedPackage = document.querySelector('input[name="package"]:checked');
+                if (selectedPackage) {
+                    const packageMultiplier = parseInt(selectedPackage.dataset.multiplier);
+
+                    // Calculate the total price
+                    const totalPrice = basePrice * packageMultiplier;
+
+                    // Update the price element
+                    priceElement.textContent = `Rs.${totalPrice.toFixed(2)}`;
+                }
+            }
+
+            function updatePriceTouchSpin(quantity) {
+
+                // Calculate the total price
+                const totalPrice = basePrice * quantity;
+
+                // Update the price element
+                priceElement.textContent = `Rs.${totalPrice.toFixed(2)}`;
+            }
+
+            quantityInput.on('change', function () {
+                // Get the current value from the input
+                const quantity = parseInt($(this).val()) || 1;
+
+                // Update the price or perform any other actions
+                updatePriceTouchSpin(quantity);
+            });
+
+            // Event listener for package change
+            packageRadios.forEach(radio => {
+                radio.addEventListener("change", updatePrice);
+            });
+
+            // Optionally, you can add a "Reset" functionality to unselect the package
+            function resetPackageSelection() {
+                packageRadios.forEach(radio => {
+                    radio.checked = false;
+                });
+                priceElement.textContent = `Rs.0.00`; // Reset the price
+            }
+
+            try {
+                // Extract the productId from the URL path
+                const path = window.location.pathname;
+                const productId = path.split("/").pop(); // Gets the last part of the path
+
+                // Fetch product details using the productId
+                const response = await fetch(`http://localhost:4000/api/products/by_id/${productId}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+
+                if (response.ok) {
+                    const product = await response.json();
+                    console.log("Product fetched successfully:", product);
+
+                    // Populate product information
+                    document.getElementById("productName").textContent = product.name;
+                    document.getElementById("productDescription").textContent = product.description;
+                    document.getElementById("productDescription1").textContent = product.description;
+                    const productImage = document.getElementById("productImage");
+                    const productImage1 = document.getElementById("productImage1");
+                    const features = product.features;
+                    // Dynamically generate the rating
+                    const averageRating = product.averageRating || 0;
+                    const ratingContainer = document.getElementById("starsContainer");
+                    ratingContainer.innerHTML = generateStars(averageRating); // Call the generateStars function
+                    // document.getElementById("price").textContent = `$${product.price}`;
+
+                    const imagePath = (product.images && product.images.length > 0) ? product.images[0].filePath : '/images/products/polo2.jpg';
+
+
+                    // Ensure the image path is valid and update the image
+                    if (imagePath) {  // Check if productImage exists
+                        productImage.className = "demo img-fluid zoomed-img";
+                        productImage.src = imagePath;
+                        productImage1.src = imagePath;
+
+                        // const concatenatedPath = "http://localhost:4000" + imagePath;
+
+                        productImage.setAttribute("data-zoom-image", imagePath);
+                        productImage1.setAttribute("data-zoom-image", imagePath);
+                        productImage1.setAttribute("data-image", imagePath);
+                        productImage1.className = "img-fluid";
+                    } else {
+                        console.log('Error: productImage element not found.');
+                    }
+
+                    // Check if features exist and is a string
+                    if (features && typeof features === 'string') {
+                        // Split the features string into an array
+                        const featuresArray = features.split(',').map(feature => feature.trim());
+
+                        // Generate HTML for each feature
+                        featuresListContainer.innerHTML = featuresArray.map(feature => `
+                    <li>☆ ${feature}</li>
+                `).join('');
+                    } else {
+                        featuresListContainer.innerHTML = '<li>No features available</li>';
+                    }
+
+                    // Set the base price from the backend
+                    basePrice = product.price;
+                    priceElement.textContent = `Rs.${basePrice.toFixed(2)}`;
+
+                    product.tags.forEach((tag) => {
+                        tagName = tag.name;
+                    });
+
+                    console.log(tagName)
+
+                    const testimonialsContainer = document.getElementById('base');
+
+                    // Clear any existing content
+                    testimonialsContainer.innerHTML = '';
+
+                    product.comments.forEach(comment => {
+                        const testimonialHTML = `
+                                <div class="testimonials-details">
+                                <div class="row align-items-center">
+                                    <div class="col-md-2">
+                                    <div class="client-pd">
+                                        <img src="${comment.user.images && comment.user.images.length > 0 ? comment.user.images[0].filePath : "/images/users/defaultUser.png"}" alt="client photo" class="client-img">
+                                    </div>
+                                    </div>
+                                    <div class="col-md-10">
+                                    <div>
+                                        <span class="reviewstar">
+                                        ${generateStars(comment.rating)}
+                                        </span>
+                                        <div class="client-name">
+                                        ${comment.user.username}
+                                        </div>
+                                        <p class="para test-para">
+                                        ${comment.content}
+                                        </p>
+                                    </div>
+                                    </div>
+                                </div>
+                                </div>
+                             `;
+
+                        // Insert the generated HTML into the container
+                        testimonialsContainer.innerHTML += testimonialHTML;
+                    });
+
+                    function generateStars(rating) {
+                        let starsHTML = '';
+                        for (let i = 0; i < 5; i++) {
+                            starsHTML += i < rating ? '<i class="fa fa-star"></i>' : '<i class="fa-regular fa-star"></i>';
+                        }
+                        return starsHTML;
+                    }
+
+
+
+                } else {
+                    console.error("Failed to fetch product details:", response.status, response.statusText);
+                }
+            } catch (error) {
+                console.error("Error occurred while fetching product details:", error);
+            }
+
+            if (tagName !== null) {
+                const similarProductsContainer = document.querySelector('.peepbought .row');
+
+                try {
+                    // Fetch products by tags
+                    const response = await fetch(`http://localhost:4000/api/products/by_tag/${tagName}?page=1&pageSize=4`, {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        console.log(result);
+                        similarProductsContainer.innerHTML = ''; // Clear any existing content
+                        result.products.forEach((product) => {
+                            const productHTML = `
+                            <div class="col-12 col-sm-3">
+                                <div class="categories-box">
+                                    <h6 class="cat-head">
+                                        <a href="http://localhost:4000/products/${product.id}" class="cat-link">
+                                            <img src="/images/products/polo.jpg" alt="${product.name}">
+                                            <span class="title">${product.name}</span>
+                                            <span class="price">Rs. ${product.price}</span>
+                                        </a>
+                                    </h6>
+                                </div>
+                            </div>
+    `;
+                            similarProductsContainer.insertAdjacentHTML('beforeend', productHTML);
+                        })
+                    }
+
+                } catch (err) {
+                    console.error("Failed to fetch similar product:");
+                }
+            }
+
+            addToCartBtn.addEventListener("click", async (event) => {
+                event.preventDefault();
+
+                // Get the necessary data attributes from the button
+                const path = window.location.pathname;
+                const userId = localStorage.getItem("userId");
+                const quantityVal = parseInt(quantity.value) || 1; // Assuming you want to add 1 item to the cart
+
+
+                if (!userId) {
+                    console.error("User ID not found in localStorage.");
+                    return;
+                }
+                // Construct the payload
+                const payload = {
+                    productId: path.split("/").pop(),
+                    userId: userId,
+                    quantity: quantityVal,
+                };
+
+                try {
+                    const response = await fetch("http://localhost:4000/api/cart", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(payload),
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        console.log("Item added to cart:", result);
+                        alert("Item successfully added to cart!");
+                        // Optionally, you could update the UI to show that the item was added to the cart
+                    } else {
+                        console.error(
+                            "Failed to add item to cart:",
+                            response.status,
+                            response.statusText
+                        );
+                    }
+                } catch (error) {
+                    console.error("Error occurred while adding item to cart:", error);
+                }
+            });
+
+        });
+    </script>
+
+    <script src="/client/postComments.js"></script>
+
+    <!-- EZ ZOOM -->
+    <script>
+        $("input[name='demo1']").TouchSpin({
+            min: 0,
+            max: 100,
+            step: 1,
+            decimals: 0,
+            boostat: 5,
+            maxboostedstep: 10,
+            postfix: '%'
+        });
+    </script>
+
+    <script>
+
+        $(".demo").ezPlus({
+            gallery: 'gallery_demo',
+            cursor: 'pointer',
+            galleryActiveClass: "active",
+            imageCrossfade: true,
+            loadingIcon: "images/spinner.gif",
+            lensSize: 100,
+        });
+
+    </script>
+
+    </script>
+
+</body>
+
+</html>

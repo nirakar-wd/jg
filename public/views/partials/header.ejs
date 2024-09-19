@@ -1,0 +1,155 @@
+<header class="header">
+
+    <div class="nav-top">
+        <div class="container">
+
+            <div class="row align-items-center">
+
+                <div class="col-md-2">
+                    <a href="<%= process.env.APP_API_URL %>/">
+                        <img src="/img/jglogofinal.png" alt="logo" class="logo logo-black">
+                        <img src="/img/jglogofinalwhite.png" alt="logo" class="logo logo-white">
+                    </a>
+                </div>
+
+                <div class="col-md-7">
+                    <nav>
+                        <ul class="navbar-nav d-flex flex-row align-items-center justify-content-center">
+
+                            <li class="nav-item-list">
+                                <a href="<%= process.env.APP_API_URL %>/" class="nav-item-link">
+                                    home
+                                </a>
+                            </li>
+
+                            <li class="nav-item-list">
+                                <a href="#" class="nav-item-link">
+                                    products
+                                </a>
+                                <ul class="nav-sub">
+                                    <li class="offset-2"><a href="<%= process.env.APP_API_URL %>/categories">tshirts</a></li>
+                                    <li class="offset-2"><a href="<%= process.env.APP_API_URL %>/categories">polo</a></li>
+                                    <li class="offset-2"><a href="<%= process.env.APP_API_URL %>/categories">shirts</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item-list">
+                                <a href="<%= process.env.APP_API_URL %>/edition" class="nav-item-link">
+                                    editions
+                                </a>
+                                <ul class="nav-sub">
+                                    <li class="offset-2"><a href="<%= process.env.APP_API_URL %>/categories">for human</a></li>
+                                    <li class="offset-2"><a href="<%= process.env.APP_API_URL %>/categories">freefall</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item-list">
+                                <a href="<%= process.env.APP_API_URL %>/newArrivals" class="nav-item-link na-link">
+                                    new arrivals
+                                </a>
+                            </li>
+
+                            <li class="nav-item-list">
+                                <a href="<%= process.env.APP_API_URL %>/digitalMarketing" class="nav-item-link">
+                                    digital marketing
+                                </a>
+                            </li>
+
+                        </ul>
+                    </nav>
+
+                </div>
+
+                <div class="col-md-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <form class="d-flex search-form justify-content-end" role="search" id="searchForm">
+                            <input class="form-control" type="search" placeholder="search" aria-label="Search"
+                                id="searchInput" autocomplete="off">
+                            <button type="submit"><span>&nbsp;</span></button>
+                        </form>
+
+                        <div class="cart-icon">
+                            <a href="<%= process.env.APP_API_URL %>/login" class="cart-btn mx-3">
+                                <i class="fa-solid fa-user fa-xl"></i>
+                            </a>
+                            <a href="<%= process.env.APP_API_URL %>/cart" class="cart-btn">
+                                <i class="fa-solid fa-cart-shopping fa-xl"></i>
+                            </a>
+                        </div>
+
+                    </div>
+                    <!-- Search Results Container -->
+                    <div id="searchResults" class="search-results-container"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const searchInput = document.getElementById("searchInput");
+            const searchForm = document.getElementById("searchForm");
+            const searchResults = document.getElementById("searchResults");
+
+            // Handle search input keyup event
+            searchInput.addEventListener("input", async function () {
+                const query = searchInput.value.trim();
+
+                // Check if the query is not empty
+                if (query.length > 0) {
+                    try {
+                        // Fetch results from the backend
+                        const response = await fetch(
+                            `http://localhost:4000/api/products/search?q=${query}`
+                        );
+                        const results = await response.json();
+
+                        // Display search results
+                        displaySearchResults(results);
+                    } catch (error) {
+                        console.error("Error fetching search results:", error);
+                    }
+                } else {
+                    searchResults.style.display = "none"; // Hide the search results if input is empty
+                }
+            });
+
+            // Function to display search results
+            function displaySearchResults(results) {
+                // Clear any previous results
+                searchResults.innerHTML = "";
+
+                // If there are results, display them
+                if (results.length > 0) {
+                    results.forEach((result) => {
+                        const resultItem = document.createElement("div");
+                        resultItem.classList.add("result-item");
+                        resultItem.textContent = result.name; // Display the name of the result, customize as needed
+
+                        // Add a click event listener to handle what happens when a result is clicked
+                        resultItem.addEventListener("click", () => {
+                            window.location.href = `/products/${result.id}`; // Redirect to the product page
+                        });
+
+                        searchResults.appendChild(resultItem);
+                    });
+
+                    // Show the search results container
+                    searchResults.style.display = "block";
+                } else {
+                    // If no results found, show a message
+                    searchResults.innerHTML = `<div class="result-item">No results found</div>`;
+                    searchResults.style.display = "block";
+                }
+            }
+
+            // Handle form submission to prevent default behavior
+            searchForm.addEventListener("submit", (e) => {
+                e.preventDefault();
+            });
+        });
+
+    </script>
+
+</header>

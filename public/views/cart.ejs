@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JG</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/tiny-slider.min.css"
+        integrity="sha512-06CZo7raVnbbD3BlY8/hGUoUCuhk8sTdVGV3m3nuh9i2R+UmkLbLRTE/My8TuJ3ALbDulhBObJQWtOUt0mXzNQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+
+
+    <link rel="stylesheet" href="../css/style.css">
+
+</head>
+
+<body id="bd">
+
+    <!-- <div id="loader" class="loading-container">
+        <img src="img/FOR_HUMANS__2_.png" alt="Loading" class="loader-image">
+    </div> -->
+
+    <div class="content">
+        <i class="fas fa-sun"></i>
+        &nbsp;&nbsp;&nbsp;
+        <input type="checkbox" id="tooglenight" class="cbx hidden" />
+        <label for="tooglenight" class="switch"></label>
+        &nbsp;&nbsp;&nbsp;
+        <i class="fas fa-moon"></i>
+    </div>
+
+    <%- include('./partials/header') %>
+
+    <main class="shopping-cart">
+
+        <div class="container">
+            <h2 class="heading-secondary mb-5">
+                shopping cart
+            </h2>
+
+            <div class="cart-box">
+                <div class="row justify-content-center">
+                    <div class="col-md-9">
+
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">product</th>
+                                    <th scope="col">decription</th>
+                                    <th scope="col">quantity</th>
+                                    <th scope="col">price</th>
+                                    <th scope="col">delete</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cartItems">
+                                <!-- <tr>
+                                    <th scope="row">
+                                        <img src="img/Flat Back Brown TFF.png" alt="">
+                                    </th>
+                                    <td>tshirt</td>
+                                    <td>4</td>
+                                    <td>$500</td>
+                                    <td>
+                                        <a href="#"><i class="fa-solid fa-trash-can"></i></a>
+                                    </td>
+                                </tr> -->
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="order-summary">
+                            <div class="order-heading">order summary</div>
+
+                            <div id="cartItemsContainer">
+                                <!-- <span>product name</span>
+                                    <span>$500</span> -->
+                            </div>
+
+                            <div class="pro-price d-flex pp-2 ">
+                                <span>shipping</span>
+                                <span>free</span>
+                            </div>
+
+                            <div class="pro-price d-flex pp-2 ">
+                                <span>delivery fee: (Rs. 150 within ktm valley/ Rs. 500 outside ktm)</span>
+                            </div>
+                            <div class="total-cost d-flex">
+                                <span>total</span>
+                                <span id="totalOrderPrice">Rs.1200</span>
+                            </div>
+                            <div class="order-checkout">
+                                <a href="http://localhost:4000/checkout">
+                                    <button class="btn btn-checkout">precede to
+                                        checkout</button></a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <%- include('./partials/footer') %>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/min/tiny-slider.js"></script>
+
+    <script src="/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.1.2/redux.min.js"></script>
+
+    <script src="/js/script.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#tooglenight").change(function () {
+                if (this.checked) {
+                    $("#bd").addClass("night");
+                    $(".content i").css("color", "#333");
+                } else {
+                    $("#bd").removeClass("night");
+                    $(".content i").css("color", "white");
+                }
+            });
+        });
+    </script>
+    <script src="/client/cart.js"></script>
+</body>
+
+</html>

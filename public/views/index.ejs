@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JG</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/tiny-slider.min.css"
+        integrity="sha512-06CZo7raVnbbD3BlY8/hGUoUCuhk8sTdVGV3m3nuh9i2R+UmkLbLRTE/My8TuJ3ALbDulhBObJQWtOUt0mXzNQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+<body id="bd">
+
+    <!-- <div id="loader" class="loading-container">
+        <img src="img/FOR_HUMANS__2_.png" alt="Loading" class="loader-image">
+    </div> -->
+
+    <div class="content">
+        <i class="fas fa-sun"></i>
+        &nbsp;&nbsp;&nbsp;
+        <input type="checkbox" id="tooglenight" class="cbx hidden" />
+        <label for="tooglenight" class="switch"></label>
+        &nbsp;&nbsp;&nbsp;
+        <i class="fas fa-moon"></i>
+    </div>
+
+    <%- include('./partials/homeHeader') %>
+
+    <main>
+
+        <section class="whats-new">
+            <h2 class="heading-secondary">Best selling and trending</h2>
+
+            <div class="container position-relative">
+                <ul class="controls" id="customize-controls" aria-label="Carousel Navigation" tabindex="0">
+                    <li class="prev" data-controls="prev" aria-controls="customize" tabindex="-1">
+                        <i class="fas fa-angle-left"></i>
+                    </li>
+                    <li class="next" data-controls="next" aria-controls="customize" tabindex="-1">
+                        <i class="fas fa-angle-right"></i>
+                    </li>
+                </ul>
+                <div class="row new-slider" id="bestSellingContainer">
+
+                </div>
+
+
+            </div>
+        </section>
+
+        <section class="whats-popular">
+            <h2 class="heading-secondary">what's popular</h2>
+
+            <div class="container">
+                <div class="row" id="productsContainer">
+
+                </div>
+            </div>
+        </section>
+
+        <section class="aboutus">
+            <div class="container">
+                <div class="row g-0">
+                    <div class="col-md-6">
+                        <div class="aboutus-des">
+                            <h2 class="heading-secondary text-start">About our Goals</h2>
+                            <p class="about-para">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis
+                                fugit dolorum vero
+                                magnam
+                                quia nisi numquam accusamus error ab, corporis ut, ipsa sequi laudantium. Aut?Lorem
+                                ipsum
+                                dolor sit amet consectetur adipisicing elit. Assumenda vero quasi exercitationem non
+                                nisi
+                                dolor voluptatem vel ratione facilis voluptate odit autem quo suscipit cumque quia,
+                                consectetur molestiae qui deleniti fugiat laboriosam sunt? Sit explicabo ut
+                                necessitatibus,
+                                inventore blanditiis dignissimos voluptate quam praesentium illo repellat vel
+                                exercitationem. Deleniti, ex nesciunt?Lorem ipsum dolor sit amet consectetur,
+                                adipisicing
+                                elit. Dolorum architecto illum reiciendis aliquam dolorem culpa non eius omnis, nam
+                                voluptas
+                                error temporibus eveniet totam rerum consectetur, dolor velit dicta nisi voluptate
+                                dolores?
+                                Distinctio unde ab architecto animi perferendis neque. Id, natus dolorum quia animi ab
+                                vero
+                                consequatur non necessitatibus pariatur!</p>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+                        <div class="video">
+                            <iframe width="908" height="511" src="https://www.youtube.com/embed/uKw6BCEM2MM"
+                                title="Mens Fashion 101: HOW TO DRESS BETTER" frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section class="testimonials">
+            <div>
+                <h2 class="heading-secondary text-center">reviews
+                    <div class="separator mx-auto"></div>
+                </h2>
+
+                <div class="my-slider" id="reviewsContainer">
+                    <div class="testimonials-box">
+                        <div class="testimonials-details">
+                            <div class="client-pd">
+                                <img src="img/pexels-andrea-piacquadio-774909 1.png" alt="client photo"
+                                    class="client-img">
+
+                            </div>
+
+                            <p class="para test-para">"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
+                                vulputate libero et velit interdum, ac aliquet odio mattis.Lorem ipsum dolor sit amet,
+                                consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio
+                                mattis."
+
+                            </p>
+
+                            <div class="client-name text-end">
+                                Jane Doe
+                                <span class="client-cpn">XYZ</span>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+                    <div class="testimonials-box" id="base">
+                        <div class="testimonials-details">
+                            <div class="client-pd">
+                                <img src="img/pexels-andrea-piacquadio-774909 1.png" alt="client photo"
+                                    class="client-img">
+
+                            </div>
+
+                            <p class="para test-para">"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
+                                vulputate libero et velit interdum, ac aliquet odio mattis.Lorem ipsum dolor sit amet,
+                                consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio
+                                mattis."
+
+                            </p>
+
+                            <div class="client-name text-end">
+                                Jane Doe
+                                <span class="client-cpn">XYZ</span>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="testimonials-box" id="base">
+                        <div class="testimonials-details">
+                            <div class="client-pd">
+                                <img src="img/pexels-andrea-piacquadio-774909 1.png" alt="client photo"
+                                    class="client-img">
+
+                            </div>
+
+                            <p class="para test-para">"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
+                                vulputate libero et velit interdum, ac aliquet odio mattis.Lorem ipsum dolor sit amet,
+                                consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio
+                                mattis."
+
+                            </p>
+
+                            <div class="client-name text-end">
+                                Jane Doe
+                                <span class="client-cpn">XYZ</span>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="testimonials-box" id="base">
+                        <div class="testimonials-details">
+                            <div class="client-pd">
+                                <img src="img/pexels-andrea-piacquadio-774909 1.png" alt="client photo"
+                                    class="client-img">
+
+                            </div>
+
+                            <p class="para test-para">"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
+                                vulputate libero et velit interdum, ac aliquet odio mattis.Lorem ipsum dolor sit amet,
+                                consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio
+                                mattis."
+
+                            </p>
+
+                            <div class="client-name text-end">
+                                Jane Doe
+                                <span class="client-cpn">Aakar Nirman Sewa</span>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="testimonials-box" id="base">
+                        <div class="testimonials-details">
+                            <div class="client-pd">
+                                <img src="/img/pexels-andrea-piacquadio-774909 1.png" alt="client photo"
+                                    class="client-img">
+
+                            </div>
+
+                            <p class="para test-para">"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
+                                vulputate libero et velit interdum, ac aliquet odio mattis.Lorem ipsum dolor sit amet,
+                                consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio
+                                mattis."
+
+                            </p>
+
+                            <div class="client-name text-end">
+                                Jane Doe
+                                <span class="client-cpn">Aakar Nirman Sewa</span>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="testimonials-box" id="base">
+                        <div class="testimonials-details">
+                            <div class="client-pd">
+                                <img src="/img/pexels-andrea-piacquadio-774909 1.png" alt="client photo"
+                                    class="client-img">
+
+                            </div>
+
+                            <p class="para test-para">"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
+                                vulputate libero et velit interdum, ac aliquet odio mattis.Lorem ipsum dolor sit amet,
+                                consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio
+                                mattis."
+
+                            </p>
+
+                            <div class="client-name text-end">
+                                Jane Doe
+                                <span class="client-cpn">Aakar Nirman Sewa</span>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+            </div>
+        </section>
+    </main>
+
+    <%- include('partials/footer') %>
+
+    <!-- <div class="modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">stay in touch</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="modal-p">Subscribe to our newsletter for news and offers</p>
+                    <form>
+                        <input type="email" class="form-control" placeholder="example@email.com">
+                    </form>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-primary btn-modal">Subscribe</button>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/min/tiny-slider.js"></script>
+
+    <script src="/js/bootstrap.bundle.min.js"></script>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+
+    <!-- <script type="text/javascript">
+        $(window).on('load', function () {
+            $('.modal').modal('show');
+        });
+    </script> -->
+
+    <!-- <script src="/client/search.js"></script> -->
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            try {
+                // Fetch products
+                const response = await fetch(
+                    `http://localhost:4000/api/products/bestSeller`,
+                    {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
+
+                if (response.ok) {
+                    const products = await response.json();
+                    console.log(products);
+                    const bestSellingContainer = document.querySelector("#bestSellingContainer"
+                    );
+
+                    // Clear existing products (if any)
+                    bestSellingContainer.innerHTML = "";
+
+                    // Populate the products container with the fetched products
+                    products.bestSellers.forEach((product) => {
+                        const bestSellingCard = `
+                            <div class="categories-box">
+                                <h6 class="cat-head">
+                                <a href="http://localhost:4000/products/${product.id}" class="cat-link">
+                                    <img src=${product.images && product.images.length ? product.images[0] : "/images/products/polo2.jpg"} alt="arc-img" class="product-img">
+                                    <span class="title">${product.name}</span>
+                                    <span class="price">${product.price}</span>
+                                </a>
+                                </h6>
+                            </div>`;
+
+
+                        bestSellingContainer.innerHTML += bestSellingCard;
+                    });
+
+                    // Initialize Tiny Slider
+                    tns({
+                        container: '.new-slider',
+                        items: 3,
+                        loop: true,
+                        speed: 500,
+                        autoplay: true,
+                        controls: true,
+                        slideBy: 1,
+                        mouseDrag: true,
+                        nav: false,
+                        autoplayButtonOutput: false,
+                        autoHeight: true,
+                        controlsContainer: "#customize-controls",
+                        responsive: {
+                            200: { items: 1, autoHeight: false },
+                            400: { items: 1, gutter: 10 },
+                            640: { gutter: 20 },
+                            700: { items: 2 },
+                            900: { items: 3, gutter: 20 },
+                            1000: { items: 4, gutter: 20 }
+                        }
+                    });
+
+                } else {
+                    console.error("Failed to fetch best seller products");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        });
+
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            try {
+                // Fetch products
+                const response = await fetch(
+                    `http://localhost:4000/api/products/?page=1&pageSize=8`,
+                    {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
+
+                if (response.ok) {
+                    const products = await response.json();
+                    console.log(products);
+                    const productsContainer = document.querySelector("#productsContainer");
+
+                    // Clear existing products (if any)
+                    productsContainer.innerHTML = "";
+
+                    // Populate the products container with the fetched products
+                    products.products.forEach((product) => {
+                        const productCard = `
+                        <div class="col-12 col-sm-3">
+                                    <div class="categories-box">
+                                        <h6 class="cat-head">
+                                            <a href="http://localhost:4000/products/${product.id}" class="cat-link">
+                                                <img src=${product.images && product.images.length > 0 ? product.images[0] : "/images/products/polo.jpg"} alt="arc-img">
+                                                <span class="title">${product.name}</span>
+                                                <span class="price">${product.price}</span>
+                                            </a>
+
+                                        </h6>
+                                    </div>
+                                </div>
+                        `;
+
+                        productsContainer.innerHTML += productCard;
+                    });
+
+                    // Initialize Tiny Slider
+                    tns({
+                        container: '.new-slider',
+                        items: 3,
+                        loop: true,
+                        speed: 500,
+                        autoplay: true,
+                        controls: true,
+                        slideBy: 1,
+                        mouseDrag: true,
+                        nav: false,
+                        autoplayButtonOutput: false,
+                        autoHeight: true,
+                        controlsContainer: "#customize-controls",
+                        responsive: {
+                            200: { items: 1, autoHeight: false },
+                            400: { items: 1, gutter: 10 },
+                            640: { gutter: 20 },
+                            700: { items: 2 },
+                            900: { items: 3, gutter: 20 },
+                            1000: { items: 4, gutter: 20 }
+                        }
+                    });
+
+                } else {
+                    console.error("Failed to fetch products");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        });
+
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            try {
+                // Fetch comments
+                const response = await fetch(
+                    `http://localhost:4000/api/comments/?page=1&pageSize=5`,
+                    {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
+
+                if (response.ok) {
+                    const comments = await response.json();
+                    console.log(comments);
+                    const commentsContainer = document.querySelector("#reviewsContainer");
+
+                    // Clear existing comments (if any)
+                    commentsContainer.innerHTML = "";
+
+                    // Populate the comments container with the fetched comments
+                    comments.comments.forEach((comment) => {
+                        const commentCard = `
+                     <div class="testimonials-box" id="base">
+                        <div class="testimonials-details">
+                            <div class="client-pd">
+                                <img src=${comment.user.images && comment.user.images.length > 0 ? comment.user.images[0].filePath : "/images/users/defaultUser.png"} alt="client photo"
+                                    class="client-img">
+                            </div>
+                            <p class="para test-para">${comment.content}</p>
+                            <div class="client-name text-end">
+                                ${comment.user.username}
+                            </div>
+                        </div>
+                    </div>`;
+                        commentsContainer.innerHTML += commentCard;
+                    });
+
+                    // Reinitialize the slider after adding new content
+                    const slider = tns({
+                        container: '.my-slider',
+                        items: 3,
+                        loop: true,
+                        speed: 500,
+                        autoplay: true,
+                        controls: false,
+                        slideBy: 1,
+                        mouseDrag: true,
+                        nav: false,
+                        autoplayButtonOutput: false,
+                        autoHeight: true,
+                        responsive: {
+                            200: {
+                                items: 1,
+                                autoHeight: false,
+                            },
+                            400: {
+                                items: 1,
+                                gutter: 10
+                            },
+                            640: {
+                                gutter: 20,
+                                edgePadding: 20
+                            },
+                            700: {
+                                items: 2
+                            },
+                            900: {
+                                items: 2,
+                                gutter: 50,
+                                edgePadding: 50
+                            }
+                        }
+                    });
+                } else {
+                    console.error("Failed to fetch comments");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        });
+    </script>
+
+
+    <script>
+
+        $(document).ready(function () {
+            $("#tooglenight").change(function () {
+                if (this.checked) {
+                    $("#bd").addClass("night");
+                    $(".content i").css("color", "#333");
+                } else {
+                    $("#bd").removeClass("night");
+                    $(".content i").css("color", "white");
+                }
+            });
+        });
+
+        var slider = tns({
+            container: '.my-slider',
+            items: 3,
+            loop: true,
+            speed: 500,
+            autoplay: true,
+            controls: false,
+            slideBy: 1,
+            mouseDrag: true,
+            nav: false,
+            autoplayButtonOutput: false,
+            autoHeight: true,
+            responsive: {
+                200: {
+                    items: 1,
+                    autoHeight: false,
+
+                },
+
+                400: {
+                    items: 1,
+                    gutter: 10
+                },
+                640: {
+                    gutter: 20,
+                    edgePadding: 20
+                },
+                700: {
+
+                    items: 2
+
+                },
+                900: {
+                    items: 2,
+                    gutter: 50,
+                    edgePadding: 50
+
+                }
+            }
+        });
+
+        var slider = tns({
+            container: '.new-slider',
+            items: 3,
+            loop: true,
+            speed: 500,
+            autoplay: true,
+            controls: true,
+            slideBy: 1,
+            mouseDrag: true,
+            nav: false,
+            autoplayButtonOutput: false,
+            autoHeight: true,
+            controlsContainer: "#customize-controls",
+            responsive: {
+                200: {
+                    items: 1,
+                    autoHeight: false,
+
+                },
+
+                400: {
+                    items: 1,
+                    gutter: 10
+                },
+                640: {
+                    gutter: 20,
+                },
+                700: {
+
+                    items: 2
+
+                },
+                900: {
+                    items: 3,
+                    gutter: 20
+
+                },
+                1000: {
+                    items: 4,
+                    gutter: 20
+
+                }
+            }
+        });
+
+    </script>
+
+    <script>
+
+
+    </script>
+
+
+    <script src="/js/script.js"></script>
+    <!-- <script src="/client/getProducts.js"></script> -->
+    <!-- <script src="/client/getReviews.js"></script> -->
+
+</body>
+
+</html>

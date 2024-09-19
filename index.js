@@ -1,5 +1,5 @@
 require("dotenv").config();
-const rateLimit = require('express-rate-limit');
+const rateLimit = require("express-rate-limit");
 // const RedisStore = require('rate-limit-redis');
 // const redis = require('redis');
 const express = require("express");
@@ -9,10 +9,7 @@ const cookieParser = require("cookie-parser");
 const path = require("path");
 const helmet = require("helmet");
 const bodyParser = require("body-parser");
-const {
-  verifyToken,
-  isAdmin,
-} = require("./middlewares/authMiddleware");
+const { verifyToken, isAdmin } = require("./middlewares/authMiddleware");
 
 const productsRouter = require("./routes/productsRoutes");
 const usersRouter = require("./routes/userRoutes");
@@ -84,122 +81,133 @@ app.use("/api", pagesRouter);
 //   next(createError(404));
 // });
 
+// Middleware to set global variables for views
+
+app.use((req, res, next) => {
+  res.locals.APP_API_URL_DEV = process.env.APP_API_URL_DEV;
+  res.locals.APP_API_URL = process.env.APP_API_URL;
+  next();
+});
+
+
+app.set("view engine", "ejs");
+
+// Set the directory where the views (EJS templates) are located
+app.set("views", path.join(__dirname, "public/views"));
+
 // Serve your HTML file at the root URL
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/views", "index.html"));
+  res.render("index"); // Renders index.ejs
 });
 
 app.get("/categories", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/views", "categories.html"));
+  res.render("categories"); // Renders categories.ejs
 });
 
 app.get("/categories/:categoryId", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/views", "productsCategories.html"));
+  res.render("productsCategories", { categoryId: req.params.categoryId }); // Pass dynamic data
 });
 
 app.get("/admin", verifyToken, isAdmin, (req, res) => {
-  res.sendFile(path.join(__dirname, "public/views", "admin.html"));
+  res.render("admin"); // Renders admin.ejs
 });
 
 app.get("/aboutUs", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/views", "aboutus.html"));
+  res.render("aboutus"); // Renders aboutus.ejs
 });
 
 app.get("/cart", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/views", "cart.html"));
+  res.render("cart"); // Renders cart.ejs
 });
 
 app.get("/orders", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/views", "orders.html"));
+  res.render("orders"); // Renders orders.ejs
 });
 
-// app.get("/checkout", (req, res) => {
-//   res.sendFile(path.join(__dirname, "public/views", "checkout.html"));
-// });
-
 app.get("/checkout", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/views", "checkoutOrder.html"));
+  res.render("checkoutOrder"); // Renders checkoutOrder.ejs
 });
 
 app.get("/order/:orderId", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/views", "orderDetails.html"));
+  res.render("orderDetails");
 });
 
 app.get("/termsAndConditions", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/views", "t&c.html"));
+  res.render("t&c"); // Renders t&c.ejs
 });
 
 app.get("/products", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/views", "product.html"));
+  res.render("product"); // Renders product.ejs
 });
 
 app.get("/products/:productId", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/views", "productDetails.html"));
+  res.render("productDetails");
 });
 
 app.get("/login", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/views", "signin.html"));
+  res.render("signin"); // Renders signin.ejs
 });
 
 app.get("/register", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/views", "register.html"));
+  res.render("register"); // Renders register.ejs
 });
 
 app.get("/deliveryPolicy", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/views", "p&p.html"));
+  res.render("p&p"); // Renders p&p.ejs
 });
 
 app.get("/contacts", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/views", "contact.html"));
+  res.render("contact"); // Renders contact.ejs
 });
 
 app.get("/newArrivals", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/views", "newarrivals.html"));
+  res.render("newarrivals"); // Renders newarrivals.ejs
 });
 
 app.get("/digitalMarketing", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/views", "digitalmarketing.html"));
+  res.render("digitalmarketing"); // Renders digitalmarketing.ejs
 });
 
 app.get("/editCategory/:categoryId", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/views", "editcategory.html"));
+  res.render("editcategory"); 
 });
 
 app.get("/editTag/:tagId", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/views", "editTag.html"));
+  res.render("editTag"); 
 });
 
 app.get("/editCollection/:collectionId", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/views", "editCollection.html"));
+  res.render("editCollection"); // Pass dynamic data
 });
 
 app.get("/edition", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/views", "edition.html"));
+  res.render("edition"); // Renders edition.ejs
 });
 
 app.get("/editProduct/:productId", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/views", "editproduct.html"));
+  res.render("editproduct"); 
 });
 
 app.get("/editOrder/:orderId", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/views", "editOrder.html"));
+  res.render("editOrder"); 
 });
 
 app.get("/manageProduct", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/views", "manageproduct.html"));
+  res.render("manageproduct"); // Renders manageproduct.ejs
 });
 
 app.get("/checkoutSuccess", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/views", "checkoutsuccess.html"));
+  res.render("checkoutsuccess"); // Renders checkoutsuccess.ejs
 });
 
 app.get("/myProfile", verifyToken, (req, res) => {
-  res.sendFile(path.join(__dirname, "public/views", "userProfile.html"));
+  res.render("userProfile"); // Renders userProfile.ejs
 });
 
 app.get("/myLocation", verifyToken, (req, res) => {
-  res.sendFile(path.join(__dirname, "public/views", "userLocation.html"));
+  res.render("userLocation"); // Renders userLocation.ejs
 });
+
 
 // Error handling middleware
 app.use(function (err, req, res, next) {

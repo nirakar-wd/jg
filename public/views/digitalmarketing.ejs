@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JG</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/tiny-slider.min.css"
+        integrity="sha512-06CZo7raVnbbD3BlY8/hGUoUCuhk8sTdVGV3m3nuh9i2R+UmkLbLRTE/My8TuJ3ALbDulhBObJQWtOUt0mXzNQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body id="bd">
+
+    <div id="loader" class="loading-container">
+        <img src="img/FOR_HUMANS__2_.png" alt="Loading" class="loader-image">
+    </div>
+
+    <div class="content">
+        <i class="fas fa-sun"></i>
+        &nbsp;&nbsp;&nbsp;
+        <input type="checkbox" id="tooglenight" class="cbx hidden" />
+        <label for="tooglenight" class="switch"></label>
+        &nbsp;&nbsp;&nbsp;
+        <i class="fas fa-moon"></i>
+    </div>
+
+    <%- include('./partials/header') %>
+
+
+    <main>
+
+        <div class="container">
+            <div class="dmarkbox">
+                <img src="img/FOR_HUMANS__2_-removebg-preview.png" alt="" class="logo market-logo">
+
+                <h2 class="heading-secondary dmarkhead">for digital marketing contact us</h2>
+
+                <div class="contact-info d-flex justify-content-between text-center">
+                    <p class="address">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <span>Kathmandu</span>
+                    </p>
+                    <p class="address">
+                        <i class="fa-solid fa-phone"></i>
+                        <span>980800001</span>
+                    </p>
+                    <p class="address">
+                        <i class="fa-solid fa-envelope"></i>
+                        <span>info@mail.com</span>
+                    </p>
+                    
+                </div>
+
+
+
+                <div class="social-link text-center">
+                    <h4 class="heading-mrkt">
+                        Follow us on:
+                    </h4>
+                    <ul>
+                        <li class="d-flex justify-content-center mt-4">
+                            <a href="#" class="social-icon">
+                                <img src="img/facebook.png" alt="fbicon">
+                            </a>
+                            <a href="#" class="social-icon">
+                                <img src="img/instagram(1).png" alt="">
+                            </a>
+                            <a href="#" class="social-icon">
+                                <img src="img/whatsapp.png" alt="">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+
+    </main>
+
+    <%- include('./partials/footer') %>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/min/tiny-slider.js"></script>
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+
+    <script src="js/script.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#tooglenight").change(function () {
+                if (this.checked) {
+                    $("#bd").addClass("night");
+                    $(".content i").css("color", "#333");
+                } else {
+                    $("#bd").removeClass("night");
+                    $(".content i").css("color", "white");
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>
