@@ -1,6 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
   const feedbackForm = document.getElementById("feedbackForm");
 
+  const apiUrl = window.APP_API_BACKEND_URL;
+
+
   feedbackForm.addEventListener("submit", async (e) => {
     e.preventDefault(); // Prevent the form from submitting the traditional way
 
@@ -22,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       // Post the form data to the server
-      const response = await fetch("http://localhost:4000/api/users/feedback", {
+      const response = await fetch(`${apiUrl}/api/users/feedback`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

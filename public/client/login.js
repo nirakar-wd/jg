@@ -1,4 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
+
+  const apiUrl = window.APP_API_BACKEND_URL;
+
   const form = document.getElementById("loginForm");
 
   form.addEventListener("submit", async (e) => {
@@ -16,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     try {
-      const response = await fetch("http://localhost:4000/api/users/login", {
+      const response = await fetch(`${apiUrl}/api/users/login`, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -27,12 +30,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const data = await response.json();
 
-      console.log(data);
-
       if (response.ok) {
         localStorage.setItem("userId", data.user.id);
         alert("login successful!");
-        // window.location.href = "http://localhost:4000/contacts";
+        window.location.href = `${apiUrl}`;
       } else {
         // Display validation errors returned by the server
         const errorMessages = Object.values(

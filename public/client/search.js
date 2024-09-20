@@ -3,6 +3,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const searchForm = document.getElementById("searchForm");
   const searchResults = document.getElementById("searchResults");
 
+  const apiUrl = window.APP_API_BACKEND_URL;
+
+
   // Handle search input keyup event
   searchInput.addEventListener("input", async function () {
     const query = searchInput.value.trim();

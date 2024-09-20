@@ -1,7 +1,10 @@
 document.addEventListener("DOMContentLoaded", async () => {
+  
+  const apiUrl = window.APP_API_BACKEND_URL;
+
   const collectionId = window.location.pathname.split("/").pop();
   try {
-    const response = await fetch(`http://localhost:4000/api/collections/${collectionId}`, {
+    const response = await fetch(`${apiUrl}/api/collections/${collectionId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -41,7 +44,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         try {
           // Await the fetch request to handle the response properly
           const editResponse = await fetch(
-            `http://localhost:4000/api/collections/${collectionId}`,
+            `${apiUrl}/api/collections/${collectionId}`,
             {
               method: "PUT",
               headers: {

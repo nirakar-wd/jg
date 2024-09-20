@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
+  const apiUrl = window.APP_API_BACKEND_URL;
+
   try {
     // Fetch products
     const response = await fetch(

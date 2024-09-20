@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("addCategoryForm");
+  const apiUrl = window.APP_API_BACKEND_URL; // Access the API URL
+
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -15,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     try {
-      const response = await fetch("http://localhost:4000/api/categories", {
+      const response = await fetch(`${apiUrl}/api/categories`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

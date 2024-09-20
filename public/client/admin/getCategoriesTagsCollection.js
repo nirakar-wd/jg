@@ -1,9 +1,11 @@
 document.addEventListener("DOMContentLoaded", async () => {
 
+  const apiUrl = window.APP_API_BACKEND_URL; // Access the API URL
+
   // categories
   try {
     // Fetch orders from the backend
-    const response = await fetch("http://localhost:4000/api/categories", {
+    const response = await fetch(`${apiUrl}/api/categories`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -12,7 +14,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (response.ok) {
       const categories = await response.json();
-      console.log(categories);
       const categoriesTableBody = document.querySelector("#categoriesTable tbody");
 
       // Clear existing rows in the table body (if any)
@@ -27,7 +28,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <td>${category.description}</td>
                 <td><div>
                   <button class="btn btn-primary">
-                  <a href="http://localhost:4000/editCategory/${category.id}">edit</a>
+                  <a href="${apiUrl}/editCategory/${category.id}">edit</a>
                   </button>
                   </div></td>
               `;
@@ -43,7 +44,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 // tags
   try {
     // Fetch tags from the backend
-    const response = await fetch("http://localhost:4000/api/tags", {
+    const response = await fetch(`${apiUrl}/api/tags`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -52,7 +53,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (response.ok) {
       const tags = await response.json();
-      console.log(tags);
       const tagsTableBody = document.querySelector("#tagsTable tbody");
 
       // Clear existing rows in the table body (if any)
@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <td>${tag.description}</td>
                 <td><div>
                   <button class="btn btn-primary">
-                  <a href="http://localhost:4000/editTag/${tag.id}">edit</a>
+                  <a href="${apiUrl}/editTag/${tag.id}">edit</a>
                   </button>
                   </div></td>
               `;
@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // collections
   try {
     // Fetch collections from the backend
-    const response = await fetch("http://localhost:4000/api/collections", {
+    const response = await fetch(`${apiUrl}/api/collections`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (response.ok) {
       const collections = await response.json();
-      console.log(collections);
+
       const collectionsTableBody = document.querySelector("#collectionsTable tbody");
 
       // Clear existing rows in the table body (if any)
@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <td>${collection.description}</td>
                 <td><div>
                   <button class="btn btn-primary">
-                  <a href="http://localhost:4000/editCollection/${collection.id}">edit</a>
+                  <a href="${apiUrl}/editCollection/${collection.id}">edit</a>
                   </button>
                   </div></td>
               `;

@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
+  const apiUrl = window.APP_API_BACKEND_URL;
+
   try {
     // Extract the user ID from the query parameters
 
@@ -7,7 +9,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (id) {
       // Fetch user information using the extracted user ID
-      const response = await fetch(`http://localhost:4000/api/users/${id}`, {
+      const response = await fetch(`${apiUrl}/api/users/${id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -15,7 +17,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         credentials: "include", // Ensure cookies are sent with the request
       });
       const user = await response.json();
-      console.log(user);
 
       if (response.ok) {
         // Populate the data into the HTML
@@ -47,7 +48,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     } else {
       console.error("User ID is missing in the query parameters");
     }
-    const usersResponse = await fetch(`http://localhost:4000/api/users`, {
+    const usersResponse = await fetch(`${apiUrl}/api/users`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -61,7 +62,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       document.getElementById("totalUsers").textContent = users.count;
     }
 
-    const ordersResponse = await fetch(`http://localhost:4000/api/orders/all`, {
+    const ordersResponse = await fetch(`${apiUrl}/api/orders/all`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -72,23 +73,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (ordersResponse.ok) {
       const orders = await ordersResponse.json();
       document.getElementById("totalOrders").textContent = orders.count;
-
     }
 
-    const productsResponse = await fetch(
-      `http://localhost:4000/api/products`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include", // Ensure cookies are sent with the request
-      }
-    );
+    const productsResponse = await fetch(`${apiUrl}/api/products`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include", // Ensure cookies are sent with the request
+    });
 
     if (productsResponse.ok) {
       const products = await productsResponse.json();
-      console.log(products);
+
       const productsTableBody = document.querySelector(
         "#productsAdminTable tbody"
       );
@@ -145,18 +142,16 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (id) {
         try {
           // Await the fetch request to handle the response properly
-          const editResponse = await fetch(
-            `http://localhost:4000/api/users/${id}`,
-            {
-              method: "PUT",
-              body: formData, // No need for headers with FormData
-              credentials: "include", // Ensure cookies are sent with the request
-            }
-          );
+          const editResponse = await fetch(`${apiUrl}/api/users/${id}`, {
+            method: "PUT",
+            body: formData, // No need for headers with FormData
+            credentials: "include", // Ensure cookies are sent with the request
+          });
 
           // Check the response status
           if (editResponse.ok) {
             console.log("User edited successfully");
+            alert("User edited successfully");
           } else {
             const errorData = await editResponse.json();
             console.error("Error editing user:", errorData);

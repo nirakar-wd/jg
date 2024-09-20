@@ -1049,6 +1049,15 @@ header .form-control:focus {
     overflow: hidden; /* Prevents overflow if the image is larger */
 }
 
+.client-comment-img {
+    width: 7rem;
+    height: 7rem; 
+    border-radius: 50%; /* Maintain a perfect circle */
+    box-shadow: 7.3px 6.4px 10px rgba(0, 0, 0, 0.14),
+                58px 51px 80px rgba(0, 0, 0, 0.07);
+    overflow: hidden; /* Prevents overflow if the image is larger */
+}
+
 
 .test-para {
     /* font-size: 1.2rem; */

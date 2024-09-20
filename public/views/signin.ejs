@@ -49,52 +49,52 @@
 
     <%- include('./partials/header') %>
 
-    <main>
+        <main>
 
-        <div class="container">
-            <div class="login">
-                <div class="container">
-                    <h2 class="heading-secondary">Login</h2>
+            <div class="container">
+                <div class="login">
+                    <div class="container">
+                        <h2 class="heading-secondary">Login</h2>
 
-                    <div class="login-form-grids">
-                        <form id="loginForm">
-                            <input type="hidden" name="">
+                        <div class="login-form-grids">
+                            <form id="loginForm">
+                                <input type="hidden" name="">
 
-                            <input type="text" class="form-control" placeholder="Username" name="username" value="" required
-                                autofocus />
+                                <input type="text" class="form-control" placeholder="Username" name="username" value=""
+                                    required autofocus />
 
 
-                            <input type="password" class="form-control" placeholder="Password" name="password"
-                                required />
+                                <input type="password" class="form-control" placeholder="Password" name="password"
+                                    required />
 
-                            <div class="forgot">
-                                <a href="#" data-dismiss="modal" data-toggle="modal"
-                                    data-target="#ForgetPasswordformModal">Forgot Password?</a>
-                            </div>
-                            <!-- <div class="CBox">
+                                <div class="forgot">
+                                    <a href="#" data-dismiss="modal" data-toggle="modal"
+                                        data-target="#ForgetPasswordformModal">Forgot Password?</a>
+                                </div>
+                                <!-- <div class="CBox">
                         <label>
                           <input type="checkbox" name="remember" >
                           Remember me
                         </label>
                       </div> -->
-                            <input type="submit" value="Login">
-                            <p> </p>
-                        </form>
+                                <input type="submit" value="Login">
+                                <p> </p>
+                            </form>
+                        </div>
+                        <!-- <h4 class="">For New People</h4> -->
+                        <p class="login-para">
+                            Dont have an account?
+                            <a href="<%= APP_API_URL %>/register"> Register Here</a>
+                        </p>
                     </div>
-                    <!-- <h4 class="">For New People</h4> -->
-                    <p class="login-para">
-                        Dont have an account?
-                        <a href="register.html"> Register Here</a>
-                    </p>
                 </div>
             </div>
-        </div>
 
 
 
-    </main>
+        </main>
 
-    <%- include('./partials/footer') %>
+        <%- include('./partials/footer') %>
 
 
 
@@ -117,6 +117,10 @@
             }
         });
     });
+</script>
+
+<script>
+    window.APP_API_BACKEND_URL = "<%= apiUrl %>";
 </script>
 
 <script src="/client/login.js">

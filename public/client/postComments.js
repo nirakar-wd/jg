@@ -1,4 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
+
+  const apiUrl = window.APP_API_BACKEND_URL;
+
   let selectedRating = 0;
 
   const path = window.location.pathname;
@@ -49,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       // Send POST request to the backend
       const response = await fetch(
-        `http://localhost:4000/api/products/${productId}/comments`,
+        `${apiUrl}/api/products/${productId}/comments`,
         {
           method: "POST",
           headers: {

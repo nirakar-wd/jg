@@ -1,7 +1,9 @@
 document.addEventListener("DOMContentLoaded", async () => {
+  const apiUrl = window.APP_API_BACKEND_URL; // Access the API URL
+
   try {
     // Fetch orders from the backend
-    const response = await fetch("http://localhost:4000/api/products?page=1&pageSize=100", {
+    const response = await fetch(`${apiUrl}/api/products?page=1&pageSize=100`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -10,7 +12,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (response.ok) {
       const products = await response.json();
-      console.log(products);
       const productsTableBody = document.querySelector("#productsTable tbody");
 
       // Clear existing rows in the table body (if any)
@@ -34,7 +35,7 @@ document.addEventListener("DOMContentLoaded", async () => {
               </span></td>
               <td><div>
                 <button class="btn btn-primary">
-                <a href="http://localhost:4000/editProduct/${product.id}">edit</a>
+                <a href="${apiUrl}/editProduct/${product.id}">edit</a>
                 </button>
                 </div></td>
             `;

@@ -3,9 +3,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   const totalPrice = document.getElementById("totalPrice");
   const orderStatus = document.getElementById("orderStatus");
 
+  const apiUrl = window.APP_API_BACKEND_URL;
+
+
   try {
     const response = await fetch(
-      `http://localhost:4000/api/orders/${orderId}`,
+      `${apiUrl}/api/orders/${orderId}`,
       {
         method: "GET",
         headers: {
@@ -52,7 +55,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.querySelector(".cancel-btn").addEventListener("click", async () => {
     try {
       const response = await fetch(
-        `http://localhost:4000/api/orders/${orderId}`,
+        `${apiUrl}/api/orders/${orderId}`,
         {
           method: "DELETE",
           headers: {

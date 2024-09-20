@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const apiUrl = window.APP_API_BACKEND_URL;
+
   const form = document.getElementById("registerForm");
 
   form.addEventListener("submit", async (e) => {
@@ -29,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     try {
-      const response = await fetch("http://localhost:4000/api/users/register", {
+      const response = await fetch(`${apiUrl}/api/users/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -41,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (response.ok) {
         alert("Registration successful!");
-        window.location.href = 'http://127.0.0.1:5500/jg/signin.html';
+        window.location.href = `${apiUrl}/login`;
       } else {
         // Display validation errors returned by the server
         const errorMessages = Object.values(

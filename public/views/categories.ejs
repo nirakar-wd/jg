@@ -201,7 +201,7 @@
                 
                 document.addEventListener("DOMContentLoaded", async () => {
                     try {
-                        const response = await fetch("http://localhost:4000/api/categories", {
+                        const response = await fetch(`<%= APP_API_BACKEND_URL %>/api/categories`, {
                             method: "GET",
                             headers: {
                                 "Content-Type": "application/json",
@@ -244,7 +244,7 @@
                 // Function to fetch products by category and page
                 async function fetchProductsByCategory(categoryId, page) {
                     try {
-                        const response = await fetch(`http://localhost:4000/api/products/by_category_id/${categoryId}?page=${page}&pageSize=9`, {
+                        const response = await fetch(`<%= APP_API_BACKEND_URL %>/api/products/by_category_id/${categoryId}?page=${page}&pageSize=9`, {
                             method: "GET",
                             headers: {
                                 "Content-Type": "application/json",
@@ -354,7 +354,7 @@
                         const selectedOption = sortSelect.value;
 
                         // Define the base API URL
-                        const baseUrl = "http://localhost:4000/api/products/filter?page=1&pageSize=50";
+                        const baseUrl = "<%= APP_API_BACKEND_URL %>/api/products/filter?page=1&pageSize=50";
 
                         // Build the query parameters based on the selected option
                         let queryParams = "";
@@ -417,7 +417,7 @@
                     async function fetchProducts(minPrice, maxPrice) {
                         console.log(maxPrice);
                         try {
-                            const response = await fetch(`http://localhost:4000/api/products/filter?minPrice=${minPrice}&maxPrice=${maxPrice}`);
+                            const response = await fetch(`<%= APP_API_BACKEND_URL %>/api/products/filter?minPrice=${minPrice}&maxPrice=${maxPrice}`);
                             const products = await response.json();
                             console.log(products)
                             // Display the products
@@ -464,7 +464,7 @@
                         const averageRating = product.averageRating || 0;
                         productElement.innerHTML = `
             <div class="abox">
-                <div class="kecimgbox"> <a href="http://localhost:4000/products/${product.id}"><img
+                <div class="kecimgbox"> <a href="<%= APP_API_URL %>/products/${product.id}"><img
                             src=${product.images && product.images.length > 0 ? product.images[0] : "/images/products/polo.jpg"} class="img-fluid"
                             alt="prod images"></a>
                 </div>
@@ -499,7 +499,7 @@
                 async function fetchProducts(page) {
                     const resultContainer = document.getElementById("resultsCount");
                     try {
-                        const response = await fetch(`http://localhost:4000/api/products?page=${page}&pageSize=9`, {
+                        const response = await fetch(`<%= APP_API_BACKEND_URL %>/api/products?page=${page}&pageSize=9`, {
                             method: "GET",
                             headers: {
                                 "Content-Type": "application/json",
@@ -528,7 +528,7 @@
                                 productElement.innerHTML = `
                         <div class="abox">
                             <div class="kecimgbox">
-                                <a href="http://localhost:4000/products/${product.id}">
+                                <a href="<%= APP_API_URL %>/products/${product.id}">
                                     <img src="${product.images && product.images.length > 0 ? product.images[0] : "/images/products/polo.jpg"}" class="img-fluid" alt="prod images">
                                 </a>
                             </div>

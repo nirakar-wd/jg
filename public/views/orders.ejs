@@ -115,7 +115,7 @@
 
         async function fetchOrders() {
             try {
-                const response = await fetch(`http://localhost:4000/api/orders`,
+                const response = await fetch(`<%= APP_API_BACKEND_URL %>/api/orders`,
                     {
                         method: "GET",
                         headers: {
@@ -136,7 +136,7 @@
                         <td>${order.orderStatusStr}</td>
                         <td>${order.order_items.length}</td>
                         <td>${order.total}</td>
-                         <td><a href="http://localhost:4000/order/${order.id}">view details</a></td>
+                         <td><a href="<%= APP_API_BACKEND_URL %>/order/${order.id}">view details</a></td>
                     `;
                         orderItemsContainer.appendChild(tr);
                     });
@@ -148,10 +148,6 @@
             }
         }
 
-        function viewDetails(orderId) {
-            alert('View details for order: ' + orderId);
-            // Implement the logic to show order details
-        }
     </script>
 
 

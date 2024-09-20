@@ -1,8 +1,11 @@
 document.addEventListener("DOMContentLoaded", async () => {
+
+  const apiUrl = window.APP_API_BACKEND_URL;
+
   const tagId = window.location.pathname.split("/").pop();
   try {
     const response = await fetch(
-      `http://localhost:4000/api/tags/${tagId}`,
+      `${apiUrl}/api/tags/${tagId}`,
       {
         method: "GET",
         headers: {
@@ -45,7 +48,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         try {
           // Await the fetch request to handle the response properly
           const editResponse = await fetch(
-            `http://localhost:4000/api/tags/${tagId}`,
+            `${apiUrl}/api/tags/${tagId}`,
             {
               method: "PUT",
               headers: {

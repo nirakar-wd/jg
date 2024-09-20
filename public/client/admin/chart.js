@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
   const chartContainer = document.getElementById("myChart");
 
+  const apiUrl = window.APP_API_BACKEND_URL; // Access the API URL
+
   // Function to create the chart
   const createChart = (ctx, months, salesData) => {
     new Chart(ctx, {
@@ -51,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Fetch the sales data and create the chart
   const fetchSalesData = async () => {
     try {
-      const response = await fetch("http://localhost:4000/api/orders/sales");
+      const response = await fetch(`${apiUrl}/api/orders/sales`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }

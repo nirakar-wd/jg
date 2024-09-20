@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
+
+  const apiUrl = window.APP_API_BACKEND_URL;
   const form = document.getElementById("categoryForm");
 
   form.addEventListener("submit", async (e) => {
@@ -14,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     try {
-      const response = await fetch("http://localhost:4000/api/categories", {
+      const response = await fetch(`${apiUrl}/api/categories`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -23,8 +25,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       const data = await response.json();
-
-      console.log(response);
 
       if (response.status === "200") {
         alert("Category added successfully successful!");

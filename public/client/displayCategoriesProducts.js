@@ -28,6 +28,9 @@ function generateStars(rating) {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
+
+  const apiUrl = window.APP_API_BACKEND_URL;
+
   try {
     const response = await fetch("http://localhost:4000/api/categories", {
       method: "GET",

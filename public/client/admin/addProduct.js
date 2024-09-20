@@ -2,25 +2,19 @@ document.addEventListener("DOMContentLoaded", async () => {
   const categoriesSelect = document.getElementById("categories");
   const tagsSelect = document.getElementById("tags");
   const collectionsSelect = document.getElementById("collections");
-  // const uploadBtn = document.getElementById("uploadBtn");
-  // const iconImageUpload = document.getElementById("iconImageUpload");
-  // const displayImage = document.getElementById("displayImage");
 
-  // uploadBtn.addEventListener("click", () => {
-  //   displayImage.click();
-  // });
-
-  // iconImageUpload.addEventListener("click", () => {
-  //   displayImage.click();
-  // });
+  const apiUrl = window.APP_API_BACKEND_URL; // Access the API URL
 
   // Fetch categories, tags, and collections when the page loads
   try {
     // Fetch categories
-    const categoriesResponse = await fetch(
-      "http://localhost:4000/api/categories",
-      { cache: "no-store" }
-    );
+    const categoriesResponse = await fetch(`${apiUrl}/api/categories`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include", // Ensure cookies are sent with the request
+    });
     const categories = await categoriesResponse.json();
 
     if (categoriesResponse.ok) {
@@ -35,8 +29,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // Fetch tags
-    const tagsResponse = await fetch("http://localhost:4000/api/tags", {
-      cache: "no-store",
+    const tagsResponse = await fetch(`${apiUrl}/api/tags`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include", // Ensure cookies are sent with the request
     });
     const tags = await tagsResponse.json();
 
@@ -52,12 +50,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // Fetch collections
-    const collectionsResponse = await fetch(
-      "http://localhost:4000/api/collections",
-      {
-        cache: "no-store",
-      }
-    );
+    const collectionsResponse = await fetch(`${apiUrl}/api/collections`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include", // Ensure cookies are sent with the request
+    });
     const collections = await collectionsResponse.json();
 
     if (collectionsResponse.ok) {
@@ -120,7 +119,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     formData.append("collections", JSON.stringify(selectedCollections));
 
     try {
-      const response = await fetch("http://localhost:4000/api/products", {
+      const response = await fetch(`${apiUrl}/api/products`, {
         method: "POST",
         body: formData, // Send the FormData with all data including files
         credentials: "include",

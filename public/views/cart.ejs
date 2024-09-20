@@ -49,29 +49,29 @@
 
     <%- include('./partials/header') %>
 
-    <main class="shopping-cart">
+        <main class="shopping-cart">
 
-        <div class="container">
-            <h2 class="heading-secondary mb-5">
-                shopping cart
-            </h2>
+            <div class="container">
+                <h2 class="heading-secondary mb-5">
+                    shopping cart
+                </h2>
 
-            <div class="cart-box">
-                <div class="row justify-content-center">
-                    <div class="col-md-9">
+                <div class="cart-box">
+                    <div class="row justify-content-center">
+                        <div class="col-md-9">
 
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">product</th>
-                                    <th scope="col">decription</th>
-                                    <th scope="col">quantity</th>
-                                    <th scope="col">price</th>
-                                    <th scope="col">delete</th>
-                                </tr>
-                            </thead>
-                            <tbody id="cartItems">
-                                <!-- <tr>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">product</th>
+                                        <th scope="col">decription</th>
+                                        <th scope="col">quantity</th>
+                                        <th scope="col">price</th>
+                                        <th scope="col">delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cartItems">
+                                    <!-- <tr>
                                     <th scope="row">
                                         <img src="img/Flat Back Brown TFF.png" alt="">
                                     </th>
@@ -82,73 +82,78 @@
                                         <a href="#"><i class="fa-solid fa-trash-can"></i></a>
                                     </td>
                                 </tr> -->
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
 
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="order-summary">
-                            <div class="order-heading">order summary</div>
-
-                            <div id="cartItemsContainer">
-                                <!-- <span>product name</span>
-                                    <span>$500</span> -->
-                            </div>
-
-                            <div class="pro-price d-flex pp-2 ">
-                                <span>shipping</span>
-                                <span>free</span>
-                            </div>
-
-                            <div class="pro-price d-flex pp-2 ">
-                                <span>delivery fee: (Rs. 150 within ktm valley/ Rs. 500 outside ktm)</span>
-                            </div>
-                            <div class="total-cost d-flex">
-                                <span>total</span>
-                                <span id="totalOrderPrice">Rs.1200</span>
-                            </div>
-                            <div class="order-checkout">
-                                <a href="http://localhost:4000/checkout">
-                                    <button class="btn btn-checkout">precede to
-                                        checkout</button></a>
-                            </div>
                         </div>
 
+                        <div class="col-md-3">
+                            <div class="order-summary">
+                                <div class="order-heading">order summary</div>
+
+                                <div id="cartItemsContainer">
+                                    <!-- <span>product name</span>
+                                    <span>$500</span> -->
+                                </div>
+
+                                <div class="pro-price d-flex pp-2 ">
+                                    <span>shipping</span>
+                                    <span>free</span>
+                                </div>
+
+                                <div class="pro-price d-flex pp-2 ">
+                                    <span>delivery fee: (Rs. 150 within ktm valley/ Rs. 500 outside ktm)</span>
+                                </div>
+                                <div class="total-cost d-flex">
+                                    <span>total</span>
+                                    <span id="totalOrderPrice">Rs.1200</span>
+                                </div>
+                                <div class="order-checkout">
+                                    <a href="http://localhost:4000/checkout">
+                                        <button class="btn btn-checkout">precede to
+                                            checkout</button></a>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-    </main>
+        </main>
 
-    <%- include('./partials/footer') %>
+        <%- include('./partials/footer') %>
 
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/min/tiny-slider.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/min/tiny-slider.js"></script>
 
-    <script src="/js/bootstrap.bundle.min.js"></script>
+            <script src="/js/bootstrap.bundle.min.js"></script>
 
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.1.2/redux.min.js"></script>
+            <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+                integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.1.2/redux.min.js"></script>
 
-    <script src="/js/script.js"></script>
+            <script src="/js/script.js"></script>
 
-    <script>
-        $(document).ready(function () {
-            $("#tooglenight").change(function () {
-                if (this.checked) {
-                    $("#bd").addClass("night");
-                    $(".content i").css("color", "#333");
-                } else {
-                    $("#bd").removeClass("night");
-                    $(".content i").css("color", "white");
-                }
-            });
-        });
-    </script>
-    <script src="/client/cart.js"></script>
+            <script>
+                $(document).ready(function () {
+                    $("#tooglenight").change(function () {
+                        if (this.checked) {
+                            $("#bd").addClass("night");
+                            $(".content i").css("color", "#333");
+                        } else {
+                            $("#bd").removeClass("night");
+                            $(".content i").css("color", "white");
+                        }
+                    });
+                });
+            </script>
+
+            <script>
+                window.APP_API_BACKEND_URL = "<%= apiUrl %>";
+            </script>
+            
+            <script src="/client/cart.js"></script>
 </body>
 
 </html>

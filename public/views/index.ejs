@@ -228,7 +228,7 @@
                         <div class="testimonials-details">
                             <div class="client-pd">
                                 <img src="/img/pexels-andrea-piacquadio-774909 1.png" alt="client photo"
-                                    class="client-img">
+                                    class="client-comment-img">
 
                             </div>
 
@@ -251,7 +251,7 @@
                         <div class="testimonials-details">
                             <div class="client-pd">
                                 <img src="/img/pexels-andrea-piacquadio-774909 1.png" alt="client photo"
-                                    class="client-img">
+                                    class="client-comment-img">
 
                             </div>
 
@@ -324,7 +324,7 @@
             try {
                 // Fetch products
                 const response = await fetch(
-                    `http://localhost:4000/api/products/bestSeller`,
+                    `<%= APP_API_BACKEND_URL %>/api/products/bestSeller`,
                     {
                         method: "GET",
                         headers: {
@@ -347,8 +347,8 @@
                         const bestSellingCard = `
                             <div class="categories-box">
                                 <h6 class="cat-head">
-                                <a href="http://localhost:4000/products/${product.id}" class="cat-link">
-                                    <img src=${product.images && product.images.length ? product.images[0] : "/images/products/polo2.jpg"} alt="arc-img" class="product-img">
+                                <a href="<%= APP_API_BACKEND_URL %>/products/${product.id}" class="cat-link">
+                                    <img src=${product.images && product.images.length ? product.images[0].filePath : "/images/products/polo2.jpg"} alt="arc-img" class="product-img">
                                     <span class="title">${product.name}</span>
                                     <span class="price">${product.price}</span>
                                 </a>
@@ -398,7 +398,7 @@
             try {
                 // Fetch products
                 const response = await fetch(
-                    `http://localhost:4000/api/products/?page=1&pageSize=8`,
+                    `<%= APP_API_BACKEND_URL %>/api/products/?page=1&pageSize=8`,
                     {
                         method: "GET",
                         headers: {
@@ -421,7 +421,7 @@
                         <div class="col-12 col-sm-3">
                                     <div class="categories-box">
                                         <h6 class="cat-head">
-                                            <a href="http://localhost:4000/products/${product.id}" class="cat-link">
+                                            <a href="<%= APP_API_BACKEND_URL %>/products/${product.id}" class="cat-link">
                                                 <img src=${product.images && product.images.length > 0 ? product.images[0] : "/images/products/polo.jpg"} alt="arc-img">
                                                 <span class="title">${product.name}</span>
                                                 <span class="price">${product.price}</span>
@@ -474,7 +474,7 @@
             try {
                 // Fetch comments
                 const response = await fetch(
-                    `http://localhost:4000/api/comments/?page=1&pageSize=5`,
+                    `<%= APP_API_BACKEND_URL %>/api/comments/?page=1&pageSize=5`,
                     {
                         method: "GET",
                         headers: {
@@ -498,7 +498,7 @@
                         <div class="testimonials-details">
                             <div class="client-pd">
                                 <img src=${comment.user.images && comment.user.images.length > 0 ? comment.user.images[0].filePath : "/images/users/defaultUser.png"} alt="client photo"
-                                    class="client-img">
+                                    class="client-comment-img">
                             </div>
                             <p class="para test-para">${comment.content}</p>
                             <div class="client-name text-end">
@@ -664,8 +664,6 @@
 
 
     <script src="/js/script.js"></script>
-    <!-- <script src="/client/getProducts.js"></script> -->
-    <!-- <script src="/client/getReviews.js"></script> -->
 
 </body>
 

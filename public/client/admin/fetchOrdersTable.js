@@ -1,7 +1,10 @@
 document.addEventListener("DOMContentLoaded", async () => {
+
+  const apiUrl = window.APP_API_BACKEND_URL;
+
   try {
     // Fetch orders from the backend
-    const response = await fetch("http://localhost:4000/api/orders/all", {
+    const response = await fetch(`${apiUrl}/api/orders/all`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -10,7 +13,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (response.ok) {
       const orders = await response.json();
-      console.log(orders);
+
       const ordersTableBody = document.querySelector("#ordersTable tbody");
 
       // Clear existing rows in the table body (if any)
@@ -34,7 +37,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             </span></td>
             <td><div>
                 <button class="btn btn-primary">
-                <a href="http://localhost:4000/editOrder/${order.id}">edit</a>
+                <a href="${apiUrl}/editOrder/${order.id}">edit</a>
                 </button>
                 </div>
               </td>

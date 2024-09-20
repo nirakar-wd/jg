@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
+  const apiUrl = window.APP_API_BACKEND_URL;
+
   let addressId = null;
 
   try {
@@ -7,7 +9,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (id) {
       // Fetch user information using the extracted user ID
-      const response = await fetch(`http://localhost:4000/api/users/${id}`, {
+      const response = await fetch(`${apiUrl}/api/users/${id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -79,7 +81,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (addressId) {
           // Edit existing address
           const editResponse = await fetch(
-            `http://localhost:4000/api/addresses/${addressId}`,
+            `${apiUrl}/api/addresses/${addressId}`,
             {
               method: "PUT",
               body: formData, // No need for headers with FormData
@@ -89,20 +91,18 @@ document.addEventListener("DOMContentLoaded", async () => {
 
           if (editResponse.ok) {
             console.log("Address updated successfully");
+            alert("Address updated");
           } else {
             const errorData = await editResponse.json();
             console.error("Error updating address:", errorData);
           }
         } else {
           // Add new address
-          const addResponse = await fetch(
-            `http://localhost:4000/api/addresses`,
-            {
-              method: "POST",
-              body: formData,
-              credentials: "include",
-            }
-          );
+          const addResponse = await fetch(`${apiUrl}/api/addresses`, {
+            method: "POST",
+            body: formData,
+            credentials: "include",
+          });
 
           if (addResponse.ok) {
             console.log("Address added successfully");

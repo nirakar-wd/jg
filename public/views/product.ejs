@@ -118,7 +118,7 @@
                 // Function to fetch products based on the current page
                 async function fetchProducts(page) {
                     try {
-                        const response = await fetch(`http://localhost:4000/api/products?page=${page}&pageSize=9`, {
+                        const response = await fetch(`<%= APP_API_BACKEND_URL %>/api/products?page=${page}&pageSize=9`, {
                             method: "GET",
                             headers: {
                                 "Content-Type": "application/json",
@@ -147,7 +147,7 @@
                                 productElement.innerHTML = `
                                     <div class="abox">
                                         <div class="kecimgbox">
-                                            <a href="http://localhost:4000/products/${product.id}">
+                                            <a href="<%= APP_API_BACKEND_URL %>/products/${product.id}">
                                                 <img src="${product.images && product.images.length > 0 ? product.images[0] : "/images/products/polo.jpg"}" class="img-fluid" alt="prod images">
                                             </a>
                                         </div>

@@ -1,10 +1,13 @@
 document.addEventListener("DOMContentLoaded", async function () {
+
+  const apiUrl = window.APP_API_BACKEND_URL;
+
   const orderId = window.location.pathname.split("/").pop();
 
   try {
     // Fetch the order details from the API
     const response = await fetch(
-      `http://localhost:4000/api/orders/${orderId}`,
+      `${apiUrl}/api/orders/${orderId}`,
       {
         method: "GET",
         headers: {
@@ -82,7 +85,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       if (orderId) {
         try {
           const updateResponse = await fetch(
-            `http://localhost:4000/api/orders/${orderId}`, // Update order endpoint
+            `${apiUrl}/api/orders/${orderId}`, // Update order endpoint
             {
               method: "PUT",
               headers: {

@@ -1,4 +1,7 @@
 document.addEventListener("DOMContentLoaded", async () => {
+
+  const apiUrl = window.APP_API_BACKEND_URL;
+
   const userId = localStorage.getItem("userId");
 
   if (!userId) {
@@ -9,7 +12,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   try {
     // Fetch cart items from the backend
     const response = await fetch(
-      `http://localhost:4000/api/cart?userId=${userId}`,
+      `${apiUrl}/api/cart?userId=${userId}`,
       {
         method: "GET",
         headers: {
@@ -94,7 +97,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
           try {
             const deleteResponse = await fetch(
-              `http://localhost:4000/api/cart/${cartItemId}`,
+              `${apiUrl}/api/cart/${cartItemId}`,
               {
                 method: "DELETE",
                 headers: {

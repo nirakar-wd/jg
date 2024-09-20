@@ -1,8 +1,11 @@
 document.addEventListener("DOMContentLoaded", async () => {
+
+  const apiUrl = window.APP_API_BACKEND_URL;
+
   const productId = window.location.pathname.split("/").pop();
   try {
     const getProductDetails = await fetch(
-      `http://localhost:4000/api/products/by_id/${productId}`,
+      `${apiUrl}/api/products/by_id/${productId}`,
       {
         method: "GET",
         headers: {
@@ -79,7 +82,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         try {
           // Await the fetch request to handle the response properly
           const editResponse = await fetch(
-            `http://localhost:4000/api/products/${productId}`,
+            `${apiUrl}/api/products/${productId}`,
             {
               method: "PUT",
               body: formData, // No need for headers with FormData

@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
+  const apiUrl = window.APP_API_BACKEND_URL;
+
   const userId = localStorage.getItem("userId");
   let addressId;
   let cartItemsOrder = [];
@@ -10,15 +12,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   try {
     // Fetch cart items from the backend
-    const response = await fetch(
-      `http://localhost:4000/api/cart?userId=${userId}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await fetch(`${apiUrl}/api/cart?userId=${userId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
     if (response.ok) {
       const result = await response.json();
@@ -99,7 +98,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       };
 
       // Send a POST request to place the order
-      const response = await fetch("http://localhost:4000/api/orders", {
+      const response = await fetch(`${apiUrl}/api/orders`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -116,7 +115,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         try {
           const clearCartResponse = await fetch(
-            `http://localhost:4000/api/cart/clear/${userId}`,
+            `${apiUrl}/api/cart/clear/${userId}`,
             {
               method: "DELETE",
               headers: {
@@ -128,7 +127,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           if (clearCartResponse.ok) {
             console.log("Cart cleared successfully.");
             // Optionally redirect the user to the homepage
-            window.location.href = "http://localhost:4000"; // Redirect to homepage
+            window.location.href = `${apiUrl}`; // Redirect to homepage
           } else {
             console.error("Failed to clear the cart.");
           }

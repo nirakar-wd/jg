@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("collectionsForm");
+  const apiUrl = window.APP_API_BACKEND_URL;
+
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -14,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     try {
-      const response = await fetch("http://localhost:4000/api/collections", {
+      const response = await fetch(`${apiUrl}/api/collections`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -23,8 +25,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       const data = await response.json();
-
-      console.log(response);
 
       if (response.status === "200") {
         alert("collection added successfully");

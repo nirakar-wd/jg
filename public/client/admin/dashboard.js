@@ -1,6 +1,9 @@
 document.addEventListener("DOMContentLoaded", async () => {
+
+  const apiUrl = window.APP_API_BACKEND_URL;
+  
   try {
-    const usersResponse = await fetch(`http://localhost:4000/api/users`, {
+    const usersResponse = await fetch(`${apiUrl}/api/users`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -13,7 +16,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       document.getElementById("noOfUsers").textContent = users.count;
     }
 
-    const ordersResponse = await fetch(`http://localhost:4000/api/orders/all`, {
+    const ordersResponse = await fetch(`${apiUrl}/api/orders/all`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -28,7 +31,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     const productsResponse = await fetch(
-      `http://localhost:4000/api/products/bestSeller`,
+      `${apiUrl}/api/products/bestSeller`,
       {
         method: "GET",
         headers: {
@@ -40,7 +43,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (productsResponse.ok) {
       const products = await productsResponse.json();
-      console.log(products);
+      
       const productsTableBody = document.querySelector(
         "#bestSellerProducts tbody"
       );
@@ -65,7 +68,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     const revenueResponse = await fetch(
-      `http://localhost:4000/api/orders/revenue`,
+      `${apiUrl}/api/orders/revenue`,
       {
         method: "GET",
         headers: {

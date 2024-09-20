@@ -86,9 +86,9 @@ app.use("/api", pagesRouter);
 app.use((req, res, next) => {
   res.locals.APP_API_URL_DEV = process.env.APP_API_URL_DEV;
   res.locals.APP_API_URL = process.env.APP_API_URL;
+  res.locals.APP_API_BACKEND_URL = process.env.APP_API_BACKEND_URL;
   next();
 });
-
 
 app.set("view engine", "ejs");
 
@@ -97,19 +97,15 @@ app.set("views", path.join(__dirname, "public/views"));
 
 // Serve your HTML file at the root URL
 app.get("/", (req, res) => {
-  res.render("index"); // Renders index.ejs
+  res.render("index", { apiUrl: process.env.APP_API_BACKEND_URL }); // Renders index.ejs
 });
 
 app.get("/categories", (req, res) => {
-  res.render("categories"); // Renders categories.ejs
-});
-
-app.get("/categories/:categoryId", (req, res) => {
-  res.render("productsCategories", { categoryId: req.params.categoryId }); // Pass dynamic data
+  res.render("categories", { apiUrl: process.env.APP_API_BACKEND_URL }); // Renders categories.ejs
 });
 
 app.get("/admin", verifyToken, isAdmin, (req, res) => {
-  res.render("admin"); // Renders admin.ejs
+  res.render("admin", { apiUrl: process.env.APP_API_BACKEND_URL }); // Renders admin.ejs
 });
 
 app.get("/aboutUs", (req, res) => {
@@ -117,19 +113,19 @@ app.get("/aboutUs", (req, res) => {
 });
 
 app.get("/cart", (req, res) => {
-  res.render("cart"); // Renders cart.ejs
+  res.render("cart", { apiUrl: process.env.APP_API_BACKEND_URL }); // Renders cart.ejs
 });
 
 app.get("/orders", (req, res) => {
-  res.render("orders"); // Renders orders.ejs
+  res.render("orders", { apiUrl: process.env.APP_API_BACKEND_URL }); // Renders orders.ejs
 });
 
 app.get("/checkout", (req, res) => {
-  res.render("checkoutOrder"); // Renders checkoutOrder.ejs
+  res.render("checkoutOrder", { apiUrl: process.env.APP_API_BACKEND_URL }); // Renders checkoutOrder.ejs
 });
 
 app.get("/order/:orderId", (req, res) => {
-  res.render("orderDetails");
+  res.render("orderDetails", { apiUrl: process.env.APP_API_BACKEND_URL });
 });
 
 app.get("/termsAndConditions", (req, res) => {
@@ -137,19 +133,19 @@ app.get("/termsAndConditions", (req, res) => {
 });
 
 app.get("/products", (req, res) => {
-  res.render("product"); // Renders product.ejs
+  res.render("product", { apiUrl: process.env.APP_API_BACKEND_URL }); // Renders product.ejs
 });
 
 app.get("/products/:productId", (req, res) => {
-  res.render("productDetails");
+  res.render("productDetails", { apiUrl: process.env.APP_API_BACKEND_URL });
 });
 
 app.get("/login", (req, res) => {
-  res.render("signin"); // Renders signin.ejs
+  res.render("signin", { apiUrl: process.env.APP_API_BACKEND_URL }); // Renders signin.ejs
 });
 
 app.get("/register", (req, res) => {
-  res.render("register"); // Renders register.ejs
+  res.render("register", { apiUrl: process.env.APP_API_BACKEND_URL }); // Renders register.ejs
 });
 
 app.get("/deliveryPolicy", (req, res) => {
@@ -157,7 +153,7 @@ app.get("/deliveryPolicy", (req, res) => {
 });
 
 app.get("/contacts", (req, res) => {
-  res.render("contact"); // Renders contact.ejs
+  res.render("contact", { apiUrl: process.env.APP_API_BACKEND_URL }); // Renders contact.ejs
 });
 
 app.get("/newArrivals", (req, res) => {
@@ -169,27 +165,27 @@ app.get("/digitalMarketing", (req, res) => {
 });
 
 app.get("/editCategory/:categoryId", (req, res) => {
-  res.render("editcategory"); 
+  res.render("editcategory", { apiUrl: process.env.APP_API_BACKEND_URL });
 });
 
 app.get("/editTag/:tagId", (req, res) => {
-  res.render("editTag"); 
+  res.render("editTag", { apiUrl: process.env.APP_API_BACKEND_URL });
 });
 
 app.get("/editCollection/:collectionId", (req, res) => {
-  res.render("editCollection"); // Pass dynamic data
+  res.render("editCollection", { apiUrl: process.env.APP_API_BACKEND_URL });
 });
 
 app.get("/edition", (req, res) => {
-  res.render("edition"); // Renders edition.ejs
+  res.render("edition");
 });
 
 app.get("/editProduct/:productId", (req, res) => {
-  res.render("editproduct"); 
+  res.render("editproduct", { apiUrl: process.env.APP_API_BACKEND_URL });
 });
 
 app.get("/editOrder/:orderId", (req, res) => {
-  res.render("editOrder"); 
+  res.render("editOrder", { apiUrl: process.env.APP_API_BACKEND_URL });
 });
 
 app.get("/manageProduct", (req, res) => {
@@ -201,13 +197,12 @@ app.get("/checkoutSuccess", (req, res) => {
 });
 
 app.get("/myProfile", verifyToken, (req, res) => {
-  res.render("userProfile"); // Renders userProfile.ejs
+  res.render("userProfile", { apiUrl: process.env.APP_API_BACKEND_URL }); // Renders userProfile.ejs
 });
 
 app.get("/myLocation", verifyToken, (req, res) => {
-  res.render("userLocation"); // Renders userLocation.ejs
+  res.render("userLocation", { apiUrl: process.env.APP_API_BACKEND_URL }); // Renders userLocation.ejs
 });
-
 
 // Error handling middleware
 app.use(function (err, req, res, next) {

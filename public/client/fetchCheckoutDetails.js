@@ -1,4 +1,7 @@
 document.addEventListener("DOMContentLoaded", async () => {
+
+  const apiUrl = window.APP_API_BACKEND_URL;
+
   try {
     // Extract the user ID from the query parameters
 
@@ -7,7 +10,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (id) {
       // Fetch user information using the extracted user ID
-      const response = await fetch(`http://localhost:4000/api/users/${id}`, {
+      const response = await fetch(`${apiUrl}/api/users/${id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
